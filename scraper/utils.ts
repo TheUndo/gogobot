@@ -99,6 +99,7 @@ export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
 				}
 				console.log(`Scraping ${slug} to find anime`);
 				const anime = await scrapeAnime(slug);
+				console.log(`Scraped ${slug}`);
 
 				return anime ?? null;
 			}

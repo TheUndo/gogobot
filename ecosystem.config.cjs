@@ -17,5 +17,11 @@ module.exports = {
       script: "scraper/scrapeRecents.ts",
       cron_restart: "*/15 * * * *",
     },
+    {
+      name: "digest",
+      interpreter: "bun",
+      script: "scraper/digest.ts",
+      cron_restart: "0 * * * *",
+    },
   ],
 };

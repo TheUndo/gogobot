@@ -35,6 +35,9 @@ export async function announceEpisode(episodeId: string) {
 	const channel =
 		channels[z.nativeEnum(Language).parse(episode.anime.language)];
 
+	console.log("Waiting 3 seconds before announcing episode");
+	await new Promise((r) => setTimeout(r, 3_000));
+
 	await new Promise((r) => {
 		client.channels.fetch(channel).then(async (channel) => {
 			if (
@@ -83,7 +86,9 @@ export async function announceEpisode(episodeId: string) {
 			await message.crosspost().catch(console.error);
 			r(undefined);
 		});
-	});
+	}).catch(console.error);
+
+	console.log("Episodes announced");
 
 	await notifyDirectly(episode.id);
 }
