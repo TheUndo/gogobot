@@ -84,8 +84,12 @@ export async function announceEpisode(episodeId: string) {
 				components: [row],
 			});
 			console.log("Crossposting");
-			await message.crosspost().catch(() => null);
-			console.log("Crossposted");
+			message
+				.crosspost()
+				.catch(() => null)
+				.then(() => {
+					console.log("Crossposted");
+				});
 			r(undefined);
 		});
 	}).catch(console.error);
