@@ -55,18 +55,17 @@ export async function animeInfoResponse(animeId: number) {
 				inline: true,
 			},
 			{
+				name: "Other names",
+				value: anime.names.map((n) => n.name).join(", "),
+				inline: true,
+			},
+			{
 				name: "Genres",
 				value: anime.genres
 					.map(
 						(g) => `[${g.genre}](${new URL(g.slug, `https://${domain.host}`)})`,
 					)
 					.join(", "),
-				inline: true,
-			},
-			{
-				name: "Other names",
-				value: anime.names.map((n) => n.name).join(", "),
-				inline: true,
 			},
 		]);
 
@@ -79,7 +78,7 @@ export async function animeInfoResponse(animeId: number) {
 				`${ButtonAction.Subscribe}+${anime.id}` satisfies ButtonActionFormat,
 			),
 		new ButtonBuilder()
-			.setLabel("Anime Info")
+			.setLabel("Gogoanime")
 			.setURL(new URL(anime.slug, `https://${domain.host}`).toString())
 			.setStyle(ButtonStyle.Link),
 	);

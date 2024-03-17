@@ -37,6 +37,8 @@ export async function commandRouter(
 		(v) => v.data.name === interaction.commandName,
 	);
 
+	console.log(interaction.commandName);
+
 	if (!command) {
 		await interaction.reply(
 			`No command matching ${interaction.commandName} was found.`,
