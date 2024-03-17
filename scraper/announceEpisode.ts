@@ -37,7 +37,11 @@ export async function announceEpisode(episodeId: string) {
 
 	await new Promise((r) => {
 		client.channels.fetch(channel).then(async (channel) => {
-			if (!channel || channel.type !== ChannelType.GuildText) {
+			if (
+				!channel ||
+				(ChannelType.GuildAnnouncement !== channel.type &&
+					ChannelType.GuildText !== channel.type)
+			) {
 				throw new Error(`Could not find channel with id ${channel}`);
 			}
 
