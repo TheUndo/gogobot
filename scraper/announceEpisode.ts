@@ -73,19 +73,24 @@ export async function announceEpisode(episodeId: string) {
 				)
 				.setStyle(ButtonStyle.Link);
 
-			const row = new ActionRowBuilder().addComponents(subscribe, watch, anime);
+			const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+				subscribe,
+				watch,
+				anime,
+			);
 
 			const message = await channel.send({
 				embeds: [main],
-				// @ts-ignore asshole discord.js
 				components: [row],
 			});
+			console.log("Crossposting");
 			await message.crosspost().catch(() => null);
+			console.log("Crossposted");
 			r(undefined);
 		});
 	}).catch(console.error);
 
-	console.log("Episodes announced");
-
+	console.log("Episode announced");
 	await notifyDirectly(episode.id);
+	console.log("Everyone notified");
 }

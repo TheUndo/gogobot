@@ -107,6 +107,7 @@ export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
 		})();
 
 		if (!referenceAnime) {
+			console.error(`Could not find anime with name ${episode.animeName}`);
 			await debug(
 				DebugLevel.Error,
 				makeCodeBlock(
