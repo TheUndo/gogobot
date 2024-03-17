@@ -27,3 +27,7 @@ await debug(
 		"json",
 	),
 );
+
+console.log("Done. Idle.");
+
+setInterval(() => {}, 1 << 30);

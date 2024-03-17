@@ -78,36 +78,37 @@ try {
 		);
 	} */
 
-	if (Bun.env.NODE_ENV === "development") {
-		const data = await rest.put(
-			Routes.applicationGuildCommands(
-				z.string().parse(Bun.env.DISCORD_CLIENT_ID),
-				z.string().parse(Bun.env.DISCORD_DEV_GUILD_ID),
-			),
-			{ body: commandsRegistrar.map((v) => v.data.toJSON()) },
-		);
-		const dataCommands = z
-			.array(
-				z.object({
-					id: z.string(),
-					name: z.string(),
-				}),
-			)
-			.parse(data);
-
-		for (const command of dataCommands) {
-			commands.set(command.name, { id: command.id });
+	const data = await (async () => {
+		if (Bun.env.NODE_ENV === "development") {
+			return await rest.put(
+				Routes.applicationGuildCommands(
+					z.string().parse(Bun.env.DISCORD_CLIENT_ID),
+					z.string().parse(Bun.env.DISCORD_DEV_GUILD_ID),
+				),
+				{ body: commandsRegistrar.map((v) => v.data.toJSON()) },
+			);
 		}
-		console.log(
-			`Successfully reloaded ${dataCommands.length} application (/) commands.`,
-		);
-	} else {
-		await rest.put(
+		return await rest.put(
 			Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_CLIENT_ID)),
 			{ body: commandsRegistrar.map((v) => v.data.toJSON()) },
 		);
-		console.log("Commands reloaded.");
+	})();
+
+	const dataCommands = z
+		.array(
+			z.object({
+				id: z.string(),
+				name: z.string(),
+			}),
+		)
+		.parse(data);
+
+	for (const command of dataCommands) {
+		commands.set(command.name, { id: command.id });
 	}
+	console.log(
+		`Successfully reloaded ${dataCommands.length} application (/) commands.`,
+	);
 } catch (error) {
 	console.error(error);
 	process.exit(1);
