@@ -22,12 +22,14 @@ export enum ButtonAction {
 export enum ModalAction {
 	Subscribe = "modal::subscribe",
 	Unsubscribe = "modal::unsubscribe",
+	AnimeSearch = "modal::animeSearch",
 }
 
 export enum SelectAction {
 	Subscribe = "select::subscribe",
 	Unsubscribe = "select::unsubscribe",
 	UnsubscribeFromSubscriptions = "select::unsubscribeFromSubscriptions",
+	ShowAnimeInfo = "select::showAnimeInfo",
 }
 
 export enum Colors {

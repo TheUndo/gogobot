@@ -3,6 +3,7 @@ import { SelectAction } from "../types";
 import { subscribe } from "../../interactions/selects/subscribe";
 import { unsubscribeFromSubscriptions } from "../../interactions/selects/unsubscribeFromSubscriptions";
 import { unsubscribe } from "../../interactions/selects/unsubscribe";
+import { showAnime } from "../../interactions/selects/showAnime";
 
 export async function selectRouter(
 	interaction: AnySelectMenuInteraction<CacheType>,
@@ -22,8 +23,13 @@ export async function selectRouter(
 		}
 		case SelectAction.Unsubscribe: {
 			if (interaction.isStringSelectMenu()) {
-				interaction;
 				return await unsubscribe(interaction);
+			}
+			break;
+		}
+		case SelectAction.ShowAnimeInfo: {
+			if (interaction.isStringSelectMenu()) {
+				return await showAnime(interaction);
 			}
 			break;
 		}

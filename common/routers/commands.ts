@@ -11,6 +11,9 @@ import { subscriptions } from "../../interactions/commands/subscriptions";
 import { unsubscribe } from "../../interactions/commands/unsubscribe";
 import { welcome } from "../../interactions/commands/welcome";
 import { help } from "../../interactions/commands/help";
+import { github } from "../../interactions/commands/github";
+import { domains } from "../../interactions/commands/domains";
+import { showAnime } from "../../interactions/commands/showAnime";
 
 const commandsRegistrar = [
 	ping,
@@ -19,6 +22,9 @@ const commandsRegistrar = [
 	unsubscribe,
 	welcome,
 	help,
+	github,
+	domains,
+	showAnime,
 ].filter((v) =>
 	Bun.env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

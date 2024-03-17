@@ -14,12 +14,6 @@ client.on(Events.GuildMemberAdd, async (member) => {
 	const guildId = member.guild.id;
 
 	if (guildId !== activeGuildId) {
-		console.log(
-			"guildId !== activeGuildId",
-			member.displayName,
-			guildId,
-			activeGuildId,
-		);
 		return;
 	}
 	try {
@@ -50,14 +44,17 @@ export function welcomeEmbed(): EmbedBuilder {
 		{
 			name: "Server rules",
 			value: "<#724159404194136074>",
+      inline: true,
 		},
 		{
 			name: "Need help with the site?",
 			value: "<#724159374100135984>",
+      inline: true,
 		},
 		{
 			name: "General chatting",
 			value: "<#726421062392217721>",
+      inline: true,
 		},
 	]);
 
