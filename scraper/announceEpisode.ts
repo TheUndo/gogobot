@@ -75,11 +75,12 @@ export async function announceEpisode(episodeId: string) {
 
 			const row = new ActionRowBuilder().addComponents(subscribe, watch, anime);
 
-			await channel.send({
+			const message = await channel.send({
 				embeds: [main],
 				// @ts-ignore asshole discord.js
 				components: [row],
 			});
+			await message.crosspost().catch(console.error);
 			r(undefined);
 		});
 	});
