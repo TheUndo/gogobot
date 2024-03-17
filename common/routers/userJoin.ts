@@ -14,6 +14,12 @@ client.on(Events.GuildMemberAdd, async (member) => {
 	const guildId = member.guild.id;
 
 	if (guildId !== activeGuildId) {
+		console.log(
+			"guildId !== activeGuildId",
+			member.displayName,
+			guildId,
+			activeGuildId,
+		);
 		return;
 	}
 	try {
