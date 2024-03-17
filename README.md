@@ -12,6 +12,8 @@ Install [bun](https://bun.sh)
 git clone https://github.com/TheUndo/gogobot.git
 cd gogobot
 cp .env.example .env
+bunx prisma db push
+bunx prisma generate
 bun install
 ```
 
