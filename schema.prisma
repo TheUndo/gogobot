@@ -1,0 +1,64 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Anime {
+  id Int @id @default(autoincrement())
+
+  slug          String              @unique
+  nameDisplay   String
+  names         AnimeName[]
+  cover         String
+  description   String
+  season        String?
+  year          Int
+  type          String
+  status        String
+  language      String
+  genres        AnimeGenre[]
+  episodes      AnimeEpisode[]
+  subscriptions AnimeSubscription[]
+  createdAt     DateTime            @default(now())
+}
+
+model AnimeEpisode {
+  id String @id @default(cuid())
+
+  anime   Anime  @relation(fields: [animeId], references: [id])
+  animeId Int
+  episode Float
+  slug    String @unique
+
+  createdAt DateTime @default(now())
+
+  @@unique([animeId, episode])
+}
+
+model AnimeGenre {
+  id    String  @id @default(cuid())
+  anime Anime[]
+  genre String
+  slug  String  @unique
+}
+
+model AnimeName {
+  id      String @id @default(cuid())
+  anime   Anime  @relation(fields: [animeId], references: [id])
+  animeId Int
+  name    String
+}
+
+model AnimeSubscription {
+  id            String   @id @default(cuid())
+  anime         Anime    @relation(fields: [animeId], references: [id])
+  animeId       Int
+  userDiscordId String
+  createdAt     DateTime @default(now())
+
+  @@unique([animeId, userDiscordId])
+}
