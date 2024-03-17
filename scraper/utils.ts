@@ -131,30 +131,34 @@ export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
 			},
 		});
 
-		const createdEpisode = await prisma.animeEpisode.upsert({
-			where: {
-				slug: episode.slug,
-			},
-			update: {
-				episode: episode.episode,
-				anime: {
-					connect: {
-						id: referenceAnime.id,
+		const createdEpisode = await prisma.animeEpisode
+			.upsert({
+				where: {
+					slug: episode.slug,
+				},
+				update: {
+					episode: episode.episode,
+					anime: {
+						connect: {
+							id: referenceAnime.id,
+						},
 					},
 				},
-			},
-			create: {
-				episode: episode.episode,
-				anime: {
-					connect: {
-						id: referenceAnime.id,
+				create: {
+					episode: episode.episode,
+					anime: {
+						connect: {
+							id: referenceAnime.id,
+						},
 					},
+					slug: episode.slug,
 				},
-				slug: episode.slug,
-			},
-		});
+			})
+			.catch(() => {
+				console.error(`Failed to add episode ${episode.slug}`);
+			});
 
-		if (!existingEpisode) {
+		if (!existingEpisode && createdEpisode) {
 			await onNewEpisode?.(createdEpisode.id);
 		}
 
@@ -292,31 +296,39 @@ export async function scrapeAnime(slug: string) {
 	const cover = $(".anime_info_body_bg img").attr("src");
 
 	if (type && status && cover) {
-		const anime = await prisma.anime.upsert({
-			where: {
-				slug,
-			},
-			update: {
-				type,
-				status,
-				year,
-				description,
-				nameDisplay,
-				cover,
-			},
-			create: {
-				type,
-				status,
-				year,
-				description,
-				nameDisplay,
-				cover,
-				slug,
-				language: nameDisplay.includes("(Dub)")
-					? getLanguage(2)
-					: getLanguage(1),
-			},
-		});
+		const anime = await prisma.anime
+			.upsert({
+				where: {
+					slug,
+				},
+				update: {
+					type,
+					status,
+					year,
+					description,
+					nameDisplay,
+					cover,
+				},
+				create: {
+					type,
+					status,
+					year,
+					description,
+					nameDisplay,
+					cover,
+					slug,
+					language: nameDisplay.includes("(Dub)")
+						? getLanguage(2)
+						: getLanguage(1),
+				},
+			})
+			.catch(() => {
+				console.error(`Failed to add anime ${slug}`);
+			});
+
+		if (!anime) {
+			return;
+		}
 
 		if (anime.status === "Ongoing" || anime.status === "Upcoming") {
 			ongoingIndex.add({
@@ -327,27 +339,33 @@ export async function scrapeAnime(slug: string) {
 		}
 
 		for (const genre of genres) {
-			await prisma.animeGenre.upsert({
-				where: {
-					slug: genre.slug,
-				},
-				update: {
-					anime: {
-						connect: {
-							id: anime.id,
+			await prisma.animeGenre
+				.upsert({
+					where: {
+						slug: genre.slug,
+					},
+					update: {
+						anime: {
+							connect: {
+								id: anime.id,
+							},
 						},
 					},
-				},
-				create: {
-					anime: {
-						connect: {
-							id: anime.id,
+					create: {
+						anime: {
+							connect: {
+								id: anime.id,
+							},
 						},
+						genre: genre.name,
+						slug: genre.slug,
 					},
-					genre: genre.name,
-					slug: genre.slug,
-				},
-			});
+				})
+				.catch(() => {
+					console.error(
+						`Failed to add genre ${genre.name} to anime ${anime.slug}`,
+					);
+				});
 		}
 
 		for (const name of otherNames ?? []) {
@@ -355,7 +373,7 @@ export async function scrapeAnime(slug: string) {
 				data: {
 					anime: {
 						connect: {
-							slug,
+							id: anime.id,
 						},
 					},
 					name,

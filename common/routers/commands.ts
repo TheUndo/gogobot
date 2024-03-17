@@ -106,6 +106,7 @@ try {
 			Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_CLIENT_ID)),
 			{ body: commandsRegistrar.map((v) => v.data.toJSON()) },
 		);
+		console.log("Commands reloaded.");
 	}
 } catch (error) {
 	console.error(error);

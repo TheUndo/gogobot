@@ -35,17 +35,14 @@ export async function announceEpisode(episodeId: string) {
 	const channel =
 		channels[z.nativeEnum(Language).parse(episode.anime.language)];
 
-	console.log("Waiting 3 seconds before announcing episode");
-	await new Promise((r) => setTimeout(r, 3_000));
-
-	await new Promise((r) => {
+	await new Promise((r, reject) => {
 		client.channels.fetch(channel).then(async (channel) => {
 			if (
 				!channel ||
 				(ChannelType.GuildAnnouncement !== channel.type &&
 					ChannelType.GuildText !== channel.type)
 			) {
-				throw new Error(`Could not find channel with id ${channel}`);
+				return reject(`Could not find channel with id ${channel}`);
 			}
 
 			const main = new EmbedBuilder()
@@ -83,7 +80,7 @@ export async function announceEpisode(episodeId: string) {
 				// @ts-ignore asshole discord.js
 				components: [row],
 			});
-			await message.crosspost().catch(console.error);
+			await message.crosspost().catch(() => null);
 			r(undefined);
 		});
 	}).catch(console.error);
