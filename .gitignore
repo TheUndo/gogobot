@@ -178,4 +178,6 @@ dist
 .env
 dev.db
 dev.db-journal
+prod.db
+prod.db-journal
 domain.txt

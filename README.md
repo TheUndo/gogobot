@@ -1,15 +1,41 @@
-# gogo
+# Gogo Robot
 
-To install dependencies:
+The official Gogoanime Discord Robot.
 
-```bash
+Join the Gogoanime server: https://discord.gg/gogo
+
+## Installation
+
+Install [bun](https://bun.sh)
+
+```sh
+git clone https://github.com/TheUndo/gogobot.git
+cd gogobot
+cp .env.example .env
 bun install
 ```
 
-To run:
+then open .env and edit it.
 
-```bash
-bun run index.ts
+## Usage
+
+### Development
+
+```sh
+bun . # Bot commands
+bun scraper/scrapeEverything.ts # Scrape anime
+bun scraper/scrapeRecents.ts # Scrape recents and notify
 ```
 
-This project was created using `bun init` in bun v1.0.30. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+### Production
+
+```sh
+bunx pm2 start ecosystem.config.cjs
+```
+
+## Technical info
+
+- db: sqlite (Prisma)
+- runtime: [bun](https://bun.sh)
+- language: TypeScript
+- sdk: [Discord.js](https://discord.js.org)
