@@ -78,13 +78,13 @@ export const commands = new Map<
 
 try {
   /* const data = await rest.get(
-		Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_CLIENT_ID)),
+		Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_APPLICATION_ID)),
 	);
 
 	for (const command of z.array(z.any()).parse(data)) {
 		await rest.delete(
 			Routes.applicationCommand(
-				z.string().parse(Bun.env.DISCORD_CLIENT_ID),
+				z.string().parse(Bun.env.DISCORD_APPLICATION_ID),
 				command.id,
 			),
 		);
@@ -94,14 +94,14 @@ try {
     if (Bun.env.NODE_ENV === "development") {
       return await rest.put(
         Routes.applicationGuildCommands(
-          z.string().parse(Bun.env.DISCORD_CLIENT_ID),
+          z.string().parse(Bun.env.DISCORD_APPLICATION_ID),
           z.string().parse(Bun.env.DISCORD_DEV_GUILD_ID),
         ),
         { body: commandsRegistrar.map((v) => v.data.toJSON()) },
       );
     }
     return await rest.put(
-      Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_CLIENT_ID)),
+      Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_APPLICATION_ID)),
       { body: commandsRegistrar.map((v) => v.data.toJSON()) },
     );
   })();

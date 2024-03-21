@@ -32,5 +32,5 @@ export async function pollCount(
       ),
   );
 
-  return await interaction.reply(response);
+  /* return await interaction.reply(response); */
 }
