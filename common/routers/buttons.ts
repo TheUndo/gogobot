@@ -6,24 +6,24 @@ import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModa
 import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
 
 export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
-	const [action, data] = interaction.customId.split("+");
+  const [action, data] = interaction.customId.split("+");
 
-	if (!action || !data) {
-		await interaction.reply({
-			content: "Invalid button action",
-			ephemeral: true,
-		});
-		return;
-	}
+  if (!action || !data) {
+    await interaction.reply({
+      content: "Invalid button action",
+      ephemeral: true,
+    });
+    return;
+  }
 
-	switch (action) {
-		case ButtonAction.Subscribe:
-			return await subscribe(interaction, data);
-		case ButtonAction.Unsubscribe:
-			return await unsubscribe(interaction, data);
-		case ButtonAction.ShowSubscribeModal:
-			return await showSubscribeModal(interaction);
-		case ButtonAction.SubscriptionListChangePage:
-			return await subscriptionListChangePage(interaction, data);
-	}
+  switch (action) {
+    case ButtonAction.Subscribe:
+      return await subscribe(interaction, data);
+    case ButtonAction.Unsubscribe:
+      return await unsubscribe(interaction, data);
+    case ButtonAction.ShowSubscribeModal:
+      return await showSubscribeModal(interaction);
+    case ButtonAction.SubscriptionListChangePage:
+      return await subscriptionListChangePage(interaction, data);
+  }
 }

@@ -3,43 +3,43 @@ import { prisma } from "../../prisma";
 import { createSubscription } from "../../common/logic/subscribe";
 
 export async function subscribe(
-	interaction: StringSelectMenuInteraction<CacheType>,
+  interaction: StringSelectMenuInteraction<CacheType>,
 ) {
-	const [id] = interaction.values;
+  const [id] = interaction.values;
 
-	if (typeof id !== "string") {
-		return await interaction.reply({
-			content: `Invalid anime id "${id}"`,
-			ephemeral: true,
-		});
-	}
+  if (typeof id !== "string") {
+    return await interaction.reply({
+      content: `Invalid anime id "${id}"`,
+      ephemeral: true,
+    });
+  }
 
-	const animeId = Number.parseInt(id);
+  const animeId = Number.parseInt(id);
 
-	if (Number.isNaN(animeId)) {
-		return await interaction.reply({
-			content: `Invalid anime id "${id}"`,
-			ephemeral: true,
-		});
-	}
+  if (Number.isNaN(animeId)) {
+    return await interaction.reply({
+      content: `Invalid anime id "${id}"`,
+      ephemeral: true,
+    });
+  }
 
-	const anime = await prisma.anime.findUnique({
-		where: {
-			id: animeId,
-		},
-	});
+  const anime = await prisma.anime.findUnique({
+    where: {
+      id: animeId,
+    },
+  });
 
-	if (!anime) {
-		return await interaction.reply({
-			content: `Could not find anime with id ${animeId}`,
-			ephemeral: true,
-		});
-	}
+  if (!anime) {
+    return await interaction.reply({
+      content: `Could not find anime with id ${animeId}`,
+      ephemeral: true,
+    });
+  }
 
-	const response = await createSubscription(anime.id, interaction.user.id);
+  const response = await createSubscription(anime.id, interaction.user.id);
 
-	return await interaction.reply({
-		...response,
-		ephemeral: true,
-	});
+  return await interaction.reply({
+    ...response,
+    ephemeral: true,
+  });
 }

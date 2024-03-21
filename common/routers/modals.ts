@@ -5,14 +5,14 @@ import { unsubscribe } from "../../interactions/modals/unsubscribe";
 import { showAnime } from "../../interactions/modals/showAnime";
 
 export async function modalRouter(
-	interaction: ModalSubmitInteraction<CacheType>,
+  interaction: ModalSubmitInteraction<CacheType>,
 ) {
-	switch (interaction.customId) {
-		case ModalAction.Subscribe:
-			return await subscribe(interaction);
-		case ModalAction.Unsubscribe:
-			return await unsubscribe(interaction);
-		case ModalAction.AnimeSearch:
-			return await showAnime(interaction);
-	}
+  switch (interaction.customId) {
+    case ModalAction.Subscribe:
+      return await subscribe(interaction);
+    case ModalAction.Unsubscribe:
+      return await unsubscribe(interaction);
+    case ModalAction.AnimeSearch:
+      return await showAnime(interaction);
+  }
 }

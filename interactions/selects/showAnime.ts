@@ -2,27 +2,27 @@ import type { CacheType, StringSelectMenuInteraction } from "discord.js";
 import { animeInfoResponse } from "../../common/logic/animeInfoResponse";
 
 export async function showAnime(
-	interaction: StringSelectMenuInteraction<CacheType>,
+  interaction: StringSelectMenuInteraction<CacheType>,
 ) {
-	const [id] = interaction.values;
+  const [id] = interaction.values;
 
-	if (typeof id !== "string") {
-		return await interaction.reply({
-			content: `Invalid anime id "${id}"`,
-			ephemeral: true,
-		});
-	}
+  if (typeof id !== "string") {
+    return await interaction.reply({
+      content: `Invalid anime id "${id}"`,
+      ephemeral: true,
+    });
+  }
 
-	const animeId = Number.parseInt(id);
+  const animeId = Number.parseInt(id);
 
-	if (Number.isNaN(animeId)) {
-		return await interaction.reply({
-			content: `Invalid anime id "${id}"`,
-			ephemeral: true,
-		});
-	}
+  if (Number.isNaN(animeId)) {
+    return await interaction.reply({
+      content: `Invalid anime id "${id}"`,
+      ephemeral: true,
+    });
+  }
 
-	const response = await animeInfoResponse(animeId);
+  const response = await animeInfoResponse(animeId);
 
-	return await interaction.reply(response);
+  return await interaction.reply(response);
 }
