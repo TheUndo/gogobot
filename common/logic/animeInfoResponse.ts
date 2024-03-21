@@ -7,10 +7,11 @@ import {
 } from "discord.js";
 import { noAnimeFound } from "../../interactions/commands/utils/queryResponses";
 import { prisma } from "../../prisma";
-import { domain } from "../../scraper/utils";
+import { domainPromise } from "../../scraper/utils";
 import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
 
 export async function animeInfoResponse(animeId: number) {
+  const domain = await domainPromise;
   const anime = await prisma.anime.findUnique({
     where: {
       id: animeId,

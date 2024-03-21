@@ -6,13 +6,14 @@ import {
 } from "discord.js";
 import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
 import { prisma } from "../../prisma";
-import { domain } from "../../scraper/utils";
+import { domainPromise } from "../../scraper/utils";
 
 /**
  * Causes db side effects db creation, checks for existing subscription
  * @returns Message payload - use as interaction.reply or .send
  * */
 export async function unsubscribeAction(animeId: number, userId: string) {
+  const domain = await domainPromise;
   const checkSubscription = await prisma.animeSubscription.findFirst({
     where: {
       animeId,

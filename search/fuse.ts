@@ -1,7 +1,7 @@
 import Fuse from "fuse.js";
 import { prisma } from "../prisma";
 
-const ongoingAnime = await prisma.anime
+const ongoingAnime = prisma.anime
   .findMany({
     where: {
       status: {
@@ -28,7 +28,7 @@ const ongoingAnime = await prisma.anime
     }),
   );
 
-const allAnime = await prisma.anime
+const allAnime = prisma.anime
   .findMany({
     select: {
       id: true,
@@ -50,10 +50,16 @@ const allAnime = await prisma.anime
     }),
   );
 
-export const ongoingIndex = new Fuse(ongoingAnime, {
-  keys: ["title", "names"],
-});
+export const ongoingIndex = ongoingAnime.then(
+  (ongoingAnime) =>
+    new Fuse(ongoingAnime, {
+      keys: ["title", "names"],
+    }),
+);
 
-export const animeIndex = new Fuse(allAnime, {
-  keys: ["title", "names"],
-});
+export const animeIndex = allAnime.then(
+  (allAnime) =>
+    new Fuse(allAnime, {
+      keys: ["title", "names"],
+    }),
+);

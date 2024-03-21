@@ -33,7 +33,7 @@ export async function subscribeFromQuery(
     return await interaction.reply(response);
   }
 
-  const search = ongoingIndex.search(query, {
+  const search = (await ongoingIndex).search(query, {
     limit: 25,
   });
 

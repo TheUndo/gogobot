@@ -1,12 +1,4 @@
-import {
-  ModalBuilder,
-  ActionRowBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  type CacheType,
-  type ButtonInteraction,
-} from "discord.js";
-import { ModalAction } from "../../common/types";
+import type { CacheType, ButtonInteraction } from "discord.js";
 import { createSubScriptionList } from "../commands/subscriptions";
 
 export async function subscriptionListChangePage(

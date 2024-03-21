@@ -8,17 +8,18 @@ import {
   ChannelType,
   EmbedBuilder,
 } from "discord.js";
-import { domain } from "./utils";
+import { domainPromise } from "./utils";
 import { client } from "../common/client";
 import { notifyDirectly } from "./notifyDirectly";
 
 const channels: Record<Language, string> = {
-  Subbed: z.string().parse(Bun.env.DISCORD_SUBBED_CHANNEL_ID),
-  Dubbed: z.string().parse(Bun.env.DISCORD_DUBBED_CHANNEL_ID),
-  Chinese: z.string().parse(Bun.env.DISCORD_CHINESE_CHANNEL_ID),
+  Subbed: z.string().parse(process.env.DISCORD_SUBBED_CHANNEL_ID),
+  Dubbed: z.string().parse(process.env.DISCORD_DUBBED_CHANNEL_ID),
+  Chinese: z.string().parse(process.env.DISCORD_CHINESE_CHANNEL_ID),
 };
 
 export async function announceEpisode(episodeId: string) {
+  const domain = await domainPromise;
   const episode = await prisma.animeEpisode.findUnique({
     where: {
       id: episodeId,

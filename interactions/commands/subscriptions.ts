@@ -18,8 +18,8 @@ import {
   Colors,
 } from "../../common/types";
 import { prisma } from "../../prisma";
-import { makeCommand, makeInlineCodeBlock } from "../../scraper/debug";
-import { domain } from "../../scraper/utils";
+import { makeCommand } from "../../scraper/debug";
+import { domainPromise } from "../../scraper/utils";
 import { commands } from "../../common/routers/commands";
 
 const pageSize = 25;
@@ -43,6 +43,7 @@ export async function createSubScriptionList(
   userDiscordId: string,
   rawPage = 1,
 ) {
+  const domain = await domainPromise;
   const totalCount = await prisma.animeSubscription.count({
     where: {
       userDiscordId,

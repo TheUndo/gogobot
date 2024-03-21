@@ -6,8 +6,8 @@ import { commands } from "./commands";
 import { Colors } from "../types";
 
 const activeGuildId =
-  Bun.env.NODE_ENV === "development"
-    ? z.string().parse(Bun.env.DISCORD_DEV_GUILD_ID)
+  process.env.NODE_ENV === "development"
+    ? z.string().parse(process.env.DISCORD_DEV_GUILD_ID)
     : "724158993320116276";
 
 client.on(Events.GuildMemberAdd, async (member) => {

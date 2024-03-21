@@ -19,7 +19,7 @@ export async function animeInfoFromQuery(query: string) {
     return await animeInfoResponse(anime.id);
   }
 
-  const search = animeIndex.search(query, {
+  const search = (await animeIndex).search(query, {
     limit: 25,
   });
 

@@ -28,9 +28,9 @@ const commandsRegistrar = [
   showAnime,
   /* poll, */
 ].filter((v) =>
-  Bun.env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
+  process.env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
-const rest = new REST().setToken(z.string().parse(Bun.env.DISCORD_TOKEN));
+const rest = new REST().setToken(z.string().parse(process.env.DISCORD_TOKEN));
 
 export async function commandRouter(
   interaction: ChatInputCommandInteraction<CacheType>,
@@ -76,52 +76,56 @@ export const commands = new Map<
   }
 >();
 
-try {
-  /* const data = await rest.get(
-		Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_APPLICATION_ID)),
+(async () => {
+  try {
+    /* const data = await rest.get(
+		Routes.applicationCommands(z.string().parse(process.env.DISCORD_APPLICATION_ID)),
 	);
 
 	for (const command of z.array(z.any()).parse(data)) {
 		await rest.delete(
 			Routes.applicationCommand(
-				z.string().parse(Bun.env.DISCORD_APPLICATION_ID),
+				z.string().parse(process.env.DISCORD_APPLICATION_ID),
 				command.id,
 			),
 		);
 	} */
 
-  const data = await (async () => {
-    if (Bun.env.NODE_ENV === "development") {
+    const data = await (async () => {
+      if (process.env.NODE_ENV === "development") {
+        return await rest.put(
+          Routes.applicationGuildCommands(
+            z.string().parse(process.env.DISCORD_APPLICATION_ID),
+            z.string().parse(process.env.DISCORD_DEV_GUILD_ID),
+          ),
+          { body: commandsRegistrar.map((v) => v.data.toJSON()) },
+        );
+      }
       return await rest.put(
-        Routes.applicationGuildCommands(
-          z.string().parse(Bun.env.DISCORD_APPLICATION_ID),
-          z.string().parse(Bun.env.DISCORD_DEV_GUILD_ID),
+        Routes.applicationCommands(
+          z.string().parse(process.env.DISCORD_APPLICATION_ID),
         ),
         { body: commandsRegistrar.map((v) => v.data.toJSON()) },
       );
+    })();
+
+    const dataCommands = z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+        }),
+      )
+      .parse(data);
+
+    for (const command of dataCommands) {
+      commands.set(command.name, { id: command.id });
     }
-    return await rest.put(
-      Routes.applicationCommands(z.string().parse(Bun.env.DISCORD_APPLICATION_ID)),
-      { body: commandsRegistrar.map((v) => v.data.toJSON()) },
+    console.log(
+      `Successfully reloaded ${dataCommands.length} application (/) commands.`,
     );
-  })();
-
-  const dataCommands = z
-    .array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-      }),
-    )
-    .parse(data);
-
-  for (const command of dataCommands) {
-    commands.set(command.name, { id: command.id });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
   }
-  console.log(
-    `Successfully reloaded ${dataCommands.length} application (/) commands.`,
-  );
-} catch (error) {
-  console.error(error);
-  process.exit(1);
-}
+})();
