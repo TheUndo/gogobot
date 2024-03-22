@@ -12,6 +12,11 @@ import { unsubscribe } from "../../interactions/commands/unsubscribe";
 import { welcome } from "../../interactions/commands/welcome";
 import { help } from "../../interactions/commands/help";
 import { github } from "../../interactions/commands/github";
+import { format } from "../../interactions/commands/format";
+import { releaseDate } from "../../interactions/commands/releaseDate";
+import { bulk } from "../../interactions/commands/bulk"
+import { adblock } from "../../interactions/commands/adblock"
+import { virus } from "../../interactions/commands/virus"
 import { domains } from "../../interactions/commands/domains";
 import { showAnime } from "../../interactions/commands/showAnime";
 import { poll } from "../../interactions/commands/poll";
@@ -24,6 +29,11 @@ const commandsRegistrar = [
   welcome,
   help,
   github,
+  format,
+  releaseDate,
+  bulk,
+  adblock,
+  virus, 
   domains,
   showAnime,
   /* poll, */
