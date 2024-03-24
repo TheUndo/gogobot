@@ -12,9 +12,9 @@ Install [bun](https://bun.sh) or [node](https://nodejs.org/)
 git clone https://github.com/TheUndo/gogobot.git
 cd gogobot
 cp .env.example .env
-bunx prisma db push
-bunx prisma generate
-bun install
+bun/npx prisma db push
+bunx/npx prisma generate
+bun/npm install
 ```
 
 then open .env and edit it.

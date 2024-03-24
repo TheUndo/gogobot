@@ -4,10 +4,11 @@ import { z } from "zod";
 import { makeCommand } from "../../scraper/debug";
 import { commands } from "./commands";
 import { Colors } from "../types";
+import { env } from "../../env";
 
-const activeGuildId =
-  process.env.NODE_ENV === "development"
-    ? z.string().parse(process.env.DISCORD_DEV_GUILD_ID)
+export const activeGuildId =
+  env.NODE_ENV === "development"
+    ? env.DISCORD_DEV_GUILD_ID
     : "724158993320116276";
 
 client.on(Events.GuildMemberAdd, async (member) => {

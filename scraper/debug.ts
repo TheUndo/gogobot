@@ -1,8 +1,8 @@
-import { z } from "zod";
 import { ChannelType, EmbedBuilder } from "discord.js";
 import { client } from "../common/client";
+import { env } from "../env";
 
-const debugChannel = z.string().parse(process.env.DISCORD_DEBUG_CHANNEL_ID);
+const debugChannel = env.DISCORD_DEBUG_CHANNEL_ID;
 
 export enum DebugLevel {
   Error = 0,

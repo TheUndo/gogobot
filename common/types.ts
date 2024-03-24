@@ -4,6 +4,7 @@ export type Command = {
   data: Partial<SlashCommandBuilder>;
   execute(interaction: Interaction): Promise<unknown>;
   dev?: boolean;
+  private?: boolean;
 };
 
 export enum Language {

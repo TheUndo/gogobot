@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { Events } from "discord.js";
 import { client } from "./common/client";
 import { commandRouter } from "./common/routers/commands";

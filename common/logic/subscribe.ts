@@ -10,6 +10,9 @@ import {
 import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
 import { prisma } from "../../prisma";
 import { domainPromise } from "../../scraper/utils";
+import { client } from "../client";
+import { env } from "../../env";
+import { activeGuildId } from "../routers/userJoin";
 
 /**
  * Causes db side effects db creation, checks for existing subscription
@@ -58,12 +61,10 @@ export async function createSubscription(animeId: number, userId: string) {
           .setColor(Colors.Warning),
       ],
       components: [
-        new ActionRowBuilder().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
           unsubscribe,
           info(checkSubscription.anime.slug),
-        ) as unknown as ActionRowData<
-          MessageActionRowComponentData | MessageActionRowComponentBuilder
-        >,
+        ),
       ],
     };
   }
@@ -82,21 +83,36 @@ export async function createSubscription(animeId: number, userId: string) {
     },
   });
 
+  const checkMember = await client.guilds
+    .fetch(activeGuildId)
+    .then((d) => d.members.fetch(userId))
+    .catch(() => null);
+
+  if (!checkMember) {
+    return {
+      content: "discord.gg/gogo",
+      embeds: [
+        new EmbedBuilder()
+          .setTitle("You're not in the Gogoanime server")
+          .setDescription(
+            `You have been subscribed to **${subscription.anime.nameDisplay}**. __However__, since you are not a member of the Gogoanime Discord server I am unable to notify you. Please join the server to receive notifications (as soon as you join notifications will start working).`,
+          )
+          .setColor(Colors.Error),
+      ],
+    };
+  }
+
   return {
     embeds: [
       new EmbedBuilder()
         .setTitle("✅ Subscribed")
         .setDescription(
-          `You are now subscribed to **${subscription.anime.nameDisplay}**. I will notify you when a new episode is released.`,
+          `You are now subscribed to **${subscription.anime.nameDisplay}**. I will notify you when a new episode is released. Make sure I can DM you (settings)!`,
         )
         .setColor(Colors.Success),
     ],
     components: [
-      new ActionRowBuilder().addComponents(
-        unsubscribe,
-      ) as unknown as ActionRowData<
-        MessageActionRowComponentData | MessageActionRowComponentBuilder
-      >,
+      new ActionRowBuilder<ButtonBuilder>().addComponents(unsubscribe),
     ],
   };
 }

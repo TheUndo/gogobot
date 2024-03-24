@@ -19,7 +19,8 @@ import { adblock } from "../../interactions/commands/adblock"
 import { virus } from "../../interactions/commands/virus"
 import { domains } from "../../interactions/commands/domains";
 import { showAnime } from "../../interactions/commands/showAnime";
-import { poll } from "../../interactions/commands/poll";
+import { env } from "../../env";
+import { stats } from "../../interactions/commands/stats";
 
 const commandsRegistrar = [
   ping,
@@ -36,11 +37,11 @@ const commandsRegistrar = [
   virus, 
   domains,
   showAnime,
-  /* poll, */
+  stats,
 ].filter((v) =>
-  process.env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
+  env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
-const rest = new REST().setToken(z.string().parse(process.env.DISCORD_TOKEN));
+const rest = new REST().setToken(env.DISCORD_TOKEN);
 
 export async function commandRouter(
   interaction: ChatInputCommandInteraction<CacheType>,
@@ -102,19 +103,17 @@ export const commands = new Map<
 	} */
 
     const data = await (async () => {
-      if (process.env.NODE_ENV === "development") {
+      if (env.NODE_ENV === "development") {
         return await rest.put(
           Routes.applicationGuildCommands(
-            z.string().parse(process.env.DISCORD_APPLICATION_ID),
-            z.string().parse(process.env.DISCORD_DEV_GUILD_ID),
+            env.DISCORD_APPLICATION_ID,
+            env.DISCORD_DEV_GUILD_ID,
           ),
           { body: commandsRegistrar.map((v) => v.data.toJSON()) },
         );
       }
       return await rest.put(
-        Routes.applicationCommands(
-          z.string().parse(process.env.DISCORD_APPLICATION_ID),
-        ),
+        Routes.applicationCommands(env.DISCORD_APPLICATION_ID),
         { body: commandsRegistrar.map((v) => v.data.toJSON()) },
       );
     })();
