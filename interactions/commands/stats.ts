@@ -33,12 +33,10 @@ export const stats = {
       ]);
 
     const subscriberCount = await prisma.animeSubscription
-      .aggregate({
-        _count: {
-          userDiscordId: true,
-        },
+      .groupBy({
+        by: ["userDiscordId"],
       })
-      .then((d) => d._count.userDiscordId);
+      .then((d) => d.length);
 
     await interaction.reply({
       ephemeral: true,
