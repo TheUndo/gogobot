@@ -21,7 +21,6 @@ function setStatus() {
   });
 }
 
-setStatus();
 setInterval(
   () => {
     setStatus();
