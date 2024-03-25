@@ -100,6 +100,7 @@ for (const [rawType, url] of Object.entries(categories)) {
                 .setImage(cover)
                 .setColor(colors[type])
                 .setTimestamp()
+                .setURL(articleUrl)
                 .setFooter({
                   text: `Category: ${categoryLabels[type]}`,
                 }),

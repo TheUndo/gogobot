@@ -23,13 +23,14 @@ export const stats = {
       });
     }
 
-    const [subscriptions, anime, genres, names, episodes] =
+    const [subscriptions, anime, genres, names, episodes, newsCount] =
       await prisma.$transaction([
         prisma.animeSubscription.count(),
         prisma.anime.count(),
         prisma.animeGenre.count(),
         prisma.animeName.count(),
         prisma.animeEpisode.count(),
+        prisma.news.count(),
       ]);
 
     const subscriberCount = await prisma.animeSubscription
@@ -53,6 +54,7 @@ export const stats = {
                   names,
                   episodes,
                   subscriberCount,
+                  newsCount,
                   subscriptionsPerSubscriber: subscriptions / subscriberCount,
                 },
                 null,
