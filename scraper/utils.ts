@@ -5,7 +5,7 @@ import { DebugLevel, debug, makeCodeBlock } from "./debug";
 import { ongoingIndex } from "../search/fuse";
 import fs from "node:fs/promises";
 
-export const domainPromise = (async () => {
+export const domain = await (async () => {
   const cache = await fs.readFile("domain.txt", "utf-8").catch(() => null);
   if (cache) {
     return cache;
@@ -21,20 +21,17 @@ export const domainPromise = (async () => {
   return new URL(resolved);
 });
 
-const apiDomainPromise = domainPromise.then(
-  async (domain) =>
-    await fetch(domain.toString())
-      .then((d) => d.text())
-      .then((d) => {
-        const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(d)?.[1];
+export const apiDomain = await fetch(domain.toString())
+  .then((d) => d.text())
+  .then((d) => {
+    const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(d)?.[1];
 
-        if (!parsed) {
-          throw new Error("Could not find the API domain");
-        }
+    if (!parsed) {
+      throw new Error("Could not find the API domain");
+    }
 
-        return new URL(parsed);
-      }),
-);
+    return new URL(parsed);
+  });
 
 type Options<T> = {
   type: number;
@@ -43,10 +40,9 @@ type Options<T> = {
 };
 
 export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
-  const apiDomain = await apiDomainPromise;
   const url = new URL(
     `/ajax/page-recent-release.html?page=${page}&type=${type}`,
-    `https://${apiDomain.host}`,
+    `https://${domain.host}`,
   );
 
   const html = await fetch(url.toString()).then((r) => r.text());
@@ -171,7 +167,6 @@ export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
 }
 
 async function scrapeEpisode(slug: string) {
-  const domain = await domainPromise;
   const html = await fetch(
     new URL(slug, `https://${domain.host}`).toString(),
   ).then((r) => r.text());
@@ -185,7 +180,6 @@ async function scrapeEpisode(slug: string) {
 
 //await scrapeAnimePage(1);
 export async function scrapeAnimePage(page: number) {
-  const domain = await domainPromise;
   const url = new URL(
     `/anime-list.html?page=${page}`,
     `https://${domain.host}`,
@@ -246,7 +240,6 @@ export function getLanguage(type: number): Language {
 }
 
 export async function scrapeAnime(slug: string) {
-  const domain = await domainPromise;
   const url = new URL(slug, `https://${domain.host}`);
 
   const html = await fetch(url.toString()).then((r) => r.text());

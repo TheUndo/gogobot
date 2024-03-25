@@ -6,6 +6,8 @@ Join the Gogoanime server: https://discord.gg/gogo
 
 ## Installation
 
+> GoGoBot no longer supports Node, get Bun or don't run
+
 Install [bun](https://bun.sh) or [node](https://nodejs.org/)
 
 ```sh

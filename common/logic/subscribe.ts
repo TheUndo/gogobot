@@ -9,17 +9,16 @@ import {
 } from "discord.js";
 import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
 import { prisma } from "../../prisma";
-import { domainPromise } from "../../scraper/utils";
 import { client } from "../client";
 import { env } from "../../env";
 import { activeGuildId } from "../routers/userJoin";
+import { domain } from "../../scraper/utils";
 
 /**
  * Causes db side effects db creation, checks for existing subscription
  * @returns Message payload - use as interaction.reply or .send
  * */
 export async function createSubscription(animeId: number, userId: string) {
-  const domain = await domainPromise;
   const checkSubscription = await prisma.animeSubscription.findFirst({
     where: {
       animeId,

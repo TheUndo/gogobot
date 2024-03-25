@@ -1,12 +1,11 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { prisma } from "../prisma";
 import { ButtonAction, type ButtonActionFormat } from "../common/types";
-import { domainPromise } from "./utils";
 import { client } from "../common/client";
 import { DebugLevel, debug, makeCodeBlock } from "./debug";
+import { domain } from "./utils";
 
 export async function notifyDirectly(episodeId: string) {
-  const domain = await domainPromise;
   const episode = await prisma.animeEpisode.findUnique({
     where: {
       id: episodeId,

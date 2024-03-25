@@ -8,10 +8,10 @@ import {
   ChannelType,
   EmbedBuilder,
 } from "discord.js";
-import { domainPromise } from "./utils";
 import { client } from "../common/client";
 import { notifyDirectly } from "./notifyDirectly";
 import { env } from "../env";
+import { domain } from "./utils";
 
 const channels: Record<Language, string> = {
   Subbed: env.DISCORD_SUBBED_CHANNEL_ID,
@@ -20,7 +20,6 @@ const channels: Record<Language, string> = {
 };
 
 export async function announceEpisode(episodeId: string) {
-  const domain = await domainPromise;
   const episode = await prisma.animeEpisode.findUnique({
     where: {
       id: episodeId,
