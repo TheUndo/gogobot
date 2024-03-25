@@ -63,3 +63,12 @@ model AnimeSubscription {
 
   @@unique([animeId, userDiscordId])
 }
+
+model News {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  cover     String
+  type      String
+  createdAt DateTime @default(now())
+}

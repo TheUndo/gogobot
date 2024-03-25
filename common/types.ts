@@ -44,3 +44,11 @@ export enum Colors {
 }
 
 export type ButtonActionFormat = `${ButtonAction}+${string}`;
+
+export enum NewsCategory {
+  Announcement = "Announcement",
+  Trailer = "Trailer",
+  News = "News",
+  WhatToWatch = "WhatToWatch",
+  Reviews = "Reviews",
+}
