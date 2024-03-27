@@ -8,15 +8,14 @@ Join the Gogoanime server: https://discord.gg/gogo
 
 > GoGoBot no longer supports Node, get Bun or don't run
 
-Install [bun](https://bun.sh) or [node](https://nodejs.org/)
+Install [bun](https://bun.sh)
 
 ```sh
 git clone https://github.com/TheUndo/gogobot.git
 cd gogobot
 cp .env.example .env
-bun/npx prisma db push
-bunx/npx prisma generate
-bun/npm install
+bunx prisma db push
+bun install
 ```
 
 then open .env and edit it.
@@ -27,16 +26,10 @@ then open .env and edit it.
 
 Bun:
 ```sh
-bun . # Bot commands
-bun scraper/scrapeEverything.ts # Scrape anime
-bun scraper/scrapeRecents.ts # Scrape recents and notify
-```
-
-Node:
-```sh
-node -r sucrase/register . # Bot commands
-node -r sucrase/register scraper/scrapeEverything.ts # Scrape anime
-node -r sucrase/register scraper/scrapeRecents.ts # Scrape recents and notify
+bun .                             # Bot commands
+bun scraper/scrapeEverything.ts   # Scrape anime
+bun scraper/scrapeRecents.ts      # Scrape recents and notify
+bun scraper/scrapeNews.ts         # Scrape recents and notify
 ```
 
 ### Production
@@ -48,6 +41,7 @@ bunx pm2 start ecosystem.config.cjs
 ## Technical info
 
 - db: sqlite (Prisma)
-- runtime: [bun](https://bun.sh)/[node](https://nodejs.org/)
+- runtime: [bun](https://bun.sh)
 - language: TypeScript
 - sdk: [Discord.js](https://discord.js.org)
+- pm: [pm2](https://pm2.io/)

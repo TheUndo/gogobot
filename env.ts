@@ -1,5 +1,4 @@
 import { z } from "zod";
-import "dotenv/config";
 
 const envString = z
   .string({
@@ -10,7 +9,7 @@ const envString = z
 
 export const env = z
   .object({
-    NODE_ENV: z.enum(["development", "production"]),
+    BUN_ENV: z.enum(["development", "production"]),
     DATABASE_URL: envString,
     DISCORD_TOKEN: envString,
     DISCORD_DEV_GUILD_ID: envString,

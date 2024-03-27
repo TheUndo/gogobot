@@ -11,7 +11,7 @@ export const github = {
     }
 
     await interaction.reply(
-      "My source code is open and available [here](https://github.com/TheUndo/gogobot).",
+      "Make a PR! <https://github.com/TheUndo/gogobot>",
     );
   },
 } satisfies Command;

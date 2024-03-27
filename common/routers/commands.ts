@@ -14,9 +14,9 @@ import { help } from "../../interactions/commands/help";
 import { github } from "../../interactions/commands/github";
 import { format } from "../../interactions/commands/format";
 import { releaseDate } from "../../interactions/commands/releaseDate";
-import { bulk } from "../../interactions/commands/bulk"
-import { adblock } from "../../interactions/commands/adblock"
-import { virus } from "../../interactions/commands/virus"
+import { bulk } from "../../interactions/commands/bulk";
+import { adblock } from "../../interactions/commands/adblock";
+import { virus } from "../../interactions/commands/virus";
 import { domains } from "../../interactions/commands/domains";
 import { showAnime } from "../../interactions/commands/showAnime";
 import { env } from "../../env";
@@ -34,12 +34,12 @@ const commandsRegistrar = [
   releaseDate,
   bulk,
   adblock,
-  virus, 
+  virus,
   domains,
   showAnime,
   stats,
 ].filter((v) =>
-  env.NODE_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
+  env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
 const rest = new REST().setToken(env.DISCORD_TOKEN);
 
@@ -103,7 +103,7 @@ export const commands = new Map<
 	} */
 
     const data = await (async () => {
-      if (env.NODE_ENV === "development") {
+      if (env.BUN_ENV === "development") {
         return await rest.put(
           Routes.applicationGuildCommands(
             env.DISCORD_APPLICATION_ID,

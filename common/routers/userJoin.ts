@@ -7,7 +7,7 @@ import { Colors } from "../types";
 import { env } from "../../env";
 
 export const activeGuildId =
-  env.NODE_ENV === "development"
+  env.BUN_ENV === "development"
     ? env.DISCORD_DEV_GUILD_ID
     : "724158993320116276";
 
