@@ -6,13 +6,13 @@ import {
   type ChatInputCommandInteraction,
   type ModalSubmitInteraction,
 } from "discord.js";
-import { findAnimeFromQuery } from "../../interactions/commands/utils/findAnimeFromQuery";
+import { findAnimeFromQuery } from "../../../interactions/commands/utils/findAnimeFromQuery";
 import {
   multipleAnimeFound,
   noAnimeFound,
-} from "../../interactions/commands/utils/queryResponses";
-import { SelectAction } from "../types";
-import { ongoingIndex } from "../../search/fuse";
+} from "../../../interactions/commands/utils/queryResponses";
+import { SelectAction } from "../../types";
+import { ongoingIndex } from "../../../search/fuse";
 import { createSubscription } from "./subscribe";
 
 /** Flow to search for anime from query, can be invoked by command or deferred by modal */

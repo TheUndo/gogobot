@@ -6,14 +6,14 @@ import {
   StringSelectMenuOptionBuilder,
   ActionRowBuilder,
 } from "discord.js";
-import { findAnimeFromQuery } from "../../interactions/commands/utils/findAnimeFromQuery";
-import { prisma } from "../../prisma";
+import { findAnimeFromQuery } from "../../../interactions/commands/utils/findAnimeFromQuery";
+import { prisma } from "../../../prisma";
 import Fuse from "fuse.js";
 import {
   multipleAnimeFound,
   noAnimeFound,
-} from "../../interactions/commands/utils/queryResponses";
-import { SelectAction } from "../types";
+} from "../../../interactions/commands/utils/queryResponses";
+import { SelectAction } from "../../types";
 import { unsubscribeAction } from "./unsubscribe";
 
 /** Flow to search for anime from query, can be invoked by command or deferred by modal */

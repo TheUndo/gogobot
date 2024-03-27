@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, type Interaction } from "discord.js";
 import { type Command, ModalAction } from "../../common/types";
 import { animeDialog } from "./utils/animeDialog";
-import { unsubscribeFromQuery } from "../../common/logic/unsubscribeFromQuery";
+import { unsubscribeFromQuery } from "../../common/logic/gogo/unsubscribeFromQuery";
 
 export const unsubscribe = {
   data: new SlashCommandBuilder()

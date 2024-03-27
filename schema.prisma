@@ -72,3 +72,28 @@ model News {
   type      String
   createdAt DateTime @default(now())
 }
+
+model Wallet {
+  id            String   @id @default(cuid())
+  userDiscordId String
+  guildId       String
+  balance       Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  lastUsedDaily  DateTime?
+  lastUsedWeekly DateTime?
+
+  @@unique([userDiscordId, guildId])
+}
+
+model Bank {
+  id            String   @id @default(cuid())
+  userDiscordId String
+  guildId       String
+  balance       Int      @default(1000)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userDiscordId, guildId])
+}

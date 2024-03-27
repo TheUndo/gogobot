@@ -6,7 +6,7 @@ import {
   TextInputBuilder,
   ActionRowBuilder,
 } from "discord.js";
-import { animeInfoResponse } from "../../common/logic/animeInfoResponse";
+import { animeInfoResponse } from "../../common/logic/gogo/animeInfoResponse";
 import { ModalAction } from "../../common/types";
 
 export async function pollCount(

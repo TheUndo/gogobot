@@ -1,5 +1,5 @@
 import type { ButtonInteraction, CacheType } from "discord.js";
-import { unsubscribeAction } from "../../common/logic/unsubscribe";
+import { unsubscribeAction } from "../../common/logic/gogo/unsubscribe";
 
 export async function unsubscribe(
   interaction: ButtonInteraction<CacheType>,

@@ -30,6 +30,7 @@ function helpEmbed() {
       [
         "I am the official Gogoanime Robot. I keep track of new anime and notify subscribers when a new episode is out. I also have a few other commands that you can use. Here are the commands that I have:",
         [...commands.entries()]
+          .filter(([, command]) => !command.private)
           .map(([name, command]) => {
             return `- ${makeCommand(name, command.id)}`;
           })

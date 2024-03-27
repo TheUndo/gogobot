@@ -1,5 +1,5 @@
 import type { CacheType, StringSelectMenuInteraction } from "discord.js";
-import { animeInfoResponse } from "../../common/logic/animeInfoResponse";
+import { animeInfoResponse } from "../../common/logic/gogo/animeInfoResponse";
 
 export async function showAnime(
   interaction: StringSelectMenuInteraction<CacheType>,

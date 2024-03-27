@@ -4,8 +4,8 @@ import {
   ButtonStyle,
   EmbedBuilder,
 } from "discord.js";
-import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
-import { prisma } from "../../prisma";
+import { ButtonAction, Colors, type ButtonActionFormat } from "../../types";
+import { prisma } from "../../../prisma";
 
 /**
  * Causes db side effects db creation, checks for existing subscription

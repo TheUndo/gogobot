@@ -21,8 +21,15 @@ import { domains } from "../../interactions/commands/domains";
 import { showAnime } from "../../interactions/commands/showAnime";
 import { env } from "../../env";
 import { stats } from "../../interactions/commands/stats";
+import { daily } from "../../interactions/commands/daily";
+import { resetCoolDowns } from "../../interactions/commands/resetCooldowns";
+import type { Command } from "../types";
+import { weekly } from "../../interactions/commands/weekly";
+import { deposit } from "../../interactions/commands/deposit";
+import { balance } from "../../interactions/commands/balance";
+import { withdraw } from "../../interactions/commands/withdraw";
 
-const commandsRegistrar = [
+const commandsRegistrar: Command[] = [
   ping,
   subscribe,
   subscriptions,
@@ -38,6 +45,12 @@ const commandsRegistrar = [
   domains,
   showAnime,
   stats,
+  daily,
+  resetCoolDowns,
+  weekly,
+  deposit,
+  balance,
+  withdraw,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
@@ -59,6 +72,14 @@ export async function commandRouter(
       `No command matching ${interaction.commandName} was found.`,
     );
     return;
+  }
+
+  if ("private" in command && command.private) {
+    if (interaction.user.id !== env.OWNER_DISCORD_ID) {
+      return await interaction.reply({
+        content: "Sorry, this command is only available to the bot owner.",
+      });
+    }
   }
 
   try {
@@ -84,6 +105,7 @@ export const commands = new Map<
   string,
   {
     id: string;
+    private: boolean;
   }
 >();
 
@@ -109,12 +131,12 @@ export const commands = new Map<
             env.DISCORD_APPLICATION_ID,
             env.DISCORD_DEV_GUILD_ID,
           ),
-          { body: commandsRegistrar.map((v) => v.data.toJSON()) },
+          { body: commandsRegistrar.map((v) => v.data.toJSON?.()) },
         );
       }
       return await rest.put(
         Routes.applicationCommands(env.DISCORD_APPLICATION_ID),
-        { body: commandsRegistrar.map((v) => v.data.toJSON()) },
+        { body: commandsRegistrar.map((v) => v.data.toJSON?.()) },
       );
     })();
 
@@ -128,7 +150,20 @@ export const commands = new Map<
       .parse(data);
 
     for (const command of dataCommands) {
-      commands.set(command.name, { id: command.id });
+      commands.set(command.name, {
+        id: command.id,
+        private: (() => {
+          const match = commandsRegistrar.find(
+            (v) => v.data.name === command.name,
+          );
+
+          if (!match) {
+            return false;
+          }
+
+          return "private" in match ? match.private ?? false : false;
+        })(),
+      });
     }
     console.log(
       `Successfully reloaded ${dataCommands.length} application (/) commands.`,

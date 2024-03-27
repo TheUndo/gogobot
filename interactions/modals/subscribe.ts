@@ -1,5 +1,5 @@
 import type { CacheType, ModalSubmitInteraction } from "discord.js";
-import { subscribeFromQuery } from "../../common/logic/subscribeFromQuery";
+import { subscribeFromQuery } from "../../common/logic/gogo/subscribeFromQuery";
 
 export async function subscribe(
   interaction: ModalSubmitInteraction<CacheType>,

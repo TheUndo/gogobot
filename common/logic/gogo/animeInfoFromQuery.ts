@@ -3,13 +3,13 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
 } from "discord.js";
-import { findAnimeFromQuery } from "../../interactions/commands/utils/findAnimeFromQuery";
-import { animeIndex } from "../../search/fuse";
+import { findAnimeFromQuery } from "../../../interactions/commands/utils/findAnimeFromQuery";
+import { animeIndex } from "../../../search/fuse";
 import {
   multipleAnimeFound,
   noAnimeFound,
-} from "../../interactions/commands/utils/queryResponses";
-import { SelectAction } from "../types";
+} from "../../../interactions/commands/utils/queryResponses";
+import { SelectAction } from "../../types";
 import { animeInfoResponse } from "./animeInfoResponse";
 
 export async function animeInfoFromQuery(query: string) {

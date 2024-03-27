@@ -29,7 +29,7 @@ Bun:
 bun .                             # Bot commands
 bun scraper/scrapeEverything.ts   # Scrape anime
 bun scraper/scrapeRecents.ts      # Scrape recents and notify
-bun scraper/scrapeNews.ts         # Scrape recents and notify
+bun scraper/scrapeNews.ts         # Scrape news
 ```
 
 ### Production

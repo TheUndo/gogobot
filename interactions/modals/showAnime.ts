@@ -1,6 +1,6 @@
 import type { CacheType, ModalSubmitInteraction } from "discord.js";
-import { subscribeFromQuery } from "../../common/logic/subscribeFromQuery";
-import { animeInfoFromQuery } from "../../common/logic/animeInfoFromQuery";
+import { subscribeFromQuery } from "../../common/logic/gogo/subscribeFromQuery";
+import { animeInfoFromQuery } from "../../common/logic/gogo/animeInfoFromQuery";
 
 export async function showAnime(
   interaction: ModalSubmitInteraction<CacheType>,

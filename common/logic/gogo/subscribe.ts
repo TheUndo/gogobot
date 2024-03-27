@@ -7,12 +7,12 @@ import {
   type MessageActionRowComponentData,
   type MessageActionRowComponentBuilder,
 } from "discord.js";
-import { ButtonAction, Colors, type ButtonActionFormat } from "../types";
-import { prisma } from "../../prisma";
-import { client } from "../client";
-import { env } from "../../env";
-import { activeGuildId } from "../routers/userJoin";
-import { domain } from "../../scraper/utils";
+import { ButtonAction, Colors, type ButtonActionFormat } from "../../types";
+import { prisma } from "../../../prisma";
+import { client } from "../../client";
+import { env } from "../../../env";
+import { activeGuildId } from "../../routers/userJoin";
+import { domain } from "../../../scraper/utils";
 
 /**
  * Causes db side effects db creation, checks for existing subscription

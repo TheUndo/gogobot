@@ -1,5 +1,5 @@
 import type { CacheType, ModalSubmitInteraction } from "discord.js";
-import { unsubscribeFromQuery } from "../../common/logic/unsubscribeFromQuery";
+import { unsubscribeFromQuery } from "../../common/logic/gogo/unsubscribeFromQuery";
 
 export async function unsubscribe(
   interaction: ModalSubmitInteraction<CacheType>,

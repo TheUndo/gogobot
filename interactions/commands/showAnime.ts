@@ -7,7 +7,7 @@ import {
   type Interaction,
 } from "discord.js";
 import { ModalAction, type Command } from "../../common/types";
-import { animeInfoFromQuery } from "../../common/logic/animeInfoFromQuery";
+import { animeInfoFromQuery } from "../../common/logic/gogo/animeInfoFromQuery";
 
 export const showAnime = {
   data: new SlashCommandBuilder()
