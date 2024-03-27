@@ -28,6 +28,7 @@ import { weekly } from "../../interactions/commands/weekly";
 import { deposit } from "../../interactions/commands/deposit";
 import { balance } from "../../interactions/commands/balance";
 import { withdraw } from "../../interactions/commands/withdraw";
+import { leaderBoard } from "../../interactions/commands/leaderboard";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -51,6 +52,7 @@ const commandsRegistrar: Command[] = [
   deposit,
   balance,
   withdraw,
+  leaderBoard,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

@@ -35,7 +35,6 @@ function helpEmbed() {
             return `- ${makeCommand(name, command.id)}`;
           })
           .join("\n"),
-        "Maybe just type / and see what commands are available?",
       ].join("\n\n"),
     )
     .setColor(Colors.Accent);

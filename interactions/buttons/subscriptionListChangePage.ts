@@ -1,20 +1,21 @@
 import type { CacheType, ButtonInteraction } from "discord.js";
 import { createSubScriptionList } from "../commands/subscriptions";
+import { z } from "zod";
 
 export async function subscriptionListChangePage(
   interaction: ButtonInteraction<CacheType>,
   rawPage: string,
 ) {
-  const page = Number.parseInt(rawPage);
+  const page = z.coerce.number().int().positive().safeParse(rawPage);
 
-  if (Number.isNaN(page)) {
+  if (!page.success) {
     return interaction.reply({
       content: `Invalid page number "${rawPage}"`,
       ephemeral: true,
     });
   }
 
-  const response = await createSubScriptionList(interaction.user.id, page);
+  const response = await createSubScriptionList(interaction.user.id, page.data);
 
   if (interaction.message.editable) {
     return await interaction.update(response);

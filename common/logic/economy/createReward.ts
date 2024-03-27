@@ -1,4 +1,6 @@
+import { sprintf } from "sprintf-js";
 import { prisma } from "../../../prisma";
+import { addCurrency } from "../../utils/addCurrency";
 import { formatNumber } from "../../utils/formatNumber";
 import { createWallet } from "./createWallet";
 
@@ -7,14 +9,15 @@ const rewardTypes = {
     lastUsed: "lastUsedDaily",
     coolDown: 86400000,
     alreadyClaimed: (last: Date, coolDown: number) =>
-      `You already claimed your daily reward. Next claim <t:${(
-        (last.getTime() + coolDown) /
-        1000
-      ).toFixed()}:R>`,
+      sprintf(
+        "You already claimed your daily reward. Next claim <t:%s:R>",
+        ((last.getTime() + coolDown) / 1000).toFixed(),
+      ),
     rewardReceived: (reward: number) =>
-      `You claimed your daily reward of **$${formatNumber(
-        reward,
-      )}**. Come back tomorrow!`,
+      sprintf(
+        "You claimed your daily reward of **%s**. Come back tomorrow!",
+        addCurrency()(formatNumber(reward)),
+      ),
     generateReward: async () => {
       return Math.floor(Math.random() * 1000) + 1000;
     },
@@ -23,14 +26,15 @@ const rewardTypes = {
     lastUsed: "lastUsedWeekly",
     coolDown: 604800000,
     alreadyClaimed: (last: Date, coolDown: number) =>
-      `You already claimed your weekly reward. Next claim <t:${(
-        (last.getTime() + coolDown) /
-        1000
-      ).toFixed()}:R>`,
+      sprintf(
+        "You already claimed your weekly reward. Next claim <t:%s:R>",
+        ((last.getTime() + coolDown) / 1000).toFixed(),
+      ),
     rewardReceived: (reward: number) =>
-      `You claimed your weekly reward of **$${formatNumber(
-        reward,
-      )}**. Come back next week!`,
+      sprintf(
+        "You claimed your weekly reward of **%s**. Come back next week!",
+        addCurrency()(formatNumber(reward)),
+      ),
     generateReward: async () => {
       return Math.floor(Math.random() * 50000) + 20000;
     },

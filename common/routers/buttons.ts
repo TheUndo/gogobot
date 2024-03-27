@@ -4,6 +4,7 @@ import { subscribe } from "../../interactions/buttons/subscribe";
 import { unsubscribe } from "../../interactions/buttons/unsubscribe";
 import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModal";
 import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
+import { leaderBoardChangePage } from "../../interactions/buttons/leaderBoardChangePage";
 
 export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
   const [action, data] = interaction.customId.split("+");
@@ -25,5 +26,7 @@ export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
       return await showSubscribeModal(interaction);
     case ButtonAction.SubscriptionListChangePage:
       return await subscriptionListChangePage(interaction, data);
+    case ButtonAction.LeaderBoardChangePage:
+      return await leaderBoardChangePage(interaction, data);
   }
 }

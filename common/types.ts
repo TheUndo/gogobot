@@ -18,6 +18,7 @@ export enum ButtonAction {
   Unsubscribe = "button::unsubscribe",
   ShowSubscribeModal = "button::showSubscribeModal",
   SubscriptionListChangePage = "button::subscriptionListChangePage",
+  LeaderBoardChangePage = "button::leaderBoardChangePage",
 }
 
 export enum ModalAction {
