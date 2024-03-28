@@ -42,7 +42,7 @@ type Options<T> = {
 export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
   const url = new URL(
     `/ajax/page-recent-release.html?page=${page}&type=${type}`,
-    `https://${domain.host}`,
+    `https://${apiDomain.host}`,
   );
 
   const html = await fetch(url.toString()).then((r) => r.text());
