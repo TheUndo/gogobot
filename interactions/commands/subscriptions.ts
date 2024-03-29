@@ -5,8 +5,6 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ButtonComponent,
-  UserSelectMenuBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
 } from "discord.js";
@@ -19,8 +17,8 @@ import {
 } from "../../common/types";
 import { prisma } from "../../prisma";
 import { makeCommand } from "../../scraper/debug";
-import { commands } from "../../common/routers/commands";
 import { domain } from "../../scraper/utils";
+import { getCommands } from "../../common/routers/commands";
 
 const pageSize = 25;
 
@@ -44,6 +42,7 @@ export async function createSubScriptionList(
   userDiscordId: string,
   rawPage = 1,
 ) {
+  const commands = await getCommands();
   const totalCount = await prisma.animeSubscription.count({
     where: {
       userDiscordId,
