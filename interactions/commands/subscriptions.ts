@@ -33,9 +33,10 @@ export const subscriptions = {
       return;
     }
 
-    return await interaction.reply(
-      await createSubScriptionList(interaction.user.id),
-    );
+    return await interaction.reply({
+      ...(await createSubScriptionList(interaction.user.id)),
+      ephemeral: interaction.inGuild(),
+    });
   },
 } satisfies Command;
 
@@ -97,6 +98,7 @@ export async function createSubScriptionList(
 
   const embed = new EmbedBuilder()
     .setTitle("Subscriptions")
+    .setColor(Colors.Info)
     .setDescription(
       [
         subscriptions

@@ -11,7 +11,7 @@ export const ping = {
       return;
     }
 
-    await interaction.reply(
+    return await interaction.reply(
       sprintf(
         "Interaction: %dms\nWebsocket: %dms",
         Date.now() - interaction.createdTimestamp,
