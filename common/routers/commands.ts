@@ -29,12 +29,9 @@ import { deposit } from "../../interactions/commands/deposit";
 import { balance } from "../../interactions/commands/balance";
 import { withdraw } from "../../interactions/commands/withdraw";
 import { leaderBoard } from "../../interactions/commands/leaderboard";
-<<<<<<< HEAD
 import { fun } from "../../interactions/commands/fun";
 import { avatar } from "../../interactions/commands/avatar";
-=======
 import { gift } from "../../interactions/commands/gift";
->>>>>>> 3691006ecdebfa347ec8d72ddfcb98bc9e88d021
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -59,12 +56,9 @@ const commandsRegistrar: Command[] = [
   balance,
   withdraw,
   leaderBoard,
-<<<<<<< HEAD
   fun,
   avatar,
-=======
   gift,
->>>>>>> 3691006ecdebfa347ec8d72ddfcb98bc9e88d021
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
