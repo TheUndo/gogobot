@@ -29,6 +29,8 @@ import { deposit } from "../../interactions/commands/deposit";
 import { balance } from "../../interactions/commands/balance";
 import { withdraw } from "../../interactions/commands/withdraw";
 import { leaderBoard } from "../../interactions/commands/leaderboard";
+import { fun } from "../../interactions/commands/fun";
+import { avatar } from "../../interactions/commands/avatar";
 import { gift } from "../../interactions/commands/gift";
 
 const commandsRegistrar: Command[] = [
@@ -54,6 +56,8 @@ const commandsRegistrar: Command[] = [
   balance,
   withdraw,
   leaderBoard,
+  fun,
+  avatar,
   gift,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
