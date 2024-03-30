@@ -19,7 +19,7 @@ const rewardTypes = {
         addCurrency()(formatNumber(reward)),
       ),
     generateReward: async () => {
-      return Math.floor(Math.random() * 1000) + 1000;
+      return Math.floor(Math.random() * 1000) + 9500;
     },
   },
   weekly: {
@@ -58,7 +58,7 @@ export async function creteEconomyReward(options: Options) {
 
   const lastDaily = wallet[reward.lastUsed];
 
-  if (lastDaily && lastDaily.getTime() + 86400000 > Date.now()) {
+  if (lastDaily && lastDaily.getTime() + reward.coolDown > Date.now()) {
     return reward.alreadyClaimed(lastDaily, reward.coolDown);
   }
 

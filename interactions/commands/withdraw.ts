@@ -76,7 +76,7 @@ export const withdraw = {
     ]);
 
     return await interaction.reply(
-      `Withdrew **$${formatNumber(toWithdraw)}** from your wallet.`,
+      `Withdrew **$${formatNumber(toWithdraw)}** from your bank.`,
     );
   },
 } satisfies Command;

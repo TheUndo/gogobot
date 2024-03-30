@@ -2,9 +2,10 @@ import { EmbedBuilder, Events } from "discord.js";
 import { client } from "../client";
 import { z } from "zod";
 import { makeCommand } from "../../scraper/debug";
-import { commands } from "./commands";
 import { Colors } from "../types";
 import { env } from "../../env";
+import { sprintf } from "sprintf-js";
+import { getCommands } from "./commands";
 
 export const activeGuildId =
   env.BUN_ENV === "development"
@@ -18,48 +19,55 @@ client.on(Events.GuildMemberAdd, async (member) => {
     return;
   }
   try {
-    await member.send({ embeds: [welcomeEmbed()] });
+    await member.send(welcomeMessage());
   } catch (error) {
     console.error(error);
   }
 });
 
-export function welcomeEmbed(): EmbedBuilder {
-  const embed = new EmbedBuilder();
+export function welcomeMessage() {
+  const commandSnippet = getCommandSnippet();
+  //const embed = new EmbedBuilder();
 
-  embed.setTitle("👋 Welcome to Gogoanime");
+  const description = [
+    "## 👋 Welcome to Gogoanime",
+    "Thank you for joining the official Gogoanime Discord server!",
+    "",
+    "My name is GoGoBot and I'm at your service! I keep track of new anime and notify subscribers when a new episode is out.",
+    "### Some useful commands:",
+    commandSnippet
+      .map((command) => {
+        return sprintf("- %s", command);
+      })
+      .join("\n"),
+    "### Need help?",
+    "We're here to help you! If you have any questions or need help, feel free to ask in the <#724159374100135984> channel. We're always happy to help!",
+    "### Chat with us",
+    "We have a dedicated channel for chatting with other members. Feel free to join the conversation in <#726421062392217721>.",
+  ].join("\n");
 
-  embed.setDescription(
-    [
-      "Hello there,",
-      "Welcome to the official Gogoanime Discord server!",
-      "I'm GoGoBot, you can use me to subscribe to anime and get notified when new episodes are released.",
-      `To get started, use ${makeCommand(
-        "subscribe",
-        z.string().parse(commands.get("subscribe")?.id),
-      )}.`,
-    ].join("\n\n"),
-  );
+  //embed.setColor(Colors.Accent);
 
-  embed.addFields([
-    {
-      name: "Server rules",
-      value: "<#724159404194136074>",
-      inline: true,
-    },
-    {
-      name: "Need help with the site?",
-      value: "<#724159374100135984>",
-      inline: true,
-    },
-    {
-      name: "General chatting",
-      value: "<#726421062392217721>",
-      inline: true,
-    },
-  ]);
+  return {
+    content: description,
+  };
+}
 
-  embed.setColor(Colors.Accent);
+function getCommandSnippet() {
+  const commands = getCommands();
 
-  return embed;
+  return [
+    { description: "Subscribe to an anime", name: "subscribe" },
+    { description: "Stop receiving notifications", name: "unsubscribe" },
+    { description: "Manage your subscriptions", name: "subscriptions" },
+    { description: "Get info of an anime", name: "anime" },
+    { description: "List all my commands", name: "help" },
+  ].map((command) => {
+    const id = z.string().parse(commands.get(command.name)?.id);
+    return sprintf(
+      "%s - %s",
+      makeCommand(command.name, id),
+      command.description,
+    );
+  });
 }

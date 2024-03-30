@@ -4,8 +4,8 @@ import {
   EmbedBuilder,
 } from "discord.js";
 import { Colors, type Command } from "../../common/types";
-import { commands } from "../../common/routers/commands";
 import { makeCommand } from "../../scraper/debug";
+import { getCommands } from "../../common/routers/commands";
 
 export const help = {
   data: new SlashCommandBuilder()
@@ -24,6 +24,7 @@ export const help = {
 } satisfies Command;
 
 function helpEmbed() {
+  const commands = getCommands();
   const embed = new EmbedBuilder()
     .setTitle("Help")
     .setDescription(

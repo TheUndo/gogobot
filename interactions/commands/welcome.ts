@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, type Interaction } from "discord.js";
 import type { Command } from "../../common/types";
-import { welcomeEmbed } from "../../common/routers/userJoin";
+import { welcomeMessage } from "../../common/routers/userJoin";
 
 export const welcome = {
   data: new SlashCommandBuilder()
@@ -11,9 +11,7 @@ export const welcome = {
       return;
     }
 
-    await interaction.reply({
-      embeds: [welcomeEmbed()],
-    });
+    await interaction.reply(welcomeMessage());
   },
   dev: true,
 } satisfies Command;

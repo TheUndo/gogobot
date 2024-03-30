@@ -17,7 +17,10 @@ await new Promise((r) => {
 function setStatus() {
   client.user?.setActivity({
     type: ActivityType.Custom,
-    name: `Using ${formatBytes(heapStats().heapSize)} of RAM, yum`,
+    name:
+      Math.random() > 0.5
+        ? "Use /subscribe for notifications!"
+        : `Using ${formatBytes(heapStats().heapSize)} of RAM, yum`,
   });
 }
 
@@ -25,7 +28,7 @@ setInterval(
   () => {
     setStatus();
   },
-  1000 * 60 * 15,
+  1000 * 60 * 30,
 );
 
 function formatBytes(bytes: number, decimals = 2) {

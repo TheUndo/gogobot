@@ -29,8 +29,12 @@ import { deposit } from "../../interactions/commands/deposit";
 import { balance } from "../../interactions/commands/balance";
 import { withdraw } from "../../interactions/commands/withdraw";
 import { leaderBoard } from "../../interactions/commands/leaderboard";
+<<<<<<< HEAD
 import { fun } from "../../interactions/commands/fun";
 import { avatar } from "../../interactions/commands/avatar";
+=======
+import { gift } from "../../interactions/commands/gift";
+>>>>>>> 3691006ecdebfa347ec8d72ddfcb98bc9e88d021
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -55,11 +59,16 @@ const commandsRegistrar: Command[] = [
   balance,
   withdraw,
   leaderBoard,
+<<<<<<< HEAD
   fun,
   avatar,
+=======
+  gift,
+>>>>>>> 3691006ecdebfa347ec8d72ddfcb98bc9e88d021
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
+
 const rest = new REST().setToken(env.DISCORD_TOKEN);
 
 export async function commandRouter(
@@ -107,7 +116,7 @@ export async function commandRouter(
 }
 
 /** key is command name */
-export const commands = new Map<
+const commands = new Map<
   string,
   {
     id: string;
@@ -115,9 +124,8 @@ export const commands = new Map<
   }
 >();
 
-(async () => {
-  try {
-    /* const data = await rest.get(
+try {
+  /* const data = await rest.get(
 		Routes.applicationCommands(z.string().parse(process.env.DISCORD_APPLICATION_ID)),
 	);
 
@@ -130,52 +138,55 @@ export const commands = new Map<
 		);
 	} */
 
-    const data = await (async () => {
-      if (env.BUN_ENV === "development") {
-        return await rest.put(
-          Routes.applicationGuildCommands(
-            env.DISCORD_APPLICATION_ID,
-            env.DISCORD_DEV_GUILD_ID,
-          ),
-          { body: commandsRegistrar.map((v) => v.data.toJSON?.()) },
-        );
-      }
+  const data = await (async () => {
+    if (env.BUN_ENV === "development") {
       return await rest.put(
-        Routes.applicationCommands(env.DISCORD_APPLICATION_ID),
+        Routes.applicationGuildCommands(
+          env.DISCORD_APPLICATION_ID,
+          env.DISCORD_DEV_GUILD_ID,
+        ),
         { body: commandsRegistrar.map((v) => v.data.toJSON?.()) },
       );
-    })();
-
-    const dataCommands = z
-      .array(
-        z.object({
-          id: z.string(),
-          name: z.string(),
-        }),
-      )
-      .parse(data);
-
-    for (const command of dataCommands) {
-      commands.set(command.name, {
-        id: command.id,
-        private: (() => {
-          const match = commandsRegistrar.find(
-            (v) => v.data.name === command.name,
-          );
-
-          if (!match) {
-            return false;
-          }
-
-          return "private" in match ? match.private ?? false : false;
-        })(),
-      });
     }
-    console.log(
-      `Successfully reloaded ${dataCommands.length} application (/) commands.`,
+    return await rest.put(
+      Routes.applicationCommands(env.DISCORD_APPLICATION_ID),
+      { body: commandsRegistrar.map((v) => v.data.toJSON?.()) },
     );
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
+  })();
+
+  const dataCommands = z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      }),
+    )
+    .parse(data);
+
+  for (const command of dataCommands) {
+    commands.set(command.name, {
+      id: command.id,
+      private: (() => {
+        const match = commandsRegistrar.find(
+          (v) => v.data.name === command.name,
+        );
+
+        if (!match) {
+          return false;
+        }
+
+        return "private" in match ? match.private ?? false : false;
+      })(),
+    });
   }
-})();
+  console.log(
+    `Successfully reloaded ${dataCommands.length} application (/) commands.`,
+  );
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}
+
+export function getCommands() {
+  return commands;
+}
