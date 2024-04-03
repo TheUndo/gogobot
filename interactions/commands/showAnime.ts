@@ -1,13 +1,13 @@
 import {
-  SlashCommandBuilder,
-  ModalBuilder,
   ActionRowBuilder,
+  type Interaction,
+  ModalBuilder,
+  SlashCommandBuilder,
   TextInputBuilder,
   TextInputStyle,
-  type Interaction,
 } from "discord.js";
-import { ModalAction, type Command } from "../../common/types";
 import { animeInfoFromQuery } from "../../common/logic/gogo/animeInfoFromQuery";
+import { type Command, ModalAction } from "../../common/types";
 
 export const showAnime = {
   data: new SlashCommandBuilder()

@@ -1,16 +1,16 @@
 import {
-  SlashCommandBuilder,
   type Interaction,
   PermissionFlagsBits,
+  SlashCommandBuilder,
 } from "discord.js";
-import type { Command } from "~/common/types";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import { prisma } from "~/prisma";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { z } from "zod";
-import { safeParseNumber } from "~/common/utils/parseNumber";
 import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { createWallet } from "~/common/logic/economy/createWallet";
+import type { Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
+import { formatNumber } from "~/common/utils/formatNumber";
+import { safeParseNumber } from "~/common/utils/parseNumber";
+import { prisma } from "~/prisma";
 
 export const spawn = {
   data: new SlashCommandBuilder()

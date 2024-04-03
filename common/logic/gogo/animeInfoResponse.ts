@@ -7,8 +7,8 @@ import {
 } from "discord.js";
 import { noAnimeFound } from "~/interactions/commands/utils/queryResponses";
 import { prisma } from "~/prisma";
-import { ButtonAction, Colors, type ButtonActionFormat } from "../../types";
 import { domain } from "~/scraper/utils";
+import { ButtonAction, type ButtonActionFormat, Colors } from "../../types";
 
 export async function animeInfoResponse(animeId: number) {
   const anime = await prisma.anime.findUnique({

@@ -3,16 +3,12 @@ import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  type ActionRowData,
-  type MessageActionRowComponentData,
-  type MessageActionRowComponentBuilder,
 } from "discord.js";
-import { ButtonAction, Colors, type ButtonActionFormat } from "../../types";
 import { prisma } from "../../../prisma";
-import { client } from "../../client";
-import { env } from "../../../env";
-import { activeGuildId } from "../../routers/userJoin";
 import { domain } from "../../../scraper/utils";
+import { client } from "../../client";
+import { activeGuildId } from "../../routers/userJoin";
+import { ButtonAction, type ButtonActionFormat, Colors } from "../../types";
 
 /**
  * Causes db side effects db creation, checks for existing subscription

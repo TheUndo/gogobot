@@ -1,6 +1,6 @@
-import type { CacheType, ButtonInteraction } from "discord.js";
-import { createSubScriptionList } from "../commands/subscriptions";
+import type { ButtonInteraction, CacheType } from "discord.js";
 import { z } from "zod";
+import { createSubScriptionList } from "../commands/subscriptions";
 
 export async function subscriptionListChangePage(
   interaction: ButtonInteraction<CacheType>,

@@ -1,8 +1,8 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 
-import { ModalAction, type Command } from "../../common/types";
-import { animeDialog } from "./utils/animeDialog";
 import { subscribeFromQuery } from "../../common/logic/gogo/subscribeFromQuery";
+import { type Command, ModalAction } from "../../common/types";
+import { animeDialog } from "./utils/animeDialog";
 
 export const subscribe = {
   data: new SlashCommandBuilder()

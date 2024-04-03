@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { creteEconomyReward } from "~/common/logic/economy/createReward";
 import type { Command } from "~/common/types";
 

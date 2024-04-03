@@ -1,22 +1,22 @@
+import { ActionRowBuilder } from "@discordjs/builders";
 import {
+  type CacheType,
+  type ChatInputCommandInteraction,
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  type ChatInputCommandInteraction,
-  type CacheType,
 } from "discord.js";
+import { z } from "zod";
 import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
 import {
-  ClanMemberRole,
   type AnyInteraction,
+  ClanMemberRole,
   type InteractionContext,
   InteractionType,
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
-import { ActionRowBuilder } from "@discordjs/builders";
-import { z } from "zod";
 
 export async function clanSettingsCommand({
   userId,

@@ -4,13 +4,13 @@ import {
   ButtonStyle,
   EmbedBuilder,
 } from "discord.js";
-import { prisma } from "../../../prisma";
+import * as R from "remeda";
 import { sprintf } from "sprintf-js";
-import { clanRoles } from "./clan";
 import { z } from "zod";
 import { ClanMemberRole, Colors, InteractionType } from "../../../common/types";
-import * as R from "remeda";
 import { capitalize } from "../../../common/utils/capitalize";
+import { prisma } from "../../../prisma";
+import { clanRoles } from "./clan";
 import type { clanInteractionContext } from "./clanInfo";
 
 type Options = {

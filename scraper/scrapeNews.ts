@@ -1,10 +1,5 @@
-import { Colors, NewsCategory } from "../common/types";
-import { env } from "../env";
 import { URL } from "node:url";
 import * as cheerio from "cheerio";
-import { z } from "zod";
-import { prisma } from "../prisma";
-import { client } from "../common/client";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -12,6 +7,11 @@ import {
   ChannelType,
   EmbedBuilder,
 } from "discord.js";
+import { z } from "zod";
+import { client } from "../common/client";
+import { Colors, NewsCategory } from "../common/types";
+import { env } from "../env";
+import { prisma } from "../prisma";
 
 const newsDomain = env.NEWS_DOMAIN;
 

@@ -1,12 +1,10 @@
 import {
-  EmbedBuilder,
-  type CacheType,
-  type StringSelectMenuInteraction,
-  ModalBuilder,
-  TextInputBuilder,
   ActionRowBuilder,
+  type CacheType,
+  ModalBuilder,
+  type StringSelectMenuInteraction,
+  TextInputBuilder,
 } from "discord.js";
-import { animeInfoResponse } from "../../common/logic/gogo/animeInfoResponse";
 import { ModalAction } from "../../common/types";
 
 export async function pollCount(

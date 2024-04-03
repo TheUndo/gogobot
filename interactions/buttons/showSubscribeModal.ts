@@ -1,10 +1,10 @@
 import {
-  ModalBuilder,
   ActionRowBuilder,
+  type ButtonInteraction,
+  type CacheType,
+  ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
-  type CacheType,
-  type ButtonInteraction,
 } from "discord.js";
 import { ModalAction } from "../../common/types";
 

@@ -1,9 +1,9 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "~/common/types";
-import { createWallet } from "~/common/logic/economy/createWallet";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { createBank } from "~/common/logic/economy/createBank";
-import { prisma } from "~/prisma";
+import { createWallet } from "~/common/logic/economy/createWallet";
+import type { Command } from "~/common/types";
 import { formatNumber } from "~/common/utils/formatNumber";
+import { prisma } from "~/prisma";
 
 export const deposit = {
   data: new SlashCommandBuilder()

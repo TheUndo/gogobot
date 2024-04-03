@@ -1,13 +1,13 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "~/common/types";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import { createBank } from "~/common/logic/economy/createBank";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { addCurrency } from "~/common/utils/addCurrency";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { prisma } from "~/prisma";
+import { createBank } from "~/common/logic/economy/createBank";
+import { createWallet } from "~/common/logic/economy/createWallet";
+import type { Command } from "~/common/types";
+import { addCurrency } from "~/common/utils/addCurrency";
+import { formatNumber } from "~/common/utils/formatNumber";
 import { safeParseNumber } from "~/common/utils/parseNumber";
+import { prisma } from "~/prisma";
 
 export const gift = {
   data: new SlashCommandBuilder()

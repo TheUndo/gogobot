@@ -1,6 +1,6 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "~/common/types";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { welcomeMessage } from "~/common/routers/userJoin";
+import type { Command } from "~/common/types";
 
 export const welcome = {
   data: new SlashCommandBuilder()

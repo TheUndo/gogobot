@@ -1,11 +1,11 @@
 import {
-  SlashCommandBuilder,
-  EmbedBuilder,
   ActionRowBuilder,
-  StringSelectMenuBuilder,
+  EmbedBuilder,
   type Interaction,
+  SlashCommandBuilder,
+  StringSelectMenuBuilder,
 } from "discord.js";
-import { Colors, SelectAction, type Command } from "../../common/types";
+import { Colors, type Command, SelectAction } from "../../common/types";
 
 export const poll = {
   data: new SlashCommandBuilder()

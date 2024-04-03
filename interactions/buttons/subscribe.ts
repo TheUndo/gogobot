@@ -1,10 +1,6 @@
-import {
-  type ButtonInteraction,
-  type CacheType,
-  EmbedBuilder,
-} from "discord.js";
-import { prisma } from "../../prisma";
+import type { ButtonInteraction, CacheType } from "discord.js";
 import { createSubscription } from "../../common/logic/gogo/subscribe";
+import { prisma } from "../../prisma";
 
 export async function subscribe(
   interaction: ButtonInteraction<CacheType>,

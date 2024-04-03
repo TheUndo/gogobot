@@ -1,22 +1,22 @@
-import { sprintf } from "sprintf-js";
-import {
-  ClanMemberRole,
-  InteractionType,
-  type InteractionContext,
-  type AnyInteraction,
-  Colors,
-} from "../../../common/types";
-import { prisma } from "../../../prisma";
-import { clanRoles } from "./clan";
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
 } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
 import { notYourInteraction } from "../../../common/logic/responses/notYourInteraction";
+import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
+import {
+  type AnyInteraction,
+  ClanMemberRole,
+  Colors,
+  type InteractionContext,
+  InteractionType,
+} from "../../../common/types";
+import { prisma } from "../../../prisma";
+import { clanRoles } from "./clan";
 
 type Options = {
   authorId: string;

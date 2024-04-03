@@ -1,10 +1,10 @@
 import type { ButtonInteraction, CacheType } from "discord.js";
-import { ButtonAction } from "../types";
-import { subscribe } from "../../interactions/buttons/subscribe";
-import { unsubscribe } from "../../interactions/buttons/unsubscribe";
-import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModal";
-import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
 import { leaderBoardChangePage } from "../../interactions/buttons/leaderBoardChangePage";
+import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModal";
+import { subscribe } from "../../interactions/buttons/subscribe";
+import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
+import { unsubscribe } from "../../interactions/buttons/unsubscribe";
+import { ButtonAction } from "../types";
 
 /** @deprecated */
 export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {

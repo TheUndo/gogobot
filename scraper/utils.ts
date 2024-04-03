@@ -1,9 +1,9 @@
-import * as cheerio from "cheerio";
-import { prisma } from "../prisma";
-import { Language } from "../common/types";
-import { DebugLevel, debug, makeCodeBlock } from "./debug";
-import { ongoingIndex } from "../search/fuse";
 import fs from "node:fs/promises";
+import * as cheerio from "cheerio";
+import { Language } from "../common/types";
+import { prisma } from "../prisma";
+import { ongoingIndex } from "../search/fuse";
+import { DebugLevel, debug, makeCodeBlock } from "./debug";
 
 export const domain = await (async () => {
   const cache = await fs.readFile("domain.txt", "utf-8").catch(() => null);
