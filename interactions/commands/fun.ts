@@ -36,30 +36,36 @@ export const fun = {
 
     if (query === "hug") {
       const embed = new EmbedBuilder()
-        .setDescription(`**${interaction.user.username} hugs ${id}**`)
+        .setDescription("***HUGGIES!!***")
         .setImage(
           "https://i.pinimg.com/originals/96/de/2f/96de2ffb76bbc84446461e9a7afa95cb.gif",
         )
-        .setFooter({ text: "HUGGIES!!" });
-      return await interaction.reply({ embeds: [embed] });
+      return await interaction.reply({
+        content: `### ${interaction.user.displayName} hugs ${id}`,
+        embeds: [embed],
+      });
     }
     if (query === "kiss") {
       const embed = new EmbedBuilder()
-        .setDescription(`**${interaction.user.username} kisses ${id}**`)
+        .setDescription("***KISSIES!!!***")
         .setImage(
           "https://i.pinimg.com/originals/b9/ef/3a/b9ef3a0b2d9ed41e467ed18d8afa8a3a.gif",
         )
-        .setFooter({ text: "KISSIES!!!" });
-      return await interaction.reply({ embeds: [embed] });
+      return await interaction.reply({
+        content: `### ${interaction.user.displayName} kisses ${id}`,
+        embeds: [embed],
+      });
     }
     if (query === "pat") {
       const embed = new EmbedBuilder()
-        .setDescription(`**${interaction.user.username} pats ${id}**`)
+        .setDescription("***Pat Pat!***")
         .setImage(
           "https://64.media.tumblr.com/6289c42ea805f475698f02207da0a377/tumblr_p14hcsxPsb1tm1dgio1_500.gif",
         )
-        .setFooter({ text: "Pat pat" });
-      return await interaction.reply({ embeds: [embed] });
+      return await interaction.reply({
+        content: `### ${interaction.user.displayName} pats ${id}`,
+        embeds: [embed],
+      });
     }
     if (query === "diss") {
       return await interaction.reply(`**Suggondese Nutz!!! BEETCHH ${id} **`);
