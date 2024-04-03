@@ -109,7 +109,7 @@ export const gift = {
       content: sprintf(
         "<@%s> received **%s** from <@%s>",
         selectedUser.id,
-        amountToGift,
+        amountToGift.data,
         interaction.user.id,
       ),
     });

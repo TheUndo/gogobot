@@ -6,6 +6,9 @@ export async function aggregateClanStatistics() {
 
   for (const clan of clans) {
     const members = await prisma.clanMember.findMany({
+      where: {
+        clanId: clan.id,
+      },
       select: {
         clanId: true,
         discordUserId: true,
