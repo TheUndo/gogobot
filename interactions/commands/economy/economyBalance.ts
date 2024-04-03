@@ -80,10 +80,7 @@ export const balance = {
     }
 
     return await interaction.reply(
-      sprintf("**Wallet**: %s\n**Bank**: %s",
-        walletBalance,
-        bankBalance,
-      ),
+      sprintf("**Wallet**: %s\n**Bank**: %s", walletBalance, bankBalance),
     );
   },
 } satisfies Command;

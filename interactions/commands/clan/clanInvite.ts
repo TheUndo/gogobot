@@ -4,8 +4,8 @@ import {
   InteractionType,
   type InteractionContext,
   type AnyInteraction,
-} from "../../../common/types";
-import { prisma } from "../../../prisma";
+} from "~/common/types";
+import { prisma } from "~/prisma";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { sprintf } from "sprintf-js";
 
@@ -106,7 +106,7 @@ export async function clanInvite({
 
   return {
     content: sprintf(
-      "<@%s> you have been invited to join %s",
+      "<@%s> you have been invited to join **%s**.",
       inviteeId,
       clan.name,
     ),

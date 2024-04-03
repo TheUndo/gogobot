@@ -5,6 +5,7 @@
     "@biomejs/biome": "1.6.1",
     "@types/bun": "latest",
     "@types/sprintf-js": "^1.1.4",
+    "husky": "^9.0.11",
     "sucrase": "^3.35.0"
   },
   "peerDependencies": {
@@ -23,5 +24,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.0.0",
     "zod": "^3.22.4"
+  },
+  "scripts": {
+    "prepare": "husky"
   }
 }

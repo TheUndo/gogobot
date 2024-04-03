@@ -110,7 +110,7 @@ export async function clanChangeJoinSetting(
   return await interaction.update(
     await showClanInfo({
       authorId: interaction.user.id,
-      guildId,
+      clanId: clan.id,
     }),
   );
 }

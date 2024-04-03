@@ -1,7 +1,6 @@
 import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "../../../common/types";
-import { prisma } from "../../../prisma";
-import { creteEconomyReward } from "../../../common/logic/economy/createReward";
+import { creteEconomyReward } from "~/common/logic/economy/createReward";
+import type { Command } from "~/common/types";
 
 export const daily = {
   data: new SlashCommandBuilder()
