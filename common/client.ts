@@ -1,5 +1,5 @@
-import { ActivityType, Client, Events, GatewayIntentBits } from "discord.js";
 import { heapStats } from "bun:jsc";
+import { ActivityType, Client, Events, GatewayIntentBits } from "discord.js";
 
 export const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],

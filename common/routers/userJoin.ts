@@ -1,9 +1,9 @@
 import { Events } from "discord.js";
-import { client } from "../client";
-import { z } from "zod";
-import { makeCommand } from "~/scraper/debug";
-import { env } from "~/env";
 import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { env } from "~/env";
+import { makeCommand } from "~/scraper/debug";
+import { client } from "../client";
 import { getCommands } from "./commands";
 
 export const activeGuildId =

@@ -1,18 +1,18 @@
 import {
-  StringSelectMenuBuilder,
+  ActionRowBuilder,
   type CacheType,
   type ChatInputCommandInteraction,
   type ModalSubmitInteraction,
+  StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
-  ActionRowBuilder,
 } from "discord.js";
-import { findAnimeFromQuery } from "../../../interactions/commands/utils/findAnimeFromQuery";
-import { prisma } from "../../../prisma";
 import Fuse from "fuse.js";
+import { findAnimeFromQuery } from "../../../interactions/commands/utils/findAnimeFromQuery";
 import {
   multipleAnimeFound,
   noAnimeFound,
 } from "../../../interactions/commands/utils/queryResponses";
+import { prisma } from "../../../prisma";
 import { SelectAction } from "../../types";
 import { unsubscribeAction } from "./unsubscribe";
 

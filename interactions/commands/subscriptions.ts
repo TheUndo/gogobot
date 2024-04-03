@@ -1,24 +1,24 @@
 import {
-  SlashCommandBuilder,
-  type Interaction,
-  EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
 } from "discord.js";
+import { getCommands } from "../../common/routers/commands";
 import {
   ButtonAction,
-  SelectAction,
   type ButtonActionFormat,
-  type Command,
   Colors,
+  type Command,
+  SelectAction,
 } from "../../common/types";
 import { prisma } from "../../prisma";
 import { makeCommand } from "../../scraper/debug";
 import { domain } from "../../scraper/utils";
-import { getCommands } from "../../common/routers/commands";
 
 const pageSize = 25;
 

@@ -1,15 +1,15 @@
 import { z } from "zod";
-import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
-import {
-  ClanJoinSetting,
-  type AnyInteraction,
-  type InteractionContext,
-  ClanMemberRole,
-} from "../../../common/types";
-import { clanInteractionContext, showClanInfo } from "./clanInfo";
-import { prisma } from "../../../prisma";
 import { notYourInteraction } from "../../../common/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "../../../common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
+import {
+  type AnyInteraction,
+  ClanJoinSetting,
+  ClanMemberRole,
+  type InteractionContext,
+} from "../../../common/types";
+import { prisma } from "../../../prisma";
+import { clanInteractionContext, showClanInfo } from "./clanInfo";
 
 export async function clanChangeJoinSetting(
   interactionContext: InteractionContext,

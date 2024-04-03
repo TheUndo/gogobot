@@ -8,26 +8,26 @@ import {
   TextInputStyle,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import {
-  Colors,
-  InteractionType,
-  type AnyInteraction,
-  type InteractionContext,
-  ClanMemberRole,
-  ClanJoinSetting,
-} from "~/common/types";
-import { prisma } from "~/prisma";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
-import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
-import { interactionAlreadyConsumed } from "~/common/logic/responses/interactionAlreadyConsumed";
 import { z } from "zod";
 import { client } from "~/common/client";
 import { createWallet } from "~/common/logic/economy/createWallet";
-import { slugify } from "~/common/utils/slugify";
 import { getUserClan } from "~/common/logic/economy/getUserClan";
+import { interactionAlreadyConsumed } from "~/common/logic/responses/interactionAlreadyConsumed";
+import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
+import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
+import {
+  type AnyInteraction,
+  ClanJoinSetting,
+  ClanMemberRole,
+  Colors,
+  type InteractionContext,
+  InteractionType,
+} from "~/common/types";
+import { addCurrency } from "~/common/utils/addCurrency";
+import { formatNumber } from "~/common/utils/formatNumber";
+import { slugify } from "~/common/utils/slugify";
+import { prisma } from "~/prisma";
 
 const CLAN_CREATE_PRICE = 500_000;
 

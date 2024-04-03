@@ -1,15 +1,15 @@
-import { SlashCommandBuilder, type Interaction } from "discord.js";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
+import { z } from "zod";
 import { ClanJoinSetting, ClanMemberRole, type Command } from "~/common/types";
-import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanDemote } from "./clanDemote";
 import { showClanInfoCommand } from "./clanInfo";
 import { clanInvite } from "./clanInvite";
-import { z } from "zod";
-import { clanSettingsCommand } from "./clanSettings";
 import { clanKick } from "./clanKick";
 import { clanLeaveCommand } from "./clanLeave";
-import { clanPromote } from "./clanPromote";
-import { clanDemote } from "./clanDemote";
 import { clanMembersCommand } from "./clanMembers";
+import { clanPromote } from "./clanPromote";
+import { clanSettingsCommand } from "./clanSettings";
+import { createGuildWizardStep1 } from "./createClanWizard";
 
 export const clan = {
   data: new SlashCommandBuilder()

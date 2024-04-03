@@ -1,39 +1,39 @@
 import {
-  Routes,
   type CacheType,
   type ChatInputCommandInteraction,
   REST,
+  Routes,
 } from "discord.js";
-import { subscribe } from "../../interactions/commands/subscribe";
-import { ping } from "../../interactions/commands/ping";
 import { z } from "zod";
+import { env } from "../../env";
+import { adblock } from "../../interactions/commands/adblock";
+import { avatar } from "../../interactions/commands/avatar";
+import { bulk } from "../../interactions/commands/bulk";
+import { clan } from "../../interactions/commands/clan/clan";
+import { deposit } from "../../interactions/commands/deposit";
+import { domains } from "../../interactions/commands/domains";
+import { balance } from "../../interactions/commands/economy/economyBalance";
+import { daily } from "../../interactions/commands/economy/economyDaily";
+import { gift } from "../../interactions/commands/economy/economyGift";
+import { leaderBoard } from "../../interactions/commands/economy/economyLeaderboard";
+import { spawn } from "../../interactions/commands/economy/economySpawn";
+import { weekly } from "../../interactions/commands/economy/economyWeekly";
+import { withdraw } from "../../interactions/commands/economy/economyWithdraw";
+import { format } from "../../interactions/commands/format";
+import { fun } from "../../interactions/commands/fun";
+import { github } from "../../interactions/commands/github";
+import { help } from "../../interactions/commands/help";
+import { ping } from "../../interactions/commands/ping";
+import { releaseDate } from "../../interactions/commands/releaseDate";
+import { resetCoolDowns } from "../../interactions/commands/resetCooldowns";
+import { showAnime } from "../../interactions/commands/showAnime";
+import { stats } from "../../interactions/commands/stats";
+import { subscribe } from "../../interactions/commands/subscribe";
 import { subscriptions } from "../../interactions/commands/subscriptions";
 import { unsubscribe } from "../../interactions/commands/unsubscribe";
-import { welcome } from "../../interactions/commands/welcome";
-import { help } from "../../interactions/commands/help";
-import { github } from "../../interactions/commands/github";
-import { format } from "../../interactions/commands/format";
-import { releaseDate } from "../../interactions/commands/releaseDate";
-import { bulk } from "../../interactions/commands/bulk";
-import { adblock } from "../../interactions/commands/adblock";
 import { virus } from "../../interactions/commands/virus";
-import { domains } from "../../interactions/commands/domains";
-import { showAnime } from "../../interactions/commands/showAnime";
-import { env } from "../../env";
-import { stats } from "../../interactions/commands/stats";
-import { daily } from "../../interactions/commands/economy/economyDaily";
-import { resetCoolDowns } from "../../interactions/commands/resetCooldowns";
+import { welcome } from "../../interactions/commands/welcome";
 import type { Command } from "../types";
-import { weekly } from "../../interactions/commands/economy/economyWeekly";
-import { deposit } from "../../interactions/commands/deposit";
-import { balance } from "../../interactions/commands/economy/economyBalance";
-import { withdraw } from "../../interactions/commands/economy/economyWithdraw";
-import { leaderBoard } from "../../interactions/commands/economy/economyLeaderboard";
-import { fun } from "../../interactions/commands/fun";
-import { avatar } from "../../interactions/commands/avatar";
-import { gift } from "../../interactions/commands/economy/economyGift";
-import { spawn } from "../../interactions/commands/economy/economySpawn";
-import { clan } from "../../interactions/commands/clan/clan";
 
 const commandsRegistrar: Command[] = [
   ping,

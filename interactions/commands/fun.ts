@@ -1,7 +1,7 @@
 import {
-  SlashCommandBuilder,
   EmbedBuilder,
   type Interaction,
+  SlashCommandBuilder,
 } from "discord.js";
 import type { Command } from "~/common/types";
 

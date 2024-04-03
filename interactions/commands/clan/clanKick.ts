@@ -1,7 +1,7 @@
 import { sprintf } from "sprintf-js";
-import { prisma } from "../../../prisma";
-import { ClanMemberRole } from "../../../common/types";
 import { z } from "zod";
+import { ClanMemberRole } from "../../../common/types";
+import { prisma } from "../../../prisma";
 
 type Options = {
   authorId: string;

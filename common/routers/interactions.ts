@@ -1,16 +1,9 @@
 import { Events } from "discord.js";
-import { client } from "../client";
-import { prisma } from "~/prisma";
+import { clanChangeJoinSetting } from "~/interactions/commands/clan/clanChangeJoinSetting";
 import {
-  clanCreateCancelWizard,
-  clanCreateNamePrompt,
-  createGuildWizardStep2,
-} from "~/interactions/commands/clan/createClanWizard";
-import { InteractionType } from "../types";
-import {
-  clanSettingsButton,
-  clanSettingsModalSubmit,
-} from "~/interactions/commands/clan/clanSettings";
+  clanInfoButton,
+  clanMembersButton,
+} from "~/interactions/commands/clan/clanInfo";
 import { clanInviteReject } from "~/interactions/commands/clan/clanInvite";
 import {
   clanJoin,
@@ -21,20 +14,27 @@ import {
   clanCancelLeadershipTransfer,
   clanTransferLeadershipConfirm,
 } from "~/interactions/commands/clan/clanPromote";
-import { clanChangeJoinSetting } from "~/interactions/commands/clan/clanChangeJoinSetting";
 import {
-  clanInfoButton,
-  clanMembersButton,
-} from "~/interactions/commands/clan/clanInfo";
-import { commandRouter } from "./commands";
-import { buttonRouter } from "./buttons";
-import { selectRouter } from "./selects";
-import { modalRouter } from "./modals";
+  clanSettingsButton,
+  clanSettingsModalSubmit,
+} from "~/interactions/commands/clan/clanSettings";
+import {
+  clanCreateCancelWizard,
+  clanCreateNamePrompt,
+  createGuildWizardStep2,
+} from "~/interactions/commands/clan/createClanWizard";
 import {
   leaderBoardClanButton,
   leaderBoardClanChangePage,
   leaderBoardUsersButton,
 } from "~/interactions/commands/economy/economyLeaderboard";
+import { prisma } from "~/prisma";
+import { client } from "../client";
+import { InteractionType } from "../types";
+import { buttonRouter } from "./buttons";
+import { commandRouter } from "./commands";
+import { modalRouter } from "./modals";
+import { selectRouter } from "./selects";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {

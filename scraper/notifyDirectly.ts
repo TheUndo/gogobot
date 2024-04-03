@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { prisma } from "../prisma";
-import { ButtonAction, type ButtonActionFormat } from "../common/types";
 import { client } from "../common/client";
+import { ButtonAction, type ButtonActionFormat } from "../common/types";
+import { prisma } from "../prisma";
 import { DebugLevel, debug, makeCodeBlock } from "./debug";
 import { domain } from "./utils";
 

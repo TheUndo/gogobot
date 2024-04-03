@@ -1,23 +1,23 @@
 import {
-  SlashCommandBuilder,
-  type Interaction,
-  EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
 import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
 import {
-  ButtonAction,
-  InteractionType,
-  type ButtonActionFormat,
-  type InteractionContext,
   type AnyInteraction,
-  type Command,
+  ButtonAction,
+  type ButtonActionFormat,
   Colors,
+  type Command,
+  type InteractionContext,
+  InteractionType,
 } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";

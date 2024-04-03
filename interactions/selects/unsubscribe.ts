@@ -1,7 +1,6 @@
 import type { CacheType, StringSelectMenuInteraction } from "discord.js";
-import { prisma } from "../../prisma";
-import { createSubscription } from "../../common/logic/gogo/subscribe";
 import { unsubscribeAction } from "../../common/logic/gogo/unsubscribe";
+import { prisma } from "../../prisma";
 
 export async function unsubscribe(
   interaction: StringSelectMenuInteraction<CacheType>,

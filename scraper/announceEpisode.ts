@@ -1,6 +1,3 @@
-import { z } from "zod";
-import { prisma } from "../prisma";
-import { ButtonAction, Colors, Language } from "../common/types";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -8,9 +5,12 @@ import {
   ChannelType,
   EmbedBuilder,
 } from "discord.js";
+import { z } from "zod";
 import { client } from "../common/client";
-import { notifyDirectly } from "./notifyDirectly";
+import { ButtonAction, Colors, Language } from "../common/types";
 import { env } from "../env";
+import { prisma } from "../prisma";
+import { notifyDirectly } from "./notifyDirectly";
 import { domain } from "./utils";
 
 const channels: Record<Language, string> = {

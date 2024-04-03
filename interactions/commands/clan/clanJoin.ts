@@ -1,19 +1,19 @@
 import { z } from "zod";
 
-import { clanInteractionContext } from "./clanInfo";
-import { sprintf } from "sprintf-js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { sprintf } from "sprintf-js";
+import { getUserClan } from "~/common/logic/economy/getUserClan";
+import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
 import {
-  ClanJoinSetting,
   type AnyInteraction,
-  type InteractionContext,
+  ClanJoinSetting,
   ClanMemberRole,
+  type InteractionContext,
   InteractionType,
 } from "~/common/types";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
-import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
-import { getUserClan } from "~/common/logic/economy/getUserClan";
 import { prisma } from "~/prisma";
+import { clanInteractionContext } from "./clanInfo";
 
 export async function clanJoin(
   interactionContext: InteractionContext,

@@ -1,9 +1,9 @@
 import type { AnySelectMenuInteraction, CacheType } from "discord.js";
-import { SelectAction } from "../types";
-import { subscribe } from "../../interactions/selects/subscribe";
-import { unsubscribeFromSubscriptions } from "../../interactions/selects/unsubscribeFromSubscriptions";
-import { unsubscribe } from "../../interactions/selects/unsubscribe";
 import { showAnime } from "../../interactions/selects/showAnime";
+import { subscribe } from "../../interactions/selects/subscribe";
+import { unsubscribe } from "../../interactions/selects/unsubscribe";
+import { unsubscribeFromSubscriptions } from "../../interactions/selects/unsubscribeFromSubscriptions";
+import { SelectAction } from "../types";
 
 export async function selectRouter(
   interaction: AnySelectMenuInteraction<CacheType>,

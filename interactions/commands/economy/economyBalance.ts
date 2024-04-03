@@ -1,15 +1,15 @@
 import {
-  SlashCommandBuilder,
-  type Interaction,
   EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
 } from "discord.js";
-import { Colors, type Command } from "../../../common/types";
-import { createWallet } from "../../../common/logic/economy/createWallet";
+import { sprintf } from "sprintf-js";
 import { createBank } from "../../../common/logic/economy/createBank";
+import { createWallet } from "../../../common/logic/economy/createWallet";
+import { Colors, type Command } from "../../../common/types";
+import { addCurrency } from "../../../common/utils/addCurrency";
 import { formatNumber } from "../../../common/utils/formatNumber";
 import { makePossessive } from "../../../common/utils/makePossessive";
-import { addCurrency } from "../../../common/utils/addCurrency";
-import { sprintf } from "sprintf-js";
 
 export const balance = {
   data: new SlashCommandBuilder()

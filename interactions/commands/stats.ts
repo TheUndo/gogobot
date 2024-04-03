@@ -1,12 +1,12 @@
 import {
-  SlashCommandBuilder,
-  type Interaction,
   EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
 } from "discord.js";
 import { Colors, type Command } from "../../common/types";
+import { env } from "../../env";
 import { prisma } from "../../prisma";
 import { makeCodeBlock } from "../../scraper/debug";
-import { env } from "../../env";
 
 export const stats = {
   data: new SlashCommandBuilder()
