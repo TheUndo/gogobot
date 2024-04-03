@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "../../common/types";
+import type { Command } from "~/common/types";
 import { sprintf } from "sprintf-js";
 
 export const ping = {

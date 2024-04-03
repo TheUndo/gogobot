@@ -10,8 +10,6 @@ export const github = {
       return;
     }
 
-    await interaction.reply(
-      "Make a PR! <https://github.com/TheUndo/gogobot>",
-    );
+    await interaction.reply("Make a PR! <https://github.com/TheUndo/gogobot>");
   },
 } satisfies Command;

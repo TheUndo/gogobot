@@ -3,14 +3,14 @@ import {
   type Interaction,
   PermissionFlagsBits,
 } from "discord.js";
-import type { Command } from "../../../common/types";
-import { createWallet } from "../../../common/logic/economy/createWallet";
-import { prisma } from "../../../prisma";
-import { formatNumber } from "../../../common/utils/formatNumber";
+import type { Command } from "~/common/types";
+import { createWallet } from "~/common/logic/economy/createWallet";
+import { prisma } from "~/prisma";
+import { formatNumber } from "~/common/utils/formatNumber";
 import { z } from "zod";
-import { safeParseNumber } from "../../../common/utils/parseNumber";
+import { safeParseNumber } from "~/common/utils/parseNumber";
 import { sprintf } from "sprintf-js";
-import { addCurrency } from "../../../common/utils/addCurrency";
+import { addCurrency } from "~/common/utils/addCurrency";
 
 export const spawn = {
   data: new SlashCommandBuilder()

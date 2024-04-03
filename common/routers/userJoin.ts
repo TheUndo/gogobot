@@ -1,9 +1,8 @@
-import { EmbedBuilder, Events } from "discord.js";
+import { Events } from "discord.js";
 import { client } from "../client";
 import { z } from "zod";
-import { makeCommand } from "../../scraper/debug";
-import { Colors } from "../types";
-import { env } from "../../env";
+import { makeCommand } from "~/scraper/debug";
+import { env } from "~/env";
 import { sprintf } from "sprintf-js";
 import { getCommands } from "./commands";
 

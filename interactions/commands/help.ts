@@ -3,9 +3,9 @@ import {
   type Interaction,
   EmbedBuilder,
 } from "discord.js";
-import { Colors, type Command } from "../../common/types";
-import { makeCommand } from "../../scraper/debug";
-import { getCommands } from "../../common/routers/commands";
+import { Colors, type Command } from "~/common/types";
+import { makeCommand } from "~/scraper/debug";
+import { getCommands } from "~/common/routers/commands";
 import { sprintf } from "sprintf-js";
 
 export const help = {

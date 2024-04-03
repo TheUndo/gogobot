@@ -5,15 +5,15 @@ import {
   type ChatInputCommandInteraction,
   type CacheType,
 } from "discord.js";
-import { wrongGuildForInteraction } from "../../../common/logic/responses/wrongGuildForInteraction";
-import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
+import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
 import {
   ClanMemberRole,
   type AnyInteraction,
   type InteractionContext,
   InteractionType,
-} from "../../../common/types";
-import { prisma } from "../../../prisma";
+} from "~/common/types";
+import { prisma } from "~/prisma";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
 import { ActionRowBuilder } from "@discordjs/builders";
 import { z } from "zod";
@@ -321,7 +321,7 @@ export async function clanSettingsModalSubmit(
   await interaction.message?.edit(
     await showClanInfo({
       authorId: interaction.user.id,
-      guildId,
+      clanId: context.data.clanId,
     }),
   );
 
