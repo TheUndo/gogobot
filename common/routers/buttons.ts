@@ -6,6 +6,7 @@ import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModa
 import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
 import { leaderBoardChangePage } from "../../interactions/buttons/leaderBoardChangePage";
 
+/** @deprecated */
 export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
   const [action, data] = interaction.customId.split("+");
 

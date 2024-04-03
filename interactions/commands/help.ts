@@ -6,6 +6,7 @@ import {
 import { Colors, type Command } from "../../common/types";
 import { makeCommand } from "../../scraper/debug";
 import { getCommands } from "../../common/routers/commands";
+import { sprintf } from "sprintf-js";
 
 export const help = {
   data: new SlashCommandBuilder()
@@ -29,7 +30,10 @@ function helpEmbed() {
     .setTitle("Help")
     .setDescription(
       [
-        "I am the official Gogoanime Robot. I keep track of new anime and notify subscribers when a new episode is out. I also have a few other commands that you can use. Here are the commands that I have:",
+        sprintf(
+          "I am an [open source](https://github.com/theundo/gogobot/) Discord bot created by <@%s>. I run on [JSC](https://docs.webkit.org)/[Bun](https://bun.sh) and I am written in [TypeScript](https://www.typescriptlang.org/).",
+          "246660882803720193",
+        ),
         [...commands.entries()]
           .filter(([, command]) => !command.private)
           .map(([name, command]) => {

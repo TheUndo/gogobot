@@ -1,7 +1,7 @@
 import type { CacheType, ButtonInteraction } from "discord.js";
 import { createSubScriptionList } from "../commands/subscriptions";
 import { z } from "zod";
-import { createLeaderBoard } from "../commands/leaderboard";
+import { createLeaderBoard } from "../commands/economy/economyLeaderboard";
 
 export async function leaderBoardChangePage(
   interaction: ButtonInteraction<CacheType>,

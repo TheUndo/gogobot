@@ -1,16 +1,17 @@
 import { SlashCommandBuilder, type Interaction } from "discord.js";
-import type { Command } from "../../common/types";
-import { createWallet } from "../../common/logic/economy/createWallet";
-import { createBank } from "../../common/logic/economy/createBank";
-import { prisma } from "../../prisma";
-import { formatNumber } from "../../common/utils/formatNumber";
+import type { Command } from "../../../common/types";
+import { createWallet } from "../../../common/logic/economy/createWallet";
+import { createBank } from "../../../common/logic/economy/createBank";
+import { prisma } from "../../../prisma";
+import { formatNumber } from "../../../common/utils/formatNumber";
 import { z } from "zod";
+import { safeParseNumber } from "../../../common/utils/parseNumber";
 
 export const withdraw = {
   data: new SlashCommandBuilder()
     .setName("with")
     .setDescription("Withdraw money from your bank account")
-    .addNumberOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("amount")
         .setDescription("Amount of money to withdraw type 0 for all")
@@ -34,7 +35,9 @@ export const withdraw = {
     }
 
     const rawAmount = interaction.options.get("amount");
-    const amount = z.coerce.number().int().min(0).safeParse(rawAmount?.value);
+    const amount = z
+      .preprocess(safeParseNumber, z.number().int().min(0))
+      .safeParse(rawAmount?.value);
 
     if (!amount.success) {
       return await interaction.reply(

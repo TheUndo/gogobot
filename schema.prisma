@@ -97,3 +97,81 @@ model Bank {
 
   @@unique([userDiscordId, guildId])
 }
+
+model Clan {
+  id   String @id @default(cuid())
+  name String
+
+  // Used to prevent name conflicts
+  slug String
+
+  discordGuildId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  members        ClanMember[]
+
+  settingsJoin         String
+  settingsDescription  String?
+  settingsColor        Int?
+  settingsAbbreviation String?
+  invitations          ClanInvitation[]
+  banishments          ClanBanishment[]
+  statistics           ClanStatistics[]
+
+  @@unique([slug, discordGuildId])
+}
+
+model ClanStatistics {
+  id String @id @default(cuid())
+
+  clan      Clan     @relation(fields: [clanId], references: [id])
+  wealth    Int
+  guildId   String
+  clanId    String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model ClanMember {
+  id            String   @id @default(cuid())
+  joinedAt      DateTime @default(now())
+  clan          Clan     @relation(fields: [clanId], references: [id])
+  clanId        String
+  guildId       String
+  discordUserId String
+  role          String
+
+  @@unique([guildId, discordUserId])
+  @@unique([clanId, discordUserId])
+}
+
+model ClanInvitation {
+  id String @id @default(cuid())
+
+  clan               Clan     @relation(fields: [clanId], references: [id])
+  clanId             String
+  userDiscordId      String
+  createdAt          DateTime @default(now())
+  invitedByDiscordId String
+}
+
+model ClanBanishment {
+  id String @id @default(cuid())
+
+  clan                Clan     @relation(fields: [clanId], references: [id])
+  clanId              String
+  userDiscordId       String
+  createdAt           DateTime @default(now())
+  banishedByDiscordId String
+}
+
+model Interaction {
+  id            String    @id @default(cuid())
+  userDiscordId String
+  guildId       String?
+  channelId     String?
+  type          String
+  payload       String?
+  consumedAt    DateTime?
+  createdAt     DateTime  @default(now())
+}

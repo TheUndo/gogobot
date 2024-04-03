@@ -1,4 +1,12 @@
-import type { Interaction, SlashCommandBuilder } from "discord.js";
+import type {
+  AnySelectMenuInteraction,
+  ButtonInteraction,
+  CacheType,
+  Interaction,
+  ModalSubmitInteraction,
+  SlashCommandBuilder,
+} from "discord.js";
+import type { prisma } from "../prisma";
 
 export type Command = {
   data: Partial<SlashCommandBuilder>;
@@ -52,4 +60,45 @@ export enum NewsCategory {
   News = "News",
   WhatToWatch = "WhatToWatch",
   Reviews = "Reviews",
+}
+
+export type AnyInteraction =
+  | AnySelectMenuInteraction<CacheType>
+  | ButtonInteraction<CacheType>
+  | ModalSubmitInteraction<CacheType>;
+export type InteractionContext = NonNullable<
+  Awaited<ReturnType<typeof prisma.interaction.findUnique>>
+>;
+
+export enum InteractionType {
+  ClanCreate = "CLAN_CREATE",
+  ClanCreatePromptName = "CLAN_CREATE_PROMPT_NAME",
+  ClanCreateWizardCancel = "GUILD_CREATE_WIZARD_CANCEL",
+  ClanPromptSettings = "CLAN_PROMPT_SETTINGS",
+  ClanJoin = "CLAN_JOIN",
+  ClanRejectInvitation = "CLAN_REJECT_INVITATION",
+  ClanSettingsModalSubmit = "CLAN_SETTINGS_MODAL_SUBMIT",
+  ClanTransferLeadership = "CLAN_TRANSFER_LEADERSHIP",
+  ClanCancelLeadershipTransfer = "CLAN_CANCEL_LEADERSHIP_TRANSFER",
+  ClanChangeJoinSettingSelect = "CLAN_CHANGE_JOIN_SETTING_SELECT",
+  ClanRequestJoinApprove = "CLAN_REQUEST_JOIN_APPROVE",
+  ClanRequestJoinReject = "CLAN_REQUEST_JOIN_REJECT",
+  ClanShowInfo = "CLAN_SHOW_INFO",
+  ClanShowMemberList = "CLAN_SHOW_MEMBER_LIST",
+  LeaderBoardShowClans = "LEADER_BOARD_SHOW_CLANS",
+  LeaderBoardShowUsers = "LEADER_BOARD_SHOW_NORMAL",
+  LeaderBoardClanChangeChangePage = "LEADER_BOARD_CLAN_CHANGE_PAGE",
+}
+
+export enum ClanMemberRole {
+  Leader = "LEADER",
+  Officer = "OFFICER",
+  Senior = "SENIOR",
+  Member = "MEMBER",
+}
+
+export enum ClanJoinSetting {
+  Open = "OPEN",
+  Approval = "APPROVAL",
+  Closed = "CLOSED",
 }

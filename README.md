@@ -25,6 +25,7 @@ then open .env and edit it.
 ### Development
 
 Bun:
+
 ```sh
 bun .                             # Bot commands
 bun scraper/scrapeEverything.ts   # Scrape anime
@@ -40,8 +41,8 @@ bunx pm2 start ecosystem.config.cjs
 
 ## Technical info
 
-- db: sqlite (Prisma)
+- db: [sqlite (Prisma)](https://www.prisma.io/)
 - runtime: [bun](https://bun.sh)
-- language: TypeScript
+- language: [TypeScript](https://www.typescriptlang.org/)
 - sdk: [Discord.js](https://discord.js.org)
 - pm: [pm2](https://pm2.io/)

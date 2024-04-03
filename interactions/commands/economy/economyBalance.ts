@@ -3,12 +3,12 @@ import {
   type Interaction,
   EmbedBuilder,
 } from "discord.js";
-import { Colors, type Command } from "../../common/types";
-import { createWallet } from "../../common/logic/economy/createWallet";
-import { createBank } from "../../common/logic/economy/createBank";
-import { formatNumber } from "../../common/utils/formatNumber";
-import { makePossessive } from "../../common/utils/makePossessive";
-import { addCurrency } from "../../common/utils/addCurrency";
+import { Colors, type Command } from "../../../common/types";
+import { createWallet } from "../../../common/logic/economy/createWallet";
+import { createBank } from "../../../common/logic/economy/createBank";
+import { formatNumber } from "../../../common/utils/formatNumber";
+import { makePossessive } from "../../../common/utils/makePossessive";
+import { addCurrency } from "../../../common/utils/addCurrency";
 import { sprintf } from "sprintf-js";
 
 export const balance = {
