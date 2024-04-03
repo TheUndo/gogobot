@@ -21,17 +21,19 @@ import { domains } from "../../interactions/commands/domains";
 import { showAnime } from "../../interactions/commands/showAnime";
 import { env } from "../../env";
 import { stats } from "../../interactions/commands/stats";
-import { daily } from "../../interactions/commands/daily";
+import { daily } from "../../interactions/commands/economy/economyDaily";
 import { resetCoolDowns } from "../../interactions/commands/resetCooldowns";
 import type { Command } from "../types";
-import { weekly } from "../../interactions/commands/weekly";
+import { weekly } from "../../interactions/commands/economy/economyWeekly";
 import { deposit } from "../../interactions/commands/deposit";
-import { balance } from "../../interactions/commands/balance";
-import { withdraw } from "../../interactions/commands/withdraw";
-import { leaderBoard } from "../../interactions/commands/leaderboard";
+import { balance } from "../../interactions/commands/economy/economyBalance";
+import { withdraw } from "../../interactions/commands/economy/economyWithdraw";
+import { leaderBoard } from "../../interactions/commands/economy/economyLeaderboard";
 import { fun } from "../../interactions/commands/fun";
 import { avatar } from "../../interactions/commands/avatar";
-import { gift } from "../../interactions/commands/gift";
+import { gift } from "../../interactions/commands/economy/economyGift";
+import { spawn } from "../../interactions/commands/economy/economySpawn";
+import { clan } from "../../interactions/commands/clan/clan";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -59,6 +61,8 @@ const commandsRegistrar: Command[] = [
   fun,
   avatar,
   gift,
+  spawn,
+  clan,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

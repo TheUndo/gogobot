@@ -3,15 +3,15 @@ import {
   type Interaction,
   EmbedBuilder,
 } from "discord.js";
-import { Colors, type Command } from "../../common/types";
-import { createWallet } from "../../common/logic/economy/createWallet";
-import { createBank } from "../../common/logic/economy/createBank";
-import { formatNumber } from "../../common/utils/formatNumber";
-import { makePossessive } from "../../common/utils/makePossessive";
-import { addCurrency } from "../../common/utils/addCurrency";
+import { Colors, type Command } from "../../../common/types";
+import { createWallet } from "../../../common/logic/economy/createWallet";
+import { createBank } from "../../../common/logic/economy/createBank";
+import { formatNumber } from "../../../common/utils/formatNumber";
+import { addCurrency } from "../../../common/utils/addCurrency";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { prisma } from "../../prisma";
+import { prisma } from "../../../prisma";
+import { safeParseNumber } from "../../../common/utils/parseNumber";
 
 export const gift = {
   data: new SlashCommandBuilder()
@@ -23,11 +23,8 @@ export const gift = {
         .setDescription("User you wish to gift money to")
         .setRequired(true),
     )
-    .addNumberOption((option) =>
-      option
-        .setName("amount")
-        .setDescription("Amount you wish to gift")
-        .setMinValue(0),
+    .addStringOption((option) =>
+      option.setName("amount").setDescription("Amount you wish to gift"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable()) {
@@ -48,17 +45,15 @@ export const gift = {
       );
     }
 
-    const amountToGift = z.coerce
-      .number()
-      .int()
-      .min(0)
-      .safeParse(interaction.options.get("amount")?.value);
+    const rawAmount = interaction.options.get("amount");
+    const amountToGift = z
+      .preprocess(safeParseNumber, z.number().int().min(0))
+      .safeParse(rawAmount?.value);
 
     if (!amountToGift.success) {
-      return await interaction.reply({
-        content: "Invalid amount. Use positive integers only.",
-        ephemeral: true,
-      });
+      return await interaction.reply(
+        "Invalid amount. Use positive integers only.",
+      );
     }
 
     const selectedUser = interaction.options.get("user")?.user;
@@ -118,7 +113,7 @@ export const gift = {
       content: sprintf(
         "<@%s> received **%s** from <@%s>",
         selectedUser.id,
-        amount,
+        amountToGift,
         interaction.user.id,
       ),
     });
