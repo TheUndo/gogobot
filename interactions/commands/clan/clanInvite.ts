@@ -45,6 +45,26 @@ export async function clanInvite({
     };
   }
 
+  const existingInvitation = await prisma.clanInvitation.findFirst({
+    where: {
+      clanId: clan.id,
+      userDiscordId: inviteeId,
+    },
+  });
+
+  if (
+    existingInvitation &&
+    existingInvitation.createdAt.getTime() > Date.now() - 1000 * 60 * 60 * 48
+  ) {
+    return {
+      ephemeral: true,
+      content: sprintf(
+        "User has already been invited in the last 48 hours. You can invite again <t:%s:R>",
+        existingInvitation.createdAt.getTime() / 1000,
+      ),
+    };
+  }
+
   const invitationContext: z.infer<typeof clanInvitationContext> = {
     clanId: clan.id,
     inviteeId,

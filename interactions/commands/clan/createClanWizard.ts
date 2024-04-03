@@ -487,7 +487,11 @@ export async function clanCreateNamePrompt(
       })
     : null;
 
-  if (validAbbreviation && !checkAbbreviationUsed) {
+  if (
+    validAbbreviation &&
+    !checkAbbreviationUsed &&
+    suggestedAbbreviation.length < name.data.length
+  ) {
     await prisma.clan.update({
       where: {
         id: clan.id,

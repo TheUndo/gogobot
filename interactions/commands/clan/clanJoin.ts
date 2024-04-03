@@ -57,6 +57,7 @@ export async function clanJoin(
         select: {
           role: true,
           id: true,
+          discordUserId: true,
         },
       },
       _count: {
@@ -131,7 +132,7 @@ export async function clanJoin(
                 z.nativeEnum(ClanMemberRole).parse(m.role),
               ),
             )
-            .map((m) => m.id),
+            .map((m) => m.discordUserId),
         },
       },
     });
