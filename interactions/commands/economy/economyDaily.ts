@@ -1,10 +1,10 @@
 import {
+  EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
-  EmbedBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { WorkType, type Command, Colors } from "~/common/types";
+import { Colors, type Command, WorkType } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";

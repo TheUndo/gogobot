@@ -9,8 +9,8 @@ import { clanLeaveCommand } from "./clanLeave";
 import { clanMembersCommand } from "./clanMembers";
 import { clanPromote } from "./clanPromote";
 import { clanSettingsCommand } from "./clanSettings";
-import { createGuildWizardStep1 } from "./createClanWizard";
 import { clanUpgradeCommand } from "./clanUpgrade";
+import { createGuildWizardStep1 } from "./createClanWizard";
 
 export const clan = {
   data: new SlashCommandBuilder()
