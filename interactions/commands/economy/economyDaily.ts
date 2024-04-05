@@ -91,14 +91,29 @@ export const daily = {
     const dailyReward = baseReward + randomBonus;
     const reward = (dailyReward + streakReward) * clanRewardMultiplier;
 
-    await prisma.work.create({
-      data: {
-        userDiscordId: userId,
-        guildDiscordId: guildId,
-        type: WorkType.Daily,
-        streak: lastWork.currentStreak,
-      },
-    });
+    await prisma.$transaction([
+      prisma.work.create({
+        data: {
+          userDiscordId: userId,
+          guildDiscordId: guildId,
+          type: WorkType.Daily,
+          streak: lastWork.currentStreak,
+        },
+      }),
+      prisma.wallet.update({
+        where: {
+          userDiscordId_guildId: {
+            userDiscordId: userId,
+            guildId,
+          },
+        },
+        data: {
+          balance: {
+            increment: reward,
+          },
+        },
+      }),
+    ]);
 
     const mainPart = sprintf("**+%s**", addCurrency()(formatNumber(reward)));
 

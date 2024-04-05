@@ -70,13 +70,28 @@ export const weekly = {
     const weeklyReward = baseReward + randomBonus;
     const reward = weeklyReward * clanRewardMultiplier;
 
-    await prisma.work.create({
-      data: {
-        userDiscordId: userId,
-        guildDiscordId: guildId,
-        type: WorkType.Weekly,
-      },
-    });
+    await prisma.$transaction([
+      prisma.work.create({
+        data: {
+          userDiscordId: userId,
+          guildDiscordId: guildId,
+          type: WorkType.Weekly,
+        },
+      }),
+      prisma.wallet.update({
+        where: {
+          userDiscordId_guildId: {
+            userDiscordId: userId,
+            guildId,
+          },
+        },
+        data: {
+          balance: {
+            increment: reward,
+          },
+        },
+      }),
+    ]);
 
     const mainPart = sprintf("**+%s**", addCurrency()(formatNumber(reward)));
 
