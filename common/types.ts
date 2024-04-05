@@ -102,3 +102,8 @@ export enum ClanJoinSetting {
   Approval = "APPROVAL",
   Closed = "CLOSED",
 }
+
+export enum WorkType {
+  Daily = "DAILY",
+  Weekly = "WEEKLY",
+}

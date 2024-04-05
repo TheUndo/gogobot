@@ -10,6 +10,7 @@ import { clanMembersCommand } from "./clanMembers";
 import { clanPromote } from "./clanPromote";
 import { clanSettingsCommand } from "./clanSettings";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanUpgradeCommand } from "./clanUpgrade";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -80,6 +81,9 @@ export const clan = {
     )
     .addSubcommand((subCommand) =>
       subCommand.setName("members").setDescription("Show your clan's members"),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand.setName("upgrade").setDescription("Upgrade your clan"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -166,6 +170,13 @@ export const clan = {
       case "members":
         return await interaction.reply(
           await clanMembersCommand({
+            authorId: interaction.user.id,
+            guildId,
+          }),
+        );
+      case "upgrade":
+        return await interaction.reply(
+          await clanUpgradeCommand({
             authorId: interaction.user.id,
             guildId,
           }),

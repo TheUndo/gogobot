@@ -81,9 +81,6 @@ model Wallet {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  lastUsedDaily  DateTime?
-  lastUsedWeekly DateTime?
-
   @@unique([userDiscordId, guildId])
 }
 
@@ -96,6 +93,15 @@ model Bank {
   updatedAt     DateTime @updatedAt
 
   @@unique([userDiscordId, guildId])
+}
+
+model Work {
+  id             String   @id @default(cuid())
+  type           String
+  createdAt      DateTime @default(now())
+  userDiscordId  String
+  guildDiscordId String
+  streak         Int      @default(0)
 }
 
 model Clan {
@@ -117,6 +123,7 @@ model Clan {
   invitations          ClanInvitation[]
   banishments          ClanBanishment[]
   statistics           ClanStatistics[]
+  level                Int              @default(1)
 
   @@unique([slug, discordGuildId])
 }

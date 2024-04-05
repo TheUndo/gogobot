@@ -412,6 +412,7 @@ export async function clanCancelLeadershipTransfer(
 
   return await interaction.update({
     content: "",
+    components: [],
     embeds: [
       new EmbedBuilder()
         .setTitle("Leadership transfer canceled")

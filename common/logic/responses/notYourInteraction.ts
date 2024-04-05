@@ -4,5 +4,8 @@ export function notYourInteraction(
   _interactionContext: InteractionContext,
   _interaction: AnyInteraction,
 ) {
-  return "This is not your interaction";
+  return {
+    content: "This is not your interaction",
+    ephemeral: true,
+  };
 }

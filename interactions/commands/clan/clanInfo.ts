@@ -154,6 +154,11 @@ export async function showClanInfo({
       inline: true,
     },
     {
+      name: "Level",
+      value: sprintf("%d", clan.level),
+      inline: true,
+    },
+    {
       name: "Leader",
       value: sprintf("<@%s>", leader.discordUserId),
       inline: true,
