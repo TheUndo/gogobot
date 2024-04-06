@@ -52,6 +52,29 @@ export async function clanInvite({
     };
   }
 
+  const userToInvite = await prisma.clanMember.findFirst({
+    where: {
+      discordUserId: inviteeId,
+      guildId,
+    },
+    select: {
+      id: true,
+      clanId: true,
+      clan: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  if (userToInvite?.clanId === clan.id) {
+    return {
+      ephemeral: true,
+      content: "User is already in the clan.",
+    };
+  }
+
   const existingInvitation = await prisma.clanInvitation.findFirst({
     where: {
       clanId: clan.id,
@@ -111,12 +134,12 @@ export async function clanInvite({
       }),
     ]);
 
+  const msg = userToInvite?.clan
+    ? `<@%s> you have been invited to join **%s**. To accept you must first leave **${userToInvite.clan.name}**.`
+    : "<@%s> you have been invited to join **%s**.";
+
   return {
-    content: sprintf(
-      "<@%s> you have been invited to join **%s**.",
-      inviteeId,
-      clan.name,
-    ),
+    content: sprintf(msg, inviteeId, clan.name),
     components: [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
