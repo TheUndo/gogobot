@@ -29,7 +29,11 @@ export async function clanInvite({
       members: {
         some: {
           role: {
-            in: [ClanMemberRole.Leader, ClanMemberRole.Officer],
+            in: [
+              ClanMemberRole.Leader,
+              ClanMemberRole.Officer,
+              ClanMemberRole.Senior,
+            ],
           },
           discordUserId: userId,
         },
@@ -41,7 +45,7 @@ export async function clanInvite({
   if (!clan) {
     return {
       ephemeral: true,
-      content: "You are not a leader or officer of a clan.",
+      content: "You are not a leader, officer or senior of your clan.",
     };
   }
 

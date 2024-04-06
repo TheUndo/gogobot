@@ -88,6 +88,8 @@ export enum InteractionType {
   LeaderBoardShowClans = "LEADER_BOARD_SHOW_CLANS",
   LeaderBoardShowUsers = "LEADER_BOARD_SHOW_NORMAL",
   LeaderBoardClanChangeChangePage = "LEADER_BOARD_CLAN_CHANGE_PAGE",
+  ClanListChangePage = "CLAN_LIST_PREVIOUS_PAGE",
+  ClanListJoinClan = "CLAN_LIST_JOIN_CLAN",
 }
 
 export enum ClanMemberRole {

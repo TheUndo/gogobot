@@ -15,15 +15,21 @@ import {
 import { prisma } from "~/prisma";
 import { clanInteractionContext } from "./clanInfo";
 import { ensureClanRole } from "./clanUtils";
+import { debugPrint } from "~/scraper/logger";
 
 export async function clanJoin(
   interactionContext: InteractionContext,
   interaction: AnyInteraction,
 ) {
-  if (!interaction.isButton()) {
+  if (!interaction.isButton() && !interaction.isStringSelectMenu()) {
     return await interaction.reply(
       wrongInteractionType(interactionContext, interaction),
     );
+  }
+
+  if (!("guildId" in interaction)) {
+    debugPrint("No guildId in interaction");
+    return;
   }
 
   if (interaction.guildId !== interactionContext.guildId) {
@@ -37,7 +43,14 @@ export async function clanJoin(
     JSON.parse(interactionContext.payload ?? "{}"),
   );
 
-  if (!clanContext.success) {
+  const selectedClanId = interaction.isStringSelectMenu()
+    ? interaction.values[0] ?? null
+    : null;
+
+  const clanId =
+    selectedClanId ?? (clanContext.success ? clanContext.data.clanId : null);
+
+  if (!clanId) {
     return await interaction.reply({
       content: "Invalid interaction context",
       ephemeral: true,
@@ -48,7 +61,7 @@ export async function clanJoin(
 
   const clanToJoin = await prisma.clan.findUnique({
     where: {
-      id: clanContext.data.clanId,
+      id: clanId,
     },
     select: {
       id: true,
@@ -71,7 +84,7 @@ export async function clanJoin(
 
   if (!clanToJoin) {
     return await interaction.reply({
-      content: `Clan not found: ${clanContext.data.clanId}`,
+      content: `Clan not found: ${clanId}`,
       ephemeral: true,
     });
   }
@@ -129,9 +142,11 @@ export async function clanJoin(
         invitedByDiscordId: {
           in: clanToJoin.members
             .filter((m) =>
-              [ClanMemberRole.Leader, ClanMemberRole.Officer].includes(
-                z.nativeEnum(ClanMemberRole).parse(m.role),
-              ),
+              [
+                ClanMemberRole.Leader,
+                ClanMemberRole.Office,
+                ClanMemberRole.Senior,
+              ].includes(z.nativeEnum(ClanMemberRole).parse(m.role)),
             )
             .map((m) => m.discordUserId),
         },

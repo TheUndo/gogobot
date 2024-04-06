@@ -112,9 +112,10 @@ export async function showClanMembers({
       }
 
       return sprintf(
-        "**%s**%s\n%s",
+        "**%s%s**%s\n%s",
         capitalize(clanRoles[z.nativeEnum(ClanMemberRole).parse(role)]),
-        list.length > 1 ? `s (${list.length})` : "",
+        list.length > 1 ? "s" : "",
+        list.length > 1 ? `(${list.length})` : "",
         list.join("\n"),
       );
     }),

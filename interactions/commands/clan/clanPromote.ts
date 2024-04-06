@@ -122,7 +122,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
 
     return {
       content: sprintf(
-        "<@%s> has been promoted to %s in **%s**!",
+        "<@%s> has been promoted to %s in **%s**! Seniors can invite members.",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
         clan.name,

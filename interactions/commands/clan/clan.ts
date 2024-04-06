@@ -11,6 +11,7 @@ import { clanPromote } from "./clanPromote";
 import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanListCommand } from "./clanList";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -89,6 +90,9 @@ export const clan = {
       subCommand
         .setName("change-name")
         .setDescription("Change your clan's name"),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand.setName("list").setDescription("List all clans in the server"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -192,6 +196,14 @@ export const clan = {
           guildId,
           interaction,
         }));
+      case "list":
+        return await interaction.reply(
+          await clanListCommand({
+            authorId: interaction.user.id,
+            guildId,
+            page: 1,
+          }),
+        );
       default:
         return await interaction.reply({
           ephemeral: true,
