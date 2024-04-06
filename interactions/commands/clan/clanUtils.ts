@@ -127,14 +127,18 @@ export async function ensureClanRole(clanId: string) {
   }
 }
 
-export function validateClanName(raw: string):
+export async function validateClanName(
+  raw: string,
+  guildId: string,
+): Promise<
   | {
       error: string;
     }
   | {
       slug: string;
       name: string;
-    } {
+    }
+> {
   const name = z
     .string()
     .trim()
@@ -149,6 +153,19 @@ export function validateClanName(raw: string):
   }
 
   const slug = slugify(name.data);
+
+  const search = await prisma.clan.findFirst({
+    where: {
+      slug,
+      discordGuildId: guildId,
+    },
+  });
+
+  if (search) {
+    return {
+      error: "This clan name is already taken. Try another.",
+    };
+  }
 
   if (!slug.length) {
     return {

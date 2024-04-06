@@ -4,6 +4,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
+import { createWallet } from "~/common/logic/economy/createWallet";
 import { Colors, type Command, WorkType } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
@@ -28,6 +29,8 @@ export const daily = {
         "This command can only be used in a server.",
       );
     }
+
+    await createWallet(interaction.user.id, guildId);
 
     const userId = interaction.user.id;
 

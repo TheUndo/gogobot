@@ -367,7 +367,10 @@ export async function clanCreateNamePrompt(
     });
   }
 
-  const result = validateClanName(interaction.fields.getField("name").value);
+  const result = await validateClanName(
+    interaction.fields.getField("name").value,
+    guildId,
+  );
 
   if ("error" in result) {
     return await interaction.reply({
@@ -377,29 +380,6 @@ export async function clanCreateNamePrompt(
   }
 
   const { name, slug } = result;
-
-  const existingClan = await prisma.clan.findUnique({
-    where: {
-      slug_discordGuildId: {
-        slug,
-        discordGuildId: guildId,
-      },
-    },
-    select: {
-      name: true,
-    },
-  });
-
-  if (existingClan) {
-    return await interaction.reply({
-      content: sprintf(
-        "A clan with the name **%s** (%s) already exists. Try again.",
-        existingClan.name,
-        slug,
-      ),
-      ephemeral: true,
-    });
-  }
 
   const [_, clan] = await prisma.$transaction([
     prisma.wallet.update({

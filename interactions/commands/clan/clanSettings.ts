@@ -512,7 +512,7 @@ export async function clanSettingsModalSubmit(
     ) {
       issues.push("You can only change the clan name once every 48 hours");
     } else {
-      const result = validateClanName(rawName);
+      const result = await validateClanName(rawName, guildId);
 
       if ("error" in result) {
         issues.push(result.error);
