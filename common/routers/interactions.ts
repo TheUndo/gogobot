@@ -10,6 +10,7 @@ import {
   clanRequestJoinApprove,
   clanRequestJoinReject,
 } from "~/interactions/commands/clan/clanJoin";
+import { clanListChangePage } from "~/interactions/commands/clan/clanList";
 import {
   clanCancelLeadershipTransfer,
   clanTransferLeadershipConfirm,
@@ -35,7 +36,6 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
-import { clanListChangePage } from "~/interactions/commands/clan/clanList";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {

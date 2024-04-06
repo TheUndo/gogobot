@@ -13,9 +13,9 @@ import {
   InteractionType,
 } from "~/common/types";
 import { prisma } from "~/prisma";
+import { debugPrint } from "~/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
 import { ensureClanRole } from "./clanUtils";
-import { debugPrint } from "~/scraper/logger";
 
 export async function clanJoin(
   interactionContext: InteractionContext,

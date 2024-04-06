@@ -6,12 +6,12 @@ import { showClanInfoCommand } from "./clanInfo";
 import { clanInvite } from "./clanInvite";
 import { clanKick } from "./clanKick";
 import { clanLeaveCommand } from "./clanLeave";
+import { clanListCommand } from "./clanList";
 import { clanMembersCommand } from "./clanMembers";
 import { clanPromote } from "./clanPromote";
 import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
-import { clanListCommand } from "./clanList";
 
 export const clan = {
   data: new SlashCommandBuilder()
