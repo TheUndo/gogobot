@@ -88,7 +88,9 @@ export const daily = {
     const clanRewardMultiplier = 1 + (clan?.level ?? 0) / 10;
     const streakReward = Math.floor(2.2 ** lastWork.currentStreak * 1_000);
     const dailyReward = baseReward + randomBonus;
-    const reward = (dailyReward + streakReward) * clanRewardMultiplier;
+    const reward = Math.round(
+      (dailyReward + streakReward) * clanRewardMultiplier,
+    );
 
     await prisma.$transaction([
       prisma.work.create({

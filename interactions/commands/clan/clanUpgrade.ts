@@ -37,7 +37,7 @@ export async function clanUpgradeCommand({ authorId, guildId }: Options) {
         addCurrency()(formatNumber(price)),
         addCurrency()(formatNumber(price - wallet.balance)),
       ),
-      ephemeral: true,
+      ephemeral: false,
     };
   }
 

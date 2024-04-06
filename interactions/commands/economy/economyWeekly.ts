@@ -67,7 +67,7 @@ export const weekly = {
 
     const clanRewardMultiplier = 1 + (clan?.level ?? 0) / 10;
     const weeklyReward = baseReward + randomBonus;
-    const reward = weeklyReward * clanRewardMultiplier;
+    const reward = Math.round(weeklyReward * clanRewardMultiplier);
 
     await prisma.$transaction([
       prisma.work.create({
