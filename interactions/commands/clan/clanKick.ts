@@ -2,6 +2,7 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { ClanMemberRole } from "../../../common/types";
 import { prisma } from "../../../prisma";
+import { ensureClanRole } from "./clanUtils";
 
 type Options = {
   authorId: string;
@@ -116,6 +117,8 @@ export async function clanKick({ authorId, mentionedId, guildId }: Options) {
       },
     }),
   ]);
+
+  void ensureClanRole(clan.id);
 
   return {
     content: sprintf(

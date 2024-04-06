@@ -82,7 +82,6 @@ export const daily = {
           "You've already claimed your daily reward. Next claim <t:%d:R>",
           Math.floor((lastWork.lastUsed.getTime() + coolDown) / 1000),
         ),
-        ephemeral: true,
       });
     }
 

@@ -14,6 +14,7 @@ import {
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { clanInteractionContext } from "./clanInfo";
+import { ensureClanRole } from "./clanUtils";
 
 export async function clanJoin(
   interactionContext: InteractionContext,
@@ -213,6 +214,8 @@ export async function clanJoin(
       },
     }),
   ]);
+
+  void ensureClanRole(clanToJoin.id);
 
   return await interaction.reply({
     content: sprintf("You have joined **%s**. Welcome!", clanToJoin.name),

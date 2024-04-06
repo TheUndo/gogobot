@@ -1,6 +1,8 @@
 import { sprintf } from "sprintf-js";
 import { ClanMemberRole } from "~/common/types";
 import { prisma } from "~/prisma";
+import { ensureClanRole } from "./clanUtils";
+import { client } from "~/common/client";
 
 export async function clanLeaveCommand({
   userId,
@@ -32,6 +34,7 @@ export async function clanLeaveCommand({
     select: {
       name: true,
       id: true,
+      roleId: true,
       _count: {
         select: {
           members: true,
@@ -88,6 +91,16 @@ export async function clanLeaveCommand({
         }),
       ]);
 
+      const roleId = clan.roleId;
+      if (roleId) {
+        await client.guilds
+          .fetch(guildId)
+          .then(async (guild) => guild.roles.delete(roleId))
+          .catch(() => {
+            console.error(`Failed to delete role ${roleId}`);
+          });
+      }
+
       return {
         content: sprintf(
           "<@%s> has __disbanded__ **%s**. <@%s> joined <t:%d:R>",
@@ -115,6 +128,8 @@ export async function clanLeaveCommand({
         },
       }),
     ]);
+
+    void ensureClanRole(clan.id);
 
     return {
       content: sprintf(

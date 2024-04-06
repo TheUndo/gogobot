@@ -62,7 +62,6 @@ export const weekly = {
           "You've already claimed your weekly reward. Next claim <t:%d:R>",
           Math.floor((lastWork.createdAt.getTime() + coolDown) / 1000),
         ),
-        ephemeral: true,
       });
     }
 
@@ -96,7 +95,7 @@ export const weekly = {
     const mainPart = sprintf("**+%s**", addCurrency()(formatNumber(reward)));
 
     const weeklyRewardPart = sprintf(
-      "Daily reward: %s",
+      "Weekly reward: %s",
       addCurrency()(formatNumber(weeklyReward)),
     );
 

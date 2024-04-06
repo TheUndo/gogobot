@@ -8,7 +8,7 @@ import { clanKick } from "./clanKick";
 import { clanLeaveCommand } from "./clanLeave";
 import { clanMembersCommand } from "./clanMembers";
 import { clanPromote } from "./clanPromote";
-import { clanSettingsCommand } from "./clanSettings";
+import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
 
@@ -84,6 +84,11 @@ export const clan = {
     )
     .addSubcommand((subCommand) =>
       subCommand.setName("upgrade").setDescription("Upgrade your clan"),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("change-name")
+        .setDescription("Change your clan's name"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -181,6 +186,12 @@ export const clan = {
             guildId,
           }),
         );
+      case "change-name":
+        return void (await clanChangeNameCommand({
+          userId: interaction.user.id,
+          guildId,
+          interaction,
+        }));
       default:
         return await interaction.reply({
           ephemeral: true,

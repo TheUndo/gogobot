@@ -119,7 +119,9 @@ export async function showClanInfo({
       results.reduce((acc, { _sum }) => acc + (_sum.balance ?? 0), 0),
     );
 
-  const embed = new EmbedBuilder().setTitle(clan.name);
+  const embed = new EmbedBuilder();
+
+  const content = sprintf("# %s", clan.name);
 
   const leader = clan.members.find(
     (member) => member.role === ClanMemberRole.Leader,
@@ -190,6 +192,14 @@ export async function showClanInfo({
       value: wrapTag(clan.settingsAbbreviation),
       inline: true,
     });
+  }
+
+  if (clan.settingsBanner) {
+    embed.setImage(clan.settingsBanner);
+  }
+
+  if (clan.settingsLogo) {
+    embed.setThumbnail(clan.settingsLogo);
   }
 
   const context: z.infer<typeof clanInteractionContext> = {
@@ -297,7 +307,7 @@ export async function showClanInfo({
   embed.setColor(clan.settingsColor ?? Colors.Info);
 
   return {
-    content: "",
+    content,
     components: [firstRow, secondRow].filter((v) => v.components.length > 0),
     embeds: [embed],
   };

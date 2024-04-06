@@ -120,10 +120,16 @@ model Clan {
   settingsDescription  String?
   settingsColor        Int?
   settingsAbbreviation String?
+  settingsBanner       String?
+  settingsLogo         String?
   invitations          ClanInvitation[]
   banishments          ClanBanishment[]
   statistics           ClanStatistics[]
   level                Int              @default(1)
+
+  lastNameChange DateTime @default(now())
+
+  roleId String?
 
   @@unique([slug, discordGuildId])
 }

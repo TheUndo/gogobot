@@ -26,8 +26,8 @@ import {
 } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
-import { slugify } from "~/common/utils/slugify";
 import { prisma } from "~/prisma";
+import { ensureClanRole, validateClanName } from "./clanUtils";
 
 const CLAN_CREATE_PRICE = 500_000;
 
@@ -367,37 +367,16 @@ export async function clanCreateNamePrompt(
     });
   }
 
-  const name = z
-    .string()
-    .trim()
-    .transform((v) => v.trim().replace(/[\n\s]+/g, " "))
-    .refine((v) => v.length > 0 && v.length <= 32)
-    .safeParse(interaction.fields.getField("name").value);
+  const result = validateClanName(interaction.fields.getField("name").value);
 
-  if (!name.success) {
+  if ("error" in result) {
     return await interaction.reply({
-      content: "Invalid clan name",
+      content: result.error,
       ephemeral: true,
     });
   }
 
-  const slug = slugify(name.data);
-
-  if (!slug.length) {
-    return await interaction.reply({
-      content:
-        "This clan name is invalid because it only contains non-alphanumeric characters. Try again.",
-      ephemeral: true,
-    });
-  }
-
-  if (/[<>@#*_~`|]/.test(name.data)) {
-    return await interaction.reply({
-      content:
-        "Clan name has <, >, @, #, *, _, ~, ` or | characters, which are not allowed.",
-      ephemeral: true,
-    });
-  }
+  const { name, slug } = result;
 
   const existingClan = await prisma.clan.findUnique({
     where: {
@@ -435,7 +414,7 @@ export async function clanCreateNamePrompt(
     }),
     prisma.clan.create({
       data: {
-        name: name.data,
+        name,
         discordGuildId: guildId,
         slug,
         settingsJoin: ClanJoinSetting.Open,
@@ -475,7 +454,7 @@ export async function clanCreateNamePrompt(
     }),
   ]);
 
-  const suggestedAbbreviation = name.data.slice(0, 4).trim();
+  const suggestedAbbreviation = name.slice(0, 4).trim();
   const validAbbreviation = /^[A-Za-z0-9]+$/.test(suggestedAbbreviation);
 
   const checkAbbreviationUsed = validAbbreviation
@@ -490,7 +469,7 @@ export async function clanCreateNamePrompt(
   if (
     validAbbreviation &&
     !checkAbbreviationUsed &&
-    suggestedAbbreviation.length < name.data.length
+    suggestedAbbreviation.length < name.length
   ) {
     await prisma.clan.update({
       where: {
@@ -502,6 +481,8 @@ export async function clanCreateNamePrompt(
     });
   }
 
+  void ensureClanRole(clan.id);
+
   await message
     .edit({
       content: "",
@@ -510,7 +491,7 @@ export async function clanCreateNamePrompt(
         new EmbedBuilder()
           .setTitle("Clan Created")
           .setDescription(
-            sprintf("Awesome, **%s** clan has now been created!", name.data),
+            sprintf("Awesome, **%s** clan has now been created!", name),
           )
           .setColor(Colors.Success),
       ],
