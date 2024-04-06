@@ -144,7 +144,7 @@ export async function clanJoin(
             .filter((m) =>
               [
                 ClanMemberRole.Leader,
-                ClanMemberRole.Office,
+                ClanMemberRole.Officer,
                 ClanMemberRole.Senior,
               ].includes(z.nativeEnum(ClanMemberRole).parse(m.role)),
             )
