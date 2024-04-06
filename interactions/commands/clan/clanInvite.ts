@@ -45,6 +45,13 @@ export async function clanInvite({
     };
   }
 
+  if (userId === inviteeId) {
+    return {
+      ephemeral: true,
+      content: "You cannot invite yourself.",
+    };
+  }
+
   const existingInvitation = await prisma.clanInvitation.findFirst({
     where: {
       clanId: clan.id,

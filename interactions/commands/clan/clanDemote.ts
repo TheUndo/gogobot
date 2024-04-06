@@ -27,7 +27,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
 
   if (!clan) {
     return {
-      content: "You are not in a clan",
+      content: "You are not in a clan.",
       ephemeral: true,
     };
   }
@@ -47,7 +47,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
 
   if (!demotingMember) {
     return {
-      content: "You are not in the clan",
+      content: "You are not in the clan.",
       ephemeral: true,
     };
   }
@@ -81,7 +81,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
 
   if (memberToDemote.discordUserId === demotingMember.discordUserId) {
     return {
-      content: "You cannot demote yourself",
+      content: "You cannot demote yourself.",
       ephemeral: true,
     };
   }

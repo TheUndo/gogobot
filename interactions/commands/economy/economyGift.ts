@@ -48,7 +48,7 @@ export const gift = {
 
     if (!amountToGift.success) {
       return await interaction.reply(
-        "Invalid amount. Use positive integers only.",
+        "Invalid amount. Use positive integers only. Example: `/gift @user 50k`",
       );
     }
 
@@ -80,7 +80,6 @@ export const gift = {
     }
 
     const makeDollars = addCurrency();
-    const amount = makeDollars(formatNumber(amountToGift.data));
 
     await prisma.$transaction([
       prisma.wallet.update({
@@ -109,7 +108,7 @@ export const gift = {
       content: sprintf(
         "<@%s> received **%s** from <@%s>",
         selectedUser.id,
-        amountToGift.data,
+        makeDollars(formatNumber(amountToGift.data)),
         interaction.user.id,
       ),
     });

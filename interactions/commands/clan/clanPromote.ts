@@ -68,7 +68,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
 
   if (!promotingMember) {
     return {
-      content: "You are not in the clan",
+      content: "You are not in the clan.",
       ephemeral: true,
     };
   }
@@ -102,7 +102,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
 
   if (memberToPromote.discordUserId === promotingMember.discordUserId) {
     return {
-      content: "You cannot promote yourself",
+      content: "You cannot promote yourself.",
       ephemeral: true,
     };
   }
@@ -122,7 +122,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
 
     return {
       content: sprintf(
-        "<@%s> has been promoted to %s in **%s**",
+        "<@%s> has been promoted to %s in **%s**!",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
         clan.name,
@@ -150,7 +150,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Officer],
         clan.name,
       ),
-      ephemeral: true,
+      ephemeral: false,
     };
   }
 
@@ -230,7 +230,7 @@ export async function clanTransferLeadershipConfirm(
 
   if (!context.success) {
     return await interaction.reply({
-      content: "Invalid interaction context",
+      content: "Invalid interaction context.",
       ephemeral: true,
     });
   }
@@ -270,14 +270,14 @@ export async function clanTransferLeadershipConfirm(
 
   if (!userClanMember) {
     return await interaction.reply({
-      content: "You are not in this clan",
+      content: "You are not in this clan.",
       ephemeral: true,
     });
   }
 
   if (userClanMember.role !== ClanMemberRole.Leader) {
     return await interaction.reply({
-      content: "Only the clan leader can transfer leadership",
+      content: "Only the clan leader can transfer leadership.",
       ephemeral: true,
     });
   }
@@ -303,7 +303,7 @@ export async function clanTransferLeadershipConfirm(
 
   if (memberToPromote.role !== ClanMemberRole.Officer) {
     return await interaction.reply({
-      content: "Only an officer can be promoted to leader",
+      content: "Only an officer can be promoted to leader.",
       ephemeral: true,
     });
   }
@@ -343,7 +343,7 @@ export async function clanTransferLeadershipConfirm(
 
   return await interaction.reply({
     content: sprintf(
-      "<@%s> has been promoted to leader of **%s** by <@%s>",
+      "<@%s> has been promoted to leader of **%s** by <@%s>!",
       context.data.newLeaderUserId,
       clan.name,
       context.data.oldLeaderUserId,
@@ -373,14 +373,14 @@ export async function clanCancelLeadershipTransfer(
 
   if (!context.success) {
     return await interaction.reply({
-      content: "Invalid interaction context",
+      content: "Invalid interaction context.",
       ephemeral: true,
     });
   }
 
   if (interactionContext.consumedAt) {
     return await interaction.reply({
-      content: "This interaction has already been consumed",
+      content: "This interaction has already been consumed.",
       ephemeral: true,
     });
   }
