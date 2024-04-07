@@ -5,12 +5,11 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { createWallet } from "~/common/logic/economy/createWallet";
-import { Colors, type Command, WorkType } from "~/common/types";
+import { Colors, type Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
-
-const coolDown = 1000 * 60 * 60 * 24 * 7 - 1000 * 60 * 60;
+import { WorkType, coolDowns } from "./lib/workConfig";
 
 export const weekly = {
   data: new SlashCommandBuilder()
@@ -59,11 +58,14 @@ export const weekly = {
       }),
     ]);
 
-    if (lastWork && lastWork.createdAt.getTime() + coolDown > Date.now()) {
+    if (
+      lastWork &&
+      lastWork.createdAt.getTime() + coolDowns.WEEKLY > Date.now()
+    ) {
       return await interaction.reply({
         content: sprintf(
           "You've already claimed your weekly reward. Next claim <t:%d:R>",
-          Math.floor((lastWork.createdAt.getTime() + coolDown) / 1000),
+          Math.floor((lastWork.createdAt.getTime() + coolDowns.WEEKLY) / 1000),
         ),
       });
     }

@@ -5,12 +5,12 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { createWallet } from "~/common/logic/economy/createWallet";
-import { Colors, type Command, WorkType } from "~/common/types";
+import { Colors, type Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
+import { WorkType, coolDowns } from "./lib/workConfig";
 
-const coolDown = 1000 * 60 * 60 * 23.5;
 const maxStreak = 7;
 
 export const daily = {
@@ -54,7 +54,7 @@ export const daily = {
             if (!d) {
               return 1;
             }
-            if (d.createdAt.getTime() + coolDown * 2 < Date.now()) {
+            if (d.createdAt.getTime() + coolDowns.DAILY * 2 < Date.now()) {
               return 1;
             }
             if (d.streak === maxStreak) {
@@ -78,12 +78,12 @@ export const daily = {
 
     if (
       lastWork.lastUsed &&
-      lastWork.lastUsed.getTime() + coolDown > Date.now()
+      lastWork.lastUsed.getTime() + coolDowns.DAILY > Date.now()
     ) {
       return await interaction.reply({
         content: sprintf(
           "You've already claimed your daily reward. Next claim <t:%d:R>",
-          Math.floor((lastWork.lastUsed.getTime() + coolDown) / 1000),
+          Math.floor((lastWork.lastUsed.getTime() + coolDowns.DAILY) / 1000),
         ),
       });
     }

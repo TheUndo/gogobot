@@ -131,7 +131,7 @@ export async function clanListCommand({ authorId, guildId, page }: Options) {
       const isMyClan = myClan && myClan.id === clan.id ? " (Your Clan)" : "";
       if (clan.settingsAbbreviation) {
         return sprintf(
-          "- %s %s lvl. **%d** • %d/50%s",
+          "- **%s** %s lvl. **%d** • %d/50%s",
           clan.name,
           wrapTag(clan.settingsAbbreviation),
           clan.level,
@@ -141,7 +141,7 @@ export async function clanListCommand({ authorId, guildId, page }: Options) {
       }
 
       return sprintf(
-        "- %s lvl. **%d** • %d/50%s",
+        "- **%s** lvl. **%d** • %d/50%s",
         clan.name,
         clan.level,
         clan._count.members,

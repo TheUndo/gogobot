@@ -1,7 +1,6 @@
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { createBank } from "~/common/logic/economy/createBank";
 import { createWallet } from "~/common/logic/economy/createWallet";
 import type { Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
@@ -20,7 +19,10 @@ export const gift = {
         .setRequired(true),
     )
     .addStringOption((option) =>
-      option.setName("amount").setDescription("Amount you wish to gift"),
+      option
+        .setName("amount")
+        .setDescription("Amount you wish to gift")
+        .setRequired(true),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable()) {
@@ -69,7 +71,7 @@ export const gift = {
     }
 
     const myWallet = await createWallet(interaction.user.id, guildId);
-    const theirBank = await createBank(selectedUser.id, guildId);
+    const theirWallet = await createWallet(selectedUser.id, guildId);
 
     if (myWallet.balance < amountToGift.data) {
       return await interaction.reply({
@@ -92,9 +94,9 @@ export const gift = {
           },
         },
       }),
-      prisma.bank.update({
+      prisma.wallet.update({
         where: {
-          id: theirBank.id,
+          id: theirWallet.id,
         },
         data: {
           balance: {

@@ -115,7 +115,7 @@ export async function showClanMembers({
         "**%s%s**%s\n%s",
         capitalize(clanRoles[z.nativeEnum(ClanMemberRole).parse(role)]),
         list.length > 1 ? "s" : "",
-        list.length > 1 ? `(${list.length})` : "",
+        list.length > 1 ? ` (${list.length})` : "",
         list.join("\n"),
       );
     }),

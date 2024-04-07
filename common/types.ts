@@ -88,6 +88,7 @@ export enum InteractionType {
   LeaderBoardShowClans = "LEADER_BOARD_SHOW_CLANS",
   LeaderBoardShowUsers = "LEADER_BOARD_SHOW_NORMAL",
   LeaderBoardClanChangeChangePage = "LEADER_BOARD_CLAN_CHANGE_PAGE",
+  LeaderBoardChangeType = "LEADER_BOARD_CHANGE_TYPE",
   ClanListChangePage = "CLAN_LIST_PREVIOUS_PAGE",
   ClanListJoinClan = "CLAN_LIST_JOIN_CLAN",
 }
@@ -103,9 +104,4 @@ export enum ClanJoinSetting {
   Open = "OPEN",
   Approval = "APPROVAL",
   Closed = "CLOSED",
-}
-
-export enum WorkType {
-  Daily = "DAILY",
-  Weekly = "WEEKLY",
 }

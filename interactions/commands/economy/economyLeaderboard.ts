@@ -24,6 +24,15 @@ import { formatNumber } from "~/common/utils/formatNumber";
 import { wrapTag } from "~/common/utils/wrapTag";
 import { prisma } from "~/prisma";
 
+enum leaderBoardTpe {
+  Bank = "BANK",
+  Wallet = "WALLET",
+}
+
+const leaderBoardChangeTypeContext = z.object({
+  type: z.nativeEnum(leaderBoardTpe),
+});
+
 export const leaderBoard = {
   data: new SlashCommandBuilder()
     .setName("lb")
@@ -33,6 +42,9 @@ export const leaderBoard = {
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("clans").setDescription("See clan leader board"),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName("wallet").setDescription("See wallet leader board"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable()) {
@@ -55,23 +67,38 @@ export const leaderBoard = {
 
     const subcommand = interaction.options.getSubcommand();
 
-    if (subcommand === "clans") {
-      return await interaction.reply(
-        await createClanLeaderBoard({
-          userId: interaction.user.id,
-          guildId,
-          page: 1,
-        }),
-      );
+    switch (subcommand) {
+      case "clans": {
+        return await interaction.reply(
+          await createClanLeaderBoard({
+            userId: interaction.user.id,
+            guildId,
+            page: 1,
+            type: leaderBoardTpe.Bank,
+          }),
+        );
+      }
+      case "wallet": {
+        return await interaction.reply(
+          await createLeaderBoard({
+            userId: interaction.user.id,
+            guildId,
+            page: 1,
+            type: leaderBoardTpe.Wallet,
+          }),
+        );
+      }
+      default: {
+        return await interaction.reply(
+          await createLeaderBoard({
+            userId: interaction.user.id,
+            guildId,
+            page: 1,
+            type: leaderBoardTpe.Bank,
+          }),
+        );
+      }
     }
-
-    return await interaction.reply(
-      await createLeaderBoard({
-        userId: interaction.user.id,
-        guildId,
-        page: 1,
-      }),
-    );
   },
 } satisfies Command;
 
@@ -79,6 +106,7 @@ type Options = {
   userId: string;
   guildId: string;
   page: number;
+  type: leaderBoardTpe;
 };
 
 const pageSize = 15;
@@ -87,22 +115,32 @@ export async function createLeaderBoard({
   userId,
   guildId,
   page = 1,
+  type,
 }: Options) {
-  const embed = new EmbedBuilder()
-    .setColor(Colors.Info)
-    .setTitle("Leaderboard");
+  const embed = new EmbedBuilder().setColor(Colors.Info);
+
+  const where = {
+    guildId,
+  };
+  const orderBy = {
+    balance: "desc",
+  } as const;
+  const skip = (page - 1) * pageSize;
 
   const [banks, size] = await prisma.$transaction([
-    prisma.bank.findMany({
-      where: {
-        guildId,
-      },
-      orderBy: {
-        balance: "desc",
-      },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    }),
+    type === leaderBoardTpe.Bank
+      ? prisma.bank.findMany({
+          where,
+          orderBy,
+          skip,
+          take: pageSize,
+        })
+      : prisma.wallet.findMany({
+          where,
+          orderBy,
+          skip,
+          take: pageSize,
+        }),
     prisma.bank.count({
       where: {
         guildId,
@@ -137,9 +175,19 @@ export async function createLeaderBoard({
   const pages = Math.ceil(size / pageSize);
 
   if (page === 1) {
-    embed.setTitle("Leader board");
+    embed.setTitle(
+      type === leaderBoardTpe.Bank ? "Leader board" : "Wallet Leader board",
+    );
   } else {
-    embed.setTitle(sprintf("Leader board (Page %d/%d)", page, pages));
+    embed.setTitle(
+      sprintf(
+        type === leaderBoardTpe.Bank
+          ? "Leader board (Page %d/%d)"
+          : "Wallet leader board (Page %d/%d)",
+        page,
+        pages,
+      ),
+    );
   }
 
   if (!banks.length) {
@@ -171,13 +219,23 @@ export async function createLeaderBoard({
 
   embed.setDescription(listItems.join("\n"));
 
-  const showClanLBInteraction = await prisma.interaction.create({
-    data: {
-      type: InteractionType.LeaderBoardShowClans,
-      guildId,
-      userDiscordId: userId,
-    },
-  });
+  const [leaderBoardChangeTypeInteraction, showClanLBInteraction] =
+    await prisma.$transaction([
+      prisma.interaction.create({
+        data: {
+          type: InteractionType.LeaderBoardChangeType,
+          guildId,
+          userDiscordId: userId,
+        },
+      }),
+      prisma.interaction.create({
+        data: {
+          type: InteractionType.LeaderBoardShowClans,
+          guildId,
+          userDiscordId: userId,
+        },
+      }),
+    ]);
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -198,6 +256,10 @@ export async function createLeaderBoard({
       .setEmoji("➡️")
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(page === pages),
+    new ButtonBuilder()
+      .setCustomId(leaderBoardChangeTypeInteraction.id)
+      .setLabel(type === leaderBoardTpe.Bank ? "Wallet" : "Bank")
+      .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(showClanLBInteraction.id)
       .setLabel("Clans")
@@ -237,6 +299,7 @@ export async function leaderBoardUsersButton(
       userId: interaction.user.id,
       guildId,
       page: 1,
+      type: leaderBoardTpe.Bank,
     }),
   );
 }
@@ -268,6 +331,7 @@ export async function leaderBoardClanButton(
       userId: interaction.user.id,
       guildId,
       page: 1,
+      type: leaderBoardTpe.Bank,
     }),
   );
 }
@@ -431,6 +495,7 @@ export async function leaderBoardClanChangePage(
       userId: interaction.user.id,
       guildId,
       page: page.data,
+      type: leaderBoardTpe.Bank,
     }),
   );
 }
