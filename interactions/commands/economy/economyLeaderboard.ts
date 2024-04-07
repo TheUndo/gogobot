@@ -288,6 +288,12 @@ export async function leaderBoardChangeTypeButton(
     );
   }
 
+  if (interaction.user.id !== interactionContext.userDiscordId) {
+    return await interaction.reply(
+      notYourInteraction(interactionContext, interaction),
+    );
+  }
+
   const context = leaderBoardChangeTypeContext.safeParse(
     JSON.parse(interactionContext.payload ?? "{}"),
   );
