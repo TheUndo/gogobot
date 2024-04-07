@@ -1,15 +1,15 @@
 import {
+  EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
-  EmbedBuilder,
 } from "discord.js";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { getCommands } from "~/common/routers/commands";
 import { Colors, type Command } from "~/common/types";
 import { prisma } from "~/prisma";
-import { WorkType, coolDowns, workCommands, workNames } from "./lib/workConfig";
-import { z } from "zod";
-import { sprintf } from "sprintf-js";
-import { getCommands } from "~/common/routers/commands";
 import { makeCommand } from "~/scraper/debug";
+import { WorkType, coolDowns, workCommands, workNames } from "./lib/workConfig";
 
 export const work = {
   data: new SlashCommandBuilder()
