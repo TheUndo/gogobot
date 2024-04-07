@@ -25,6 +25,7 @@ import {
   createGuildWizardStep2,
 } from "~/interactions/commands/clan/createClanWizard";
 import {
+  leaderBoardChangeTypeButton,
   leaderBoardClanButton,
   leaderBoardClanChangePage,
   leaderBoardUsersButton,
@@ -125,6 +126,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
           ));
         case InteractionType.ClanListChangePage:
           return void (await clanListChangePage(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.LeaderBoardChangeType:
+          return void (await leaderBoardChangeTypeButton(
             interactionContext,
             interaction,
           ));

@@ -1,6 +1,9 @@
 import type { ButtonInteraction, CacheType } from "discord.js";
 import { z } from "zod";
-import { createLeaderBoard } from "../commands/economy/economyLeaderboard";
+import {
+  LeaderBoardType,
+  createLeaderBoard,
+} from "../commands/economy/economyLeaderboard";
 
 export async function leaderBoardChangePage(
   interaction: ButtonInteraction<CacheType>,
@@ -35,6 +38,7 @@ export async function leaderBoardChangePage(
     page: page.data,
     guildId,
     userId: interaction.user.id,
+    type: LeaderBoardType.Bank,
   });
 
   if (interaction.message.editable) {

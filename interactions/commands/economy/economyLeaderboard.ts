@@ -24,13 +24,13 @@ import { formatNumber } from "~/common/utils/formatNumber";
 import { wrapTag } from "~/common/utils/wrapTag";
 import { prisma } from "~/prisma";
 
-enum leaderBoardTpe {
+export enum LeaderBoardType {
   Bank = "BANK",
   Wallet = "WALLET",
 }
 
 const leaderBoardChangeTypeContext = z.object({
-  type: z.nativeEnum(leaderBoardTpe),
+  type: z.nativeEnum(LeaderBoardType),
 });
 
 export const leaderBoard = {
@@ -74,7 +74,7 @@ export const leaderBoard = {
             userId: interaction.user.id,
             guildId,
             page: 1,
-            type: leaderBoardTpe.Bank,
+            type: LeaderBoardType.Bank,
           }),
         );
       }
@@ -84,7 +84,7 @@ export const leaderBoard = {
             userId: interaction.user.id,
             guildId,
             page: 1,
-            type: leaderBoardTpe.Wallet,
+            type: LeaderBoardType.Wallet,
           }),
         );
       }
@@ -94,7 +94,7 @@ export const leaderBoard = {
             userId: interaction.user.id,
             guildId,
             page: 1,
-            type: leaderBoardTpe.Bank,
+            type: LeaderBoardType.Bank,
           }),
         );
       }
@@ -106,7 +106,7 @@ type Options = {
   userId: string;
   guildId: string;
   page: number;
-  type: leaderBoardTpe;
+  type: LeaderBoardType;
 };
 
 const pageSize = 15;
@@ -128,7 +128,7 @@ export async function createLeaderBoard({
   const skip = (page - 1) * pageSize;
 
   const [banks, size] = await prisma.$transaction([
-    type === leaderBoardTpe.Bank
+    type === LeaderBoardType.Bank
       ? prisma.bank.findMany({
           where,
           orderBy,
@@ -176,12 +176,12 @@ export async function createLeaderBoard({
 
   if (page === 1) {
     embed.setTitle(
-      type === leaderBoardTpe.Bank ? "Leader board" : "Wallet Leader board",
+      type === LeaderBoardType.Bank ? "Leader board" : "Wallet Leader board",
     );
   } else {
     embed.setTitle(
       sprintf(
-        type === leaderBoardTpe.Bank
+        type === LeaderBoardType.Bank
           ? "Leader board (Page %d/%d)"
           : "Wallet leader board (Page %d/%d)",
         page,
@@ -226,6 +226,12 @@ export async function createLeaderBoard({
           type: InteractionType.LeaderBoardChangeType,
           guildId,
           userDiscordId: userId,
+          payload: JSON.stringify({
+            type:
+              type === LeaderBoardType.Bank
+                ? LeaderBoardType.Wallet
+                : LeaderBoardType.Bank,
+          } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
         },
       }),
       prisma.interaction.create({
@@ -258,7 +264,7 @@ export async function createLeaderBoard({
       .setDisabled(page === pages),
     new ButtonBuilder()
       .setCustomId(leaderBoardChangeTypeInteraction.id)
-      .setLabel(type === leaderBoardTpe.Bank ? "Wallet" : "Bank")
+      .setLabel(type === LeaderBoardType.Bank ? "Wallet" : "Bank")
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(showClanLBInteraction.id)
@@ -272,6 +278,43 @@ export async function createLeaderBoard({
   };
 }
 
+export async function leaderBoardChangeTypeButton(
+  interactionContext: InteractionContext,
+  interaction: AnyInteraction,
+) {
+  if (!interaction.isButton()) {
+    return await interaction.reply(
+      wrongInteractionType(interactionContext, interaction),
+    );
+  }
+
+  const context = leaderBoardChangeTypeContext.safeParse(
+    JSON.parse(interactionContext.payload ?? "{}"),
+  );
+
+  if (!context.success) {
+    return await interaction.reply({
+      content: "An error occurred. Please try again later.",
+    });
+  }
+
+  const guildId = interaction.guildId;
+
+  if (!guildId) {
+    return await interaction.reply(
+      "This command can only be used in a server.",
+    );
+  }
+
+  return await interaction.update(
+    await createLeaderBoard({
+      userId: interaction.user.id,
+      guildId,
+      page: 1,
+      type: context.data.type,
+    }),
+  );
+}
 export async function leaderBoardUsersButton(
   interactionContext: InteractionContext,
   interaction: AnyInteraction,
@@ -299,7 +342,7 @@ export async function leaderBoardUsersButton(
       userId: interaction.user.id,
       guildId,
       page: 1,
-      type: leaderBoardTpe.Bank,
+      type: LeaderBoardType.Bank,
     }),
   );
 }
@@ -331,7 +374,7 @@ export async function leaderBoardClanButton(
       userId: interaction.user.id,
       guildId,
       page: 1,
-      type: leaderBoardTpe.Bank,
+      type: LeaderBoardType.Bank,
     }),
   );
 }
@@ -495,7 +538,7 @@ export async function leaderBoardClanChangePage(
       userId: interaction.user.id,
       guildId,
       page: page.data,
-      type: leaderBoardTpe.Bank,
+      type: LeaderBoardType.Bank,
     }),
   );
 }
