@@ -48,7 +48,7 @@ type Options = {
 };
 
 async function createWorkEmbed({ guildId, userId }: Options) {
-  const embed = new EmbedBuilder().setTitle("Work");
+  const embed = new EmbedBuilder();
 
   const lastUsed = await prisma.$transaction(
     Object.entries(coolDowns).map(([type]) => {
