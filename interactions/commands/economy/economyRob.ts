@@ -9,7 +9,7 @@ import { randomNumber } from "~/common/utils/randomNumber";
 import { prisma } from "~/prisma";
 import { WorkType, coolDowns } from "./lib/workConfig";
 
-const immunityCoolDown = 1000 * 60 * 60 * 24 * 3;
+export const immunityCoolDown = 1000 * 60 * 60 * 24 * 3;
 
 const failureCost = 10_000;
 
@@ -84,7 +84,14 @@ export const rob = {
 
     if (victim.bot) {
       return await interaction.reply({
-        content: "You can't rob bots",
+        content: "You can't rob bots.",
+        ephemeral: true,
+      });
+    }
+
+    if (robber.id === victim.id) {
+      return await interaction.reply({
+        content: "You can't rob yourself.",
         ephemeral: true,
       });
     }
