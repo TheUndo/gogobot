@@ -23,6 +23,7 @@ import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { wrapTag } from "~/common/utils/wrapTag";
 import { prisma } from "~/prisma";
+import { immunityCoolDown } from "./economyRob";
 
 export enum LeaderBoardType {
   Bank = "BANK",
@@ -204,15 +205,37 @@ export async function createLeaderBoard({
       clan.members.some((m) => m.discordUserId === bank.userDiscordId),
     );
 
+    const userItem = clan?.settingsAbbreviation
+      ? `<@${bank.userDiscordId}> ${wrapTag(clan.settingsAbbreviation)}`
+      : `<@${bank.userDiscordId}>`;
+    const lastRobbed =
+      "lastRobbed" in bank ? new Date(z.any().parse(bank.lastRobbed)) : null;
+
+    if (
+      type === LeaderBoardType.Wallet &&
+      lastRobbed &&
+      immunityCoolDown + lastRobbed.getTime() > Date.now()
+    ) {
+      const format =
+        bank.userDiscordId === userId
+          ? "%d. %s **%s** (you) (immune)"
+          : "%d. %s %s (immune)";
+
+      return sprintf(
+        format,
+        position,
+        userItem,
+        makeDollars(formatNumber(bank.balance)),
+      );
+    }
+
     const format =
       bank.userDiscordId === userId ? "%d. %s **%s** (you)" : "%d. %s %s";
 
     return sprintf(
       format,
       position,
-      clan?.settingsAbbreviation
-        ? `<@${bank.userDiscordId}> ${wrapTag(clan.settingsAbbreviation)}`
-        : `<@${bank.userDiscordId}>`,
+      userItem,
       makeDollars(formatNumber(bank.balance)),
     );
   });
