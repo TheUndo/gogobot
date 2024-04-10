@@ -9,7 +9,7 @@ export const coolDowns: Record<WorkType, number> = {
   [WorkType.Daily]: 1000 * 60 * 60 * 23.5,
   [WorkType.Weekly]: 1000 * 60 * 60 * 24 * 7 - 1000 * 60 * 60,
   [WorkType.Rob]: 1000 * 60 * 60 * 3,
-  [WorkType.Fish]: 1000 * 60 * 60 * 1,
+  [WorkType.Fish]: 1000 * 60 * 30,
 };
 
 export const workNames: Record<WorkType, string> = {
