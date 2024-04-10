@@ -164,7 +164,7 @@ export const fish = {
         },
         data: {
           balance: {
-            increment: reward,
+            increment: totalReward,
           },
         },
       }),
