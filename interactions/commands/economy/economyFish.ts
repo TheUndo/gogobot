@@ -100,6 +100,7 @@ export const fish = {
         createdAt: {
           gte: new Date(Date.now() - coolDown),
         },
+        userDiscordId: interaction.user.id,
       },
       orderBy: {
         createdAt: "desc",
@@ -118,7 +119,7 @@ export const fish = {
 
       return await interaction.reply({
         content: sprintf(
-          "You've fished too much today. Try your luck <t:%s:R>",
+          "You scared all the fish away. Try your luck <t:%s:R>",
           Math.floor((lastUse.createdAt.getTime() + coolDown) / 1000),
         ),
       });
