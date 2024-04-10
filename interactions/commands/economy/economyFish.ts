@@ -48,11 +48,11 @@ const rewards: Record<
   },
   [Scenario.BigFish]: {
     message: "You caught a big fish! 🐟",
-    generateReward: async () => randomNumber(3_000, 5_000),
+    generateReward: async () => randomNumber(1_000, 1_300),
   },
   [Scenario.SmallFish]: {
     message: "You caught a small fish! 🐠",
-    generateReward: async () => randomNumber(1_000, 2_000),
+    generateReward: async () => randomNumber(500, 800),
   },
   [Scenario.Shoe]: {
     message: "You caught a shoe! 👞",
