@@ -190,3 +190,9 @@ model Interaction {
   consumedAt    DateTime?
   createdAt     DateTime  @default(now())
 }
+
+model GuildConfig {
+  id String @id @default(cuid())
+
+  economyChannelId String?
+}

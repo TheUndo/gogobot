@@ -5,19 +5,21 @@ import { createWallet } from "~/common/logic/economy/createWallet";
 import type { Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
-import { randomNumber } from "~/common/utils/randomNumber";
 import { prisma } from "~/prisma";
 import { WorkType, coolDowns } from "./lib/workConfig";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
+import { stackOdds } from "./lib/stackOdds";
+import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 
 export const immunityCoolDown = 1000 * 60 * 60 * 24 * 3;
 
 const failureCost = 10_000;
 
 enum Scenario {
-  CompleteSuccess = "CompleteSuccess",
-  PartialSuccess = "PartialSuccess",
-  Failure = "Failure",
-  Caught = "Caught",
+  CompleteSuccess = "COMPLETE_SUCCESS",
+  PartialSuccess = "PARTIAL_SUCCESS",
+  Failure = "FAILURE",
+  Caught = "CAUGHT",
 }
 
 const odds: Record<Scenario, number> = {
@@ -27,30 +29,7 @@ const odds: Record<Scenario, number> = {
   [Scenario.Caught]: 7,
 };
 
-const totalOdds = Object.values(odds).reduce((acc, curr) => acc + curr, 0);
-const stackedOdds = (() => {
-  let n = 0;
-  const stack: Partial<
-    Record<
-      Scenario,
-      {
-        from: number;
-        to: number;
-      }
-    >
-  > = {};
-
-  for (const [rawScenario, chance] of Object.entries(odds)) {
-    const scenario = z.nativeEnum(Scenario).parse(rawScenario);
-    stack[scenario] = {
-      from: n,
-      to: n + chance,
-    };
-    n += chance;
-  }
-
-  return stack;
-})();
+const computedOdds = stackOdds(odds);
 
 export const rob = {
   data: new SlashCommandBuilder()
@@ -75,6 +54,19 @@ export const rob = {
       );
     }
 
+    const guard = await guardEconomyChannel(
+      guildId,
+      interaction.channelId,
+      interaction.user.id,
+    );
+
+    if (guard) {
+      return await interaction.reply({
+        ephemeral: true,
+        ...guard,
+      });
+    }
+
     const robber = interaction.user;
     const victim = interaction.options.getUser("user");
 
@@ -92,6 +84,36 @@ export const rob = {
     if (robber.id === victim.id) {
       return await interaction.reply({
         content: "You can't rob yourself.",
+        ephemeral: true,
+      });
+    }
+
+    const [robberClan, victimClan] = await Promise.all([
+      prisma.clan.findFirst({
+        where: {
+          members: {
+            some: {
+              discordUserId: robber.id,
+            },
+          },
+          discordGuildId: guildId,
+        },
+      }),
+      prisma.clan.findFirst({
+        where: {
+          members: {
+            some: {
+              discordUserId: victim.id,
+            },
+          },
+          discordGuildId: guildId,
+        },
+      }),
+    ]);
+
+    if (robberClan && robberClan.id === victimClan?.id) {
+      return await interaction.reply({
+        content: "You can't rob your clan members.",
         ephemeral: true,
       });
     }
@@ -150,10 +172,7 @@ export const rob = {
       });
     }
 
-    const rng = randomNumber(0, totalOdds - 1);
-    const randomizedScenario = Object.entries(stackedOdds).find(
-      ([, { from, to }]) => rng >= from && rng < to,
-    )?.[0];
+    const randomizedScenario = getRandomizedScenario(computedOdds);
 
     const parsedScenario = z.nativeEnum(Scenario).safeParse(randomizedScenario);
     if (!randomizedScenario || !parsedScenario.success) {

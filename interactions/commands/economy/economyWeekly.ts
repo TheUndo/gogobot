@@ -10,13 +10,14 @@ import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
 import { WorkType, coolDowns } from "./lib/workConfig";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 
 export const weekly = {
   data: new SlashCommandBuilder()
     .setName("weekly")
     .setDescription("Get weekly reward"),
   async execute(interaction: Interaction) {
-    if (!interaction.isRepliable()) {
+    if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;
     }
 
@@ -26,6 +27,19 @@ export const weekly = {
       return await interaction.reply(
         "This command can only be used in a server.",
       );
+    }
+
+    const guard = await guardEconomyChannel(
+      guildId,
+      interaction.channelId,
+      interaction.user.id,
+    );
+
+    if (guard) {
+      return await interaction.reply({
+        ephemeral: true,
+        ...guard,
+      });
     }
 
     await createWallet(interaction.user.id, guildId);

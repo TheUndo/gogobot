@@ -9,7 +9,14 @@ import { getCommands } from "~/common/routers/commands";
 import { Colors, type Command } from "~/common/types";
 import { prisma } from "~/prisma";
 import { makeCommand } from "~/scraper/debug";
-import { WorkType, coolDowns, workCommands, workNames } from "./lib/workConfig";
+import {
+  WorkType,
+  coolDowns,
+  workCommandUses,
+  workCommands,
+  workNames,
+} from "./lib/workConfig";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 
 export const work = {
   data: new SlashCommandBuilder()
@@ -34,6 +41,19 @@ export const work = {
       );
     }
 
+    const guard = await guardEconomyChannel(
+      guildId,
+      interaction.channelId,
+      interaction.user.id,
+    );
+
+    if (guard) {
+      return await interaction.reply({
+        ephemeral: true,
+        ...guard,
+      });
+    }
+
     const userId = interaction.user.id;
 
     return await interaction.reply({
@@ -51,16 +71,22 @@ async function createWorkEmbed({ guildId, userId }: Options) {
   const embed = new EmbedBuilder();
 
   const lastUsed = await prisma.$transaction(
-    Object.entries(coolDowns).map(([type]) => {
-      return prisma.work.findFirst({
+    Object.entries(coolDowns).map(([rawType]) => {
+      const type = z.nativeEnum(WorkType).parse(rawType);
+
+      return prisma.work.findMany({
         where: {
           type,
           userDiscordId: userId,
           guildDiscordId: guildId,
+          createdAt: {
+            gte: new Date(Date.now() - coolDowns[type]),
+          },
         },
         orderBy: {
           createdAt: "desc",
         },
+        take: workCommandUses[type],
       });
     }),
   );
@@ -68,6 +94,7 @@ async function createWorkEmbed({ guildId, userId }: Options) {
   type Availability = {
     type: WorkType;
     lastUsed: Date | null;
+    usesLeft: number;
   };
 
   const { available, unavailable } = (() => {
@@ -76,12 +103,14 @@ async function createWorkEmbed({ guildId, userId }: Options) {
 
     for (const [rawType, cooldown] of Object.entries(coolDowns)) {
       const type = z.nativeEnum(WorkType).parse(rawType);
-      const last = lastUsed.find((work) => work?.type === type);
 
-      if (!last || last.createdAt.getTime() + cooldown < Date.now()) {
-        available.push({ type, lastUsed: null });
+      const usesOfType = lastUsed.flat(1).filter((d) => d.type === type);
+      const last = usesOfType.at(-1) ?? null;
+      const usesLeft = workCommandUses[type] - usesOfType.length;
+      if (usesLeft > 0 || !last) {
+        available.push({ type, lastUsed: null, usesLeft });
       } else {
-        unavailable.push({ type, lastUsed: last.createdAt });
+        unavailable.push({ type, lastUsed: last.createdAt, usesLeft });
       }
     }
 
@@ -99,12 +128,21 @@ async function createWorkEmbed({ guildId, userId }: Options) {
       );
     }
 
+    const usesLeftMessage =
+      item.usesLeft > 1
+        ? sprintf(" (%d/%d)", item.usesLeft, workCommandUses[item.type])
+        : "";
+
     const command = commands.get(workCommands[item.type]);
     if (!command) {
-      return sprintf("- %s", workNames[item.type]);
+      return sprintf("- %s%s", workNames[item.type], usesLeftMessage);
     }
 
-    return sprintf("- %s", makeCommand(workCommands[item.type], command.id));
+    return sprintf(
+      "- %s%s",
+      makeCommand(workCommands[item.type], command.id),
+      usesLeftMessage,
+    );
   };
 
   const sortItems = (a: Availability, b: Availability) => {

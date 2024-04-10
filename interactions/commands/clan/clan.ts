@@ -17,6 +17,7 @@ export const clan = {
   data: new SlashCommandBuilder()
     .setName("clan")
     .setDescription("Clan management")
+    .setDMPermission(false)
     .addSubcommand((subCommand) =>
       subCommand
         .setName("info")
