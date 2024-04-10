@@ -5,6 +5,7 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 import { getCommands } from "~/common/routers/commands";
 import { Colors, type Command } from "~/common/types";
 import { prisma } from "~/prisma";
@@ -16,7 +17,6 @@ import {
   workCommands,
   workNames,
 } from "./lib/workConfig";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 
 export const work = {
   data: new SlashCommandBuilder()

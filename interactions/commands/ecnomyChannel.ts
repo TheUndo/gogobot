@@ -1,12 +1,12 @@
 import {
   type Interaction,
-  SlashCommandBuilder,
   PermissionFlagsBits,
+  SlashCommandBuilder,
 } from "discord.js";
-import type { Command } from "../../common/types";
+import { sprintf } from "sprintf-js";
 import { getGuildConfig } from "~/common/logic/guildConfig/getGuildConfig";
 import { prisma } from "~/prisma";
-import { sprintf } from "sprintf-js";
+import type { Command } from "../../common/types";
 
 export const economyChannel = {
   data: new SlashCommandBuilder()

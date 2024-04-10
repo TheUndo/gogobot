@@ -2,14 +2,14 @@ import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { createWallet } from "~/common/logic/economy/createWallet";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 import type { Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
-import { WorkType, coolDowns } from "./lib/workConfig";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
-import { stackOdds } from "./lib/stackOdds";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
+import { stackOdds } from "./lib/stackOdds";
+import { WorkType, coolDowns } from "./lib/workConfig";
 
 export const immunityCoolDown = 1000 * 60 * 60 * 24 * 3;
 

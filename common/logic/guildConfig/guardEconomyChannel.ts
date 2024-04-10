@@ -1,7 +1,7 @@
-import { sprintf } from "sprintf-js";
-import { getGuildConfig } from "./getGuildConfig";
-import { client } from "~/common/client";
 import { PermissionsBitField } from "discord.js";
+import { sprintf } from "sprintf-js";
+import { client } from "~/common/client";
+import { getGuildConfig } from "./getGuildConfig";
 
 export async function guardEconomyChannel(
   guildId: string,

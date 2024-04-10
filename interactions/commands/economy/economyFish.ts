@@ -1,19 +1,19 @@
 import {
+  EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
-  EmbedBuilder,
 } from "discord.js";
-import { Colors, type Command } from "~/common/types";
-import { prisma } from "~/prisma";
-import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
 import { sprintf } from "sprintf-js";
-import { stackOdds } from "./lib/stackOdds";
-import { randomNumber } from "~/common/utils/randomNumber";
-import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { createWallet } from "~/common/logic/economy/createWallet";
+import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
+import { Colors, type Command } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
+import { randomNumber } from "~/common/utils/randomNumber";
+import { prisma } from "~/prisma";
+import { getRandomizedScenario } from "./lib/getRandomizedScenario";
+import { stackOdds } from "./lib/stackOdds";
+import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const maxStreak = 7;
 
