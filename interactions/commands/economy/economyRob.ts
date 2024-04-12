@@ -266,8 +266,8 @@ async function performRobbery({
   const immuneUntil = new Date(
     Date.now() +
       clamp(immunityLength, {
-        min: 60 * 60 * 1000,
-        max: 48 * 60 * 60 * 1000,
+        min: 1e3 * 60 * 2,
+        max: 1e3 * 60 * 60 * 48,
       }),
   );
   return await prisma.$transaction([
