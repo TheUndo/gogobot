@@ -10,8 +10,7 @@ import { prisma } from "~/prisma";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns } from "./lib/workConfig";
-
-export const immunityCoolDown = 1000 * 60 * 60 * 24 * 3;
+import { clamp } from "remeda";
 
 const failureCost = 10_000;
 
@@ -144,16 +143,14 @@ export const rob = {
     ]);
 
     if (
-      victimWallet.lastRobbed &&
-      victimWallet.lastRobbed.getTime() + immunityCoolDown > Date.now()
+      victimWallet.immuneUntil &&
+      victimWallet.immuneUntil.getTime() > Date.now()
     ) {
       return await interaction.reply({
         content: sprintf(
           "<@%s> is still recovering from the last robbery. Next rob <t:%d:R>",
           victim.id,
-          Math.floor(
-            (victimWallet.lastRobbed.getTime() + immunityCoolDown) / 1000,
-          ),
+          Math.floor(victimWallet.immuneUntil.getTime() / 1000),
         ),
       });
     }
@@ -168,7 +165,7 @@ export const rob = {
 
     if (victimWallet.balance < 1) {
       return await interaction.reply({
-        content: sprintf("<@%s> is broke. You can't rob them.", victim.id),
+        content: sprintf("<@%s> is broke. Robbery failed.", victim.id),
       });
     }
 
@@ -265,6 +262,14 @@ async function performRobbery({
   amount,
   guildId,
 }: RobberyOptions) {
+  const immunityLength = amount * 360;
+  const immuneUntil = new Date(
+    Date.now() +
+      clamp(immunityLength, {
+        min: 60 * 60 * 1000,
+        max: 48 * 60 * 60 * 1000,
+      }),
+  );
   return await prisma.$transaction([
     prisma.wallet.update({
       where: {
@@ -288,6 +293,7 @@ async function performRobbery({
       },
       data: {
         lastRobbed: new Date(),
+        immuneUntil,
         balance: {
           decrement: amount,
         },

@@ -23,7 +23,6 @@ import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { wrapTag } from "~/common/utils/wrapTag";
 import { prisma } from "~/prisma";
-import { immunityCoolDown } from "./economyRob";
 
 export enum LeaderBoardType {
   Bank = "BANK",
@@ -208,13 +207,13 @@ export async function createLeaderBoard({
     const userItem = clan?.settingsAbbreviation
       ? `<@${bank.userDiscordId}> ${wrapTag(clan.settingsAbbreviation)}`
       : `<@${bank.userDiscordId}>`;
-    const lastRobbed =
-      "lastRobbed" in bank ? new Date(z.any().parse(bank.lastRobbed)) : null;
+    const immuneUntil =
+      "immuneUntil" in bank ? new Date(z.any().parse(bank.immuneUntil)) : null;
 
     if (
       type === LeaderBoardType.Wallet &&
-      lastRobbed &&
-      immunityCoolDown + lastRobbed.getTime() > Date.now()
+      immuneUntil &&
+      immuneUntil.getTime() > Date.now()
     ) {
       const format =
         bank.userDiscordId === userId
