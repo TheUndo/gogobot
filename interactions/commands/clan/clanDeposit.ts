@@ -53,6 +53,14 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
 
   const amountToDeposit = parsedAmount === 0 ? wallet.balance : parsedAmount;
 
+  if (amountToDeposit <= 0) {
+    return {
+      content: 
+        "Invalid amount.",
+      ephemeral: true,
+    };
+  }
+
   if (wallet.balance < amountToDeposit) {
     return {
       content: sprintf(
