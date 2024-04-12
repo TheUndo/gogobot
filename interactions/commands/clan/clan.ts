@@ -2,6 +2,7 @@ import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 import { ClanJoinSetting, ClanMemberRole, type Command } from "~/common/types";
 import { clanDemote } from "./clanDemote";
+import { clanDeposit } from "./clanDeposit";
 import { showClanInfoCommand } from "./clanInfo";
 import { clanInvite } from "./clanInvite";
 import { clanKick } from "./clanKick";
@@ -12,7 +13,6 @@ import { clanPromote } from "./clanPromote";
 import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
-import { clanDeposit } from "./clanDeposit";
 
 export const clan = {
   data: new SlashCommandBuilder()

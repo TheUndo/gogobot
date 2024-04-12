@@ -24,6 +24,7 @@ import {
   clanCreateNamePrompt,
   createGuildWizardStep2,
 } from "~/interactions/commands/clan/createClanWizard";
+import { gambleInteractionButton } from "~/interactions/commands/economy/economyGamble";
 import {
   leaderBoardChangeTypeButton,
   leaderBoardClanButton,
@@ -37,7 +38,6 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
-import { gambleInteractionButton } from "~/interactions/commands/economy/economyGamble";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {

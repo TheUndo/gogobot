@@ -1,30 +1,30 @@
 import {
-  type Interaction,
-  SlashCommandBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
 } from "discord.js";
+import { shuffle } from "remeda";
+import * as R from "remeda";
 import { sprintf } from "sprintf-js";
+import { z } from "zod";
 import { createWallet } from "~/common/logic/economy/createWallet";
 import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
+import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
 import {
-  InteractionType,
-  type Command,
-  Colors,
-  type InteractionContext,
   type AnyInteraction,
+  Colors,
+  type Command,
+  type InteractionContext,
+  InteractionType,
 } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
-import { prisma } from "~/prisma";
 import { safeParseNumber } from "~/common/utils/parseNumber";
-import { shuffle } from "remeda";
-import { z } from "zod";
 import { randomNumber } from "~/common/utils/randomNumber";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
-import * as R from "remeda";
+import { prisma } from "~/prisma";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const gamblePayloadContext = z.object({
