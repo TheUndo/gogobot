@@ -2,6 +2,10 @@ import { describe, expect, it } from "bun:test";
 import { parseNumber } from "./parseNumber";
 
 describe("parseNumber", () => {
+  it("should parse all", () => {
+    expect(parseNumber("all")).toBe(0);
+  });
+
   it("should throw on empty input", () => {
     expect(() => parseNumber("")).toThrow("Invalid input");
   });

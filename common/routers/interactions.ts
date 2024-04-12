@@ -37,6 +37,7 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { gambleInteractionButton } from "~/interactions/commands/economy/economyGamble";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {
@@ -131,6 +132,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
           ));
         case InteractionType.LeaderBoardChangeType:
           return void (await leaderBoardChangeTypeButton(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.Gamble:
+          return void (await gambleInteractionButton(
             interactionContext,
             interaction,
           ));

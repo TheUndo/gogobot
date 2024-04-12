@@ -37,21 +37,36 @@ export const gift = {
       );
     }
 
-    if (!interaction.isCommand()) {
+    if (!interaction.isCommand() || !interaction.isChatInputCommand()) {
       return await interaction.reply(
         "This interaction can only be used as a command.",
       );
     }
 
-    const rawAmount = interaction.options.get("amount");
+    const rawAmount = interaction.options.getString("amount");
+    const myWallet = await createWallet(interaction.user.id, guildId);
+
     const amountToGift = z
-      .preprocess(safeParseNumber, z.number().int().min(0))
-      .safeParse(rawAmount?.value);
+      .preprocess(
+        safeParseNumber,
+        z
+          .number()
+          .int()
+          .transform((v) => (v === 0 ? myWallet.balance : v)),
+      )
+      .safeParse(rawAmount);
 
     if (!amountToGift.success) {
       return await interaction.reply(
         "Invalid amount. Use positive integers only. Example: `/gift @user 50k`",
       );
+    }
+
+    if (amountToGift.data < 100) {
+      return await interaction.reply({
+        content: "You can't gift less than 100.",
+        ephemeral: true,
+      });
     }
 
     const selectedUser = interaction.options.get("user")?.user;
@@ -70,7 +85,6 @@ export const gift = {
       });
     }
 
-    const myWallet = await createWallet(interaction.user.id, guildId);
     const theirWallet = await createWallet(selectedUser.id, guildId);
 
     if (myWallet.balance < amountToGift.data) {

@@ -133,6 +133,8 @@ model Clan {
 
   roleId String?
 
+  treasuryBalance Int @default(0)
+
   @@unique([slug, discordGuildId])
 }
 

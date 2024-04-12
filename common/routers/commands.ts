@@ -37,6 +37,7 @@ import { unsubscribe } from "~/interactions/commands/unsubscribe";
 import { virus } from "~/interactions/commands/virus";
 import { welcome } from "~/interactions/commands/welcome";
 import type { Command } from "../types";
+import { gamble } from "~/interactions/commands/economy/economyGamble";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -69,6 +70,7 @@ const commandsRegistrar: Command[] = [
   work,
   economyChannel,
   fish,
+  gamble,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

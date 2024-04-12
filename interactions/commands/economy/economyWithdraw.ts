@@ -33,8 +33,8 @@ export const withdraw = {
     if (!interaction.isCommand()) {
       return;
     }
-
     const rawAmount = interaction.options.get("amount");
+
     const amount = z
       .preprocess(safeParseNumber, z.number().int().min(0))
       .safeParse(rawAmount?.value);

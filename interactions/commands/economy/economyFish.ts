@@ -15,8 +15,6 @@ import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
-const maxStreak = 7;
-
 enum Scenario {
   Shark = "SHARK",
   BigFish = "BIG_FISH",

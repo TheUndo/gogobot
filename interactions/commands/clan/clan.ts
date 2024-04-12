@@ -12,6 +12,7 @@ import { clanPromote } from "./clanPromote";
 import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanDeposit } from "./clanDeposit";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -94,6 +95,17 @@ export const clan = {
     )
     .addSubcommand((subCommand) =>
       subCommand.setName("list").setDescription("List all clans in the server"),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("deposit")
+        .setDescription("Deposit the money in your wallet to your clan")
+        .addStringOption((option) =>
+          option
+            .setName("amount")
+            .setRequired(true)
+            .setDescription("Amount to deposit. Put 0 for all"),
+        ),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -203,6 +215,14 @@ export const clan = {
             authorId: interaction.user.id,
             guildId,
             page: 1,
+          }),
+        );
+      case "deposit":
+        return await interaction.reply(
+          await clanDeposit({
+            authorId: interaction.user.id,
+            guildId,
+            amount: interaction.options.getString("amount") ?? "0",
           }),
         );
       default:

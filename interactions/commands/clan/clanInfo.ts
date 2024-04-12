@@ -59,7 +59,9 @@ export async function showClanInfoCommand({
 
   if (!clan) {
     return {
-      content: "User is not in a clan",
+      content: mentionedId
+        ? "User is not in a clan."
+        : "You are not in a clan. Use `/clan list` for a list of clans.",
       ephemeral: true,
     };
   }
@@ -104,6 +106,8 @@ export async function showClanInfo({
     balance: true,
   } as const;
 
+  const treasuryBalance = clan.treasuryBalance;
+
   const wealth = await prisma
     .$transaction([
       prisma.wallet.aggregate({
@@ -117,7 +121,8 @@ export async function showClanInfo({
     ])
     .then((results) =>
       results.reduce((acc, { _sum }) => acc + (_sum.balance ?? 0), 0),
-    );
+    )
+    .then((d) => d + treasuryBalance);
 
   const embed = new EmbedBuilder();
 
@@ -166,22 +171,22 @@ export async function showClanInfo({
       inline: true,
     },
     {
+      name: "Treasury",
+      value: sprintf("%s", addCurrency()(formatNumber(treasuryBalance))),
+      inline: true,
+    },
+    {
+      name: "Total wealth",
+      value: sprintf("%s", addCurrency()(formatNumber(wealth))),
+      inline: true,
+    },
+    {
       name: "Created",
       value: sprintf(
         "<t:%d:d> • <t:%d:R>",
         clan.createdAt.getTime() / 1e3,
         clan.createdAt.getTime() / 1e3,
       ),
-      inline: true,
-    },
-    {
-      name: "Wealth",
-      value: sprintf("%s", addCurrency()(formatNumber(wealth))),
-      inline: true,
-    },
-    {
-      name: "Availability",
-      value: joinSettings[settingsJoin.data],
       inline: true,
     },
   );
@@ -252,6 +257,14 @@ export async function showClanInfo({
       clanId: clan.id,
     },
   });
+
+  if (authorMember && authorMember.role !== ClanMemberRole.Leader) {
+    embed.addFields({
+      name: "Availability",
+      value: joinSettings[settingsJoin.data],
+      inline: true,
+    });
+  }
 
   const firstRow = new ActionRowBuilder<StringSelectMenuBuilder>();
   const secondRow = new ActionRowBuilder<ButtonBuilder>();

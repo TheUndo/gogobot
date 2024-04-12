@@ -42,7 +42,9 @@ export async function clanMembersCommand({
 
   if (!clan) {
     return {
-      content: "User is not in a clan",
+      content: mentionedId
+        ? "User is not in a clan."
+        : "You are not in a clan. Use `/clan list` for a list of clans.",
       ephemeral: true,
     };
   }

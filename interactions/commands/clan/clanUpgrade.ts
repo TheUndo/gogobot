@@ -1,5 +1,6 @@
 import { sprintf } from "sprintf-js";
-import { createWallet } from "~/common/logic/economy/createWallet";
+import { z } from "zod";
+import { ClanMemberRole } from "~/common/types";
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
@@ -22,20 +23,48 @@ export async function clanUpgradeCommand({ authorId, guildId }: Options) {
 
   if (!clan) {
     return {
-      content: "You are not in a clan",
+      content: "You are not in a clan.",
       ephemeral: true,
     };
   }
 
-  const wallet = await createWallet(authorId, guildId);
+  const clanMember = await prisma.clanMember.findFirst({
+    where: {
+      clanId: clan.id,
+      discordUserId: authorId,
+    },
+  });
+
+  if (!clanMember) {
+    return {
+      content: "You are not in a clan.",
+      ephemeral: true,
+    };
+  }
+
+  if (
+    ![
+      ClanMemberRole.Leader,
+      ClanMemberRole.Officer,
+      ClanMemberRole.Senior,
+    ].includes(z.nativeEnum(ClanMemberRole).parse(clanMember.role))
+  ) {
+    return {
+      content:
+        "You must be a clan leader, officer, or senior to upgrade the clan.",
+      ephemeral: true,
+    };
+  }
+
   const price = upgradePrice(clan.level);
 
-  if (wallet.balance < price) {
+  if (clan.treasuryBalance < price) {
     return {
       content: sprintf(
-        "Upgrading the clan costs **%s** you need **%s** more to afford the upgrade. You can ask your clan members to help you out.",
+        "Upgrading the clan costs **%s**. Your clan **%s**, needs **%s** more in its clan treasury to afford the upgrade. Deposit money to the treasury with `/clan deposit`.",
         addCurrency()(formatNumber(price)),
-        addCurrency()(formatNumber(price - wallet.balance)),
+        clan.name,
+        addCurrency()(formatNumber(price - clan.treasuryBalance)),
       ),
       ephemeral: false,
     };
@@ -50,14 +79,7 @@ export async function clanUpgradeCommand({ authorId, guildId }: Options) {
         level: {
           increment: 1,
         },
-      },
-    }),
-    prisma.wallet.update({
-      where: {
-        id: wallet.id,
-      },
-      data: {
-        balance: {
+        treasuryBalance: {
           decrement: price,
         },
       },

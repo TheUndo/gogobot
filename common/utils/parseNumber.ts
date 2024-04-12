@@ -1,8 +1,13 @@
 export function parseNumber(input: string): number {
   const cleaned = input
     .trim()
-    .replace(/[$,]/g, "")
+    .toLowerCase()
+    .replace(/[$,@#*|_~><"']/g, "")
     .replace(/[\s\n]+/g, " ");
+
+  if (cleaned === "all") {
+    return 0;
+  }
 
   if (!cleaned) {
     throw new Error("Invalid input");
