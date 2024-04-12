@@ -177,7 +177,7 @@ export const fish = {
     const makeDollars = addCurrency();
 
     const embed = new EmbedBuilder()
-      .setColor(Colors.Success)
+      .setColor(reward > 0 ? Colors.Success : Colors.Error)
       .setTitle(sprintf("+%s", makeDollars(formatNumber(totalReward))))
       .setDescription(
         sprintf(
