@@ -55,8 +55,7 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
 
   if (amountToDeposit <= 0) {
     return {
-      content: 
-        "Invalid amount.",
+      content: "Invalid amount.",
       ephemeral: true,
     };
   }
