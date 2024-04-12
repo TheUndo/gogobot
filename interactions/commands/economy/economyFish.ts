@@ -16,6 +16,7 @@ import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 enum Scenario {
+  Whale = "WHALE",
   Shark = "SHARK",
   BigFish = "BIG_FISH",
   SmallFish = "SMALL_FISH",
@@ -24,10 +25,11 @@ enum Scenario {
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Shark]: 10,
-  [Scenario.BigFish]: 30,
-  [Scenario.SmallFish]: 55,
-  [Scenario.Shoe]: 8,
+  [Scenario.Whale]: 1,
+  [Scenario.Shark]: 5,
+  [Scenario.BigFish]: 27,
+  [Scenario.SmallFish]: 52,
+  [Scenario.Shoe]: 12,
   [Scenario.Nothing]: 3,
 };
 
@@ -40,6 +42,10 @@ const rewards: Record<
     generateReward: () => Promise<number>;
   }
 > = {
+  [Scenario.Whale]: {
+    message: "You caught a whale! 🐋",
+    generateReward: async () => 50_000,
+  },
   [Scenario.Shark]: {
     message: "You caught a shark! 🦈",
     generateReward: async () => 15_000,
