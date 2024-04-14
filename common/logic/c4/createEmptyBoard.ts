@@ -1,4 +1,4 @@
-import { SlotState, type Board } from "./c4types";
+import { type Board, SlotState } from "./c4types";
 
 export function createEmptyBoard(): Board {
   const slots = Array.from({ length: 7 }, (_, x) =>

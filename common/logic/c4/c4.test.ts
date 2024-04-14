@@ -1,8 +1,8 @@
-import { expect, describe, it } from "bun:test";
-import { SlotState, type Board } from "./c4types";
+import { describe, expect, it } from "bun:test";
+import { type Board, SlotState } from "./c4types";
 import { calculateWinner } from "./calculateWinner";
-import { mergeBoards } from "./mergeBoards";
 import { createEmptyBoard } from "./createEmptyBoard";
+import { mergeBoards } from "./mergeBoards";
 
 describe("connect 4 calculate winner", () => {
   it("should calculate horizontal winner", () => {

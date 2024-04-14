@@ -1,6 +1,6 @@
-import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { SlotState, type Board } from "./c4types";
 import path from "node:path";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { type Board, SlotState } from "./c4types";
 
 export async function renderBoard(board: Board) {
   const boardImage = await loadImage(

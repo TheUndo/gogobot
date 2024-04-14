@@ -1,4 +1,4 @@
-import { SlotState, type Slot, type Board } from "./c4types";
+import { type Board, type Slot, SlotState } from "./c4types";
 
 export function calculateWinner(board: Board): SlotState {
   const { slots } = board;
