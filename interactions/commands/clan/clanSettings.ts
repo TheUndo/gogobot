@@ -17,7 +17,7 @@ import {
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
-import { ensureClanRole, validateClanName } from "./clanUtils";
+import { clanRoleUpdate, validateClanName } from "./clanUtils";
 
 function generalSettings({
   description,
@@ -554,7 +554,7 @@ export async function clanSettingsModalSubmit(
     }),
   );
 
-  void ensureClanRole(context.data.clanId);
+  await clanRoleUpdate(context.data.clanId);
 
   if (issues.length) {
     return await interaction.reply({

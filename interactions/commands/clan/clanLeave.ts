@@ -2,7 +2,7 @@ import { sprintf } from "sprintf-js";
 import { client } from "~/common/client";
 import { ClanMemberRole } from "~/common/types";
 import { prisma } from "~/prisma";
-import { ensureClanRole } from "./clanUtils";
+import { removeClanRole } from "./clanUtils";
 
 export async function clanLeaveCommand({
   userId,
@@ -129,7 +129,16 @@ export async function clanLeaveCommand({
       }),
     ]);
 
-    void ensureClanRole(clan.id);
+    await prisma.clanlessUser
+      .create({
+        data: {
+          guildId,
+          userDiscordId: userId,
+        },
+      })
+      .catch(() => {});
+
+    await removeClanRole(clan.id, userId);
 
     return {
       content: sprintf(

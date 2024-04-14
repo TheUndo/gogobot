@@ -15,7 +15,7 @@ import {
 import { prisma } from "~/prisma";
 import { debugPrint } from "~/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
-import { ensureClanRole } from "./clanUtils";
+import { addClanRole } from "./clanUtils";
 
 export async function clanJoin(
   interactionContext: InteractionContext,
@@ -230,7 +230,18 @@ export async function clanJoin(
     }),
   ]);
 
-  void ensureClanRole(clanToJoin.id);
+  await prisma.clanlessUser
+    .delete({
+      where: {
+        userDiscordId_guildId: {
+          userDiscordId: interaction.user.id,
+          guildId,
+        },
+      },
+    })
+    .catch(() => null);
+
+  await addClanRole(clanToJoin.id, interaction.user.id);
 
   return await interaction.reply({
     content: sprintf("You have joined **%s**. Welcome!", clanToJoin.name),

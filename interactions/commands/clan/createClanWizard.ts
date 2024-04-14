@@ -27,7 +27,7 @@ import {
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
-import { ensureClanRole, validateClanName } from "./clanUtils";
+import { addClanRole, clanRoleUpdate, validateClanName } from "./clanUtils";
 
 const CLAN_CREATE_PRICE = 500_000;
 
@@ -434,6 +434,17 @@ export async function clanCreateNamePrompt(
     }),
   ]);
 
+  await prisma.clanlessUser
+    .delete({
+      where: {
+        userDiscordId_guildId: {
+          userDiscordId: interaction.user.id,
+          guildId,
+        },
+      },
+    })
+    .catch(() => null);
+
   const suggestedAbbreviation = name.slice(0, 4).trim();
   const validAbbreviation = /^[A-Za-z0-9]+$/.test(suggestedAbbreviation);
 
@@ -461,7 +472,8 @@ export async function clanCreateNamePrompt(
     });
   }
 
-  void ensureClanRole(clan.id);
+  await clanRoleUpdate(clan.id);
+  await addClanRole(clan.id, interaction.user.id);
 
   await message
     .edit({

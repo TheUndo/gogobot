@@ -1,12 +1,75 @@
-import type { Role } from "discord.js";
+import type { Guild, Role } from "discord.js";
 import { z } from "zod";
 import { client } from "~/common/client";
-import { Colors } from "~/common/types";
 import { slugify } from "~/common/utils/slugify";
 import { prisma } from "~/prisma";
-import { debugPrint } from "~/scraper/logger";
 
-export async function ensureClanRole(clanId: string) {
+export async function removeClanRole(
+  clanId: string,
+  userId: string,
+): Promise<undefined> {
+  const result = await clanUpsertRole(clanId);
+
+  if (!result) {
+    return;
+  }
+
+  const { guild, role } = result;
+
+  if (!guild || !role) {
+    return;
+  }
+
+  const member = await guild.members.fetch(userId).catch((e) => {
+    console.error(`Failed to fetch member ${userId}`, e);
+    return null;
+  });
+
+  if (!member) {
+    return;
+  }
+
+  await member?.roles.remove(role.id).catch((e) => {
+    console.error(`Failed to remove role from ${userId}`, e);
+    return null;
+  });
+}
+
+export async function addClanRole(
+  clanId: string,
+  userId: string,
+): Promise<undefined> {
+  const result = await clanUpsertRole(clanId);
+
+  if (!result) {
+    return;
+  }
+
+  const { guild, role } = result;
+
+  if (!guild || !role) {
+    return;
+  }
+
+  const member = await guild.members.fetch(userId).catch((e) => {
+    console.error(`Failed to fetch member ${userId}`, e);
+    return null;
+  });
+
+  if (!member) {
+    return;
+  }
+
+  await member?.roles.add(role.id).catch((e) => {
+    console.error(`Failed to add role to ${userId}`, e);
+    return null;
+  });
+}
+
+export async function clanUpsertRole(clanId: string): Promise<{
+  role: Role | null;
+  guild: Guild | null;
+} | null> {
   const clan = await prisma.clan.findUnique({
     where: {
       id: clanId,
@@ -14,117 +77,105 @@ export async function ensureClanRole(clanId: string) {
     select: {
       discordGuildId: true,
       roleId: true,
-      name: true,
       settingsColor: true,
-      members: {
-        select: {
-          discordUserId: true,
-        },
-      },
+      name: true,
     },
   });
 
   if (!clan) {
-    return;
-  }
-
-  const guild = await client.guilds.fetch(clan.discordGuildId);
-
-  if (!guild) {
-    console.error(`Failed to fetch guild for clan ${clanId}`);
-    return;
-  }
-
-  const role: Role | null = await (async () => {
-    const fetchedRole = clan.roleId
-      ? await guild.roles.fetch(clan.roleId).catch(() => null)
-      : null;
-
-    if (fetchedRole) {
-      return fetchedRole;
-    }
-
-    const role = await guild.roles
-      .create({
-        name: clan.name,
-        permissions: [],
-        color: clan.settingsColor ?? Colors.Info,
-        reason: "Clan role creation",
-      })
-      .catch(() => null);
-
-    if (!role) {
-      console.error(
-        `Failed to create role for clan ${clanId} in guild ${guild.id}`,
-      );
-      return null;
-    }
-
-    await prisma.clan.update({
-      where: {
-        id: clanId,
-      },
-      data: {
-        roleId: role.id,
-      },
-    });
-
-    return role;
-  })();
-
-  if (!role) {
-    console.error(`Failed to fetch or create role for clan ${clanId}`);
+    console.error(`Clan ${clanId} not found`);
     return null;
   }
 
-  if (
-    role.name !== clan.name ||
-    (clan.settingsColor != null && role.color !== clan.settingsColor)
-  ) {
-    debugPrint(
-      `Updating role ${role.id} to name ${clan.name} color ${clan.settingsColor}`,
-    );
-    await role.edit({
-      name: clan.name,
-      color: clan.settingsColor ?? Colors.Info,
-      reason: "Clan name update",
+  const guild = await client.guilds.fetch(clan.discordGuildId).catch((e) => {
+    console.error(`Failed to fetch guild ${clan.discordGuildId}`, e);
+    return null;
+  });
+
+  if (!guild) {
+    return null;
+  }
+
+  const roleId = clan?.roleId;
+
+  if (roleId) {
+    const role = await guild.roles.fetch(roleId).catch((e) => {
+      console.error(`Failed to fetch role ${roleId}`, e);
+      return null;
     });
+
+    if (role) {
+      return { role, guild };
+    }
   }
 
-  const members = clan.members.map((member) => member.discordUserId);
+  const createdRole = await guild.roles
+    .create({
+      name: clan.name,
+      color: clan.settingsColor ?? 0,
+    })
+    .catch((e) => {
+      console.error(`Failed to create role for clan ${clanId}`, e);
+      return null;
+    });
 
-  const roleOwners = await guild.roles
-    .fetch(role.id)
-    .then((role) => role?.members.map((member) => member.id) ?? []);
+  if (!createdRole) {
+    return null;
+  }
 
-  const toAdd = members.filter((member) => !roleOwners.includes(member));
-  const toRemove = roleOwners.filter((member) => !members.includes(member));
+  await prisma.clan.update({
+    where: {
+      id: clanId,
+    },
+    data: {
+      roleId: createdRole.id,
+    },
+  });
 
-  for (const userId of toAdd) {
-    debugPrint(`Adding role ${role.id} to user ${userId}`);
-    await guild.members
-      .addRole({
-        user: userId,
-        role: role.id,
-        reason: "Clan role update",
+  return { role: createdRole, guild };
+}
+
+export async function clanRoleUpdate(clanId: string): Promise<{
+  role: Role | null;
+  guild: Guild | null;
+} | null> {
+  const result = await clanUpsertRole(clanId);
+
+  if (!result) {
+    return null;
+  }
+
+  const { role, guild } = result;
+
+  if (!role || !guild) {
+    return null;
+  }
+
+  const clan = await prisma.clan.findUnique({
+    where: {
+      id: clanId,
+    },
+    select: {
+      id: true,
+      settingsColor: true,
+      name: true,
+    },
+  });
+
+  if (!clan) {
+    return null;
+  }
+
+  if (role.name !== clan.name || role.color !== (clan.settingsColor ?? 0)) {
+    await role
+      .edit({
+        name: clan.name,
+        color: clan.settingsColor ?? 0,
       })
-      .catch(() => {
-        console.error(`Failed to add role ${role.id} to user ${userId}`);
-      });
+      .catch(() => null);
   }
 
-  for (const userId of toRemove) {
-    debugPrint(`Removing role ${role.id} from user ${userId}`);
-    await guild.members
-      .removeRole({
-        user: userId,
-        role: role.id,
-        reason: "Clan role update",
-      })
-      .catch(() => {
-        console.error(`Failed to remove role ${role.id} from user ${userId}`);
-      });
-  }
+  return result;
 }
 
 export async function validateClanName(

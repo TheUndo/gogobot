@@ -139,6 +139,15 @@ model Clan {
   @@unique([slug, discordGuildId])
 }
 
+model ClanlessUser {
+  id            String   @id @default(cuid())
+  userDiscordId String
+  guildId       String
+  createdAt     DateTime @default(now())
+
+  @@unique([userDiscordId, guildId])
+}
+
 model ClanStatistics {
   id String @id @default(cuid())
 

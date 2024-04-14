@@ -1,8 +1,8 @@
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ClanMemberRole } from "../../../common/types";
-import { prisma } from "../../../prisma";
-import { ensureClanRole } from "./clanUtils";
+import { ClanMemberRole } from "~/common/types";
+import { prisma } from "~/prisma";
+import { removeClanRole } from "./clanUtils";
 
 type Options = {
   authorId: string;
@@ -118,7 +118,16 @@ export async function clanKick({ authorId, mentionedId, guildId }: Options) {
     }),
   ]);
 
-  void ensureClanRole(clan.id);
+  await prisma.clanlessUser
+    .create({
+      data: {
+        guildId,
+        userDiscordId: mentionedId,
+      },
+    })
+    .catch(() => {});
+
+  await removeClanRole(clan.id, mentionedId);
 
   return {
     content: sprintf(
