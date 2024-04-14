@@ -114,6 +114,13 @@ export const gamble = {
       });
     }
 
+    if (bet > 500_000) {
+      return await interaction.reply({
+        content: "Maximum bet is 500k",
+        ephemeral: true,
+      });
+    }
+
     if (wallet.balance < bet) {
       return await interaction.reply({
         content: sprintf(
@@ -195,8 +202,8 @@ export const gamble = {
       1,
       1,
       2,
+      2,
       3,
-      4,
       Math.random() > 0.75
         ? randomNumber(6, 10)
         : Math.random() > 0.98

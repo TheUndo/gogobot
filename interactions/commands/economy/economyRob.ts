@@ -262,7 +262,7 @@ async function performRobbery({
   amount,
   guildId,
 }: RobberyOptions) {
-  const immunityLength = amount * 360;
+  const immunityLength = amount < 100_000 ? 0 : amount * 360;
   const immuneUntil = new Date(
     Date.now() +
       clamp(immunityLength, {

@@ -12,6 +12,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.51",
     "@prisma/client": "^5.12.1",
     "@types/node": "^20.11.27",
     "cheerio": "^1.0.0-rc.12",
