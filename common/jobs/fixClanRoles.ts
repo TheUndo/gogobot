@@ -1,5 +1,5 @@
-import { prisma } from "~/prisma";
 import { clanRoleUpdate } from "~/interactions/commands/clan/clanUtils";
+import { prisma } from "~/prisma";
 
 export async function fixClanRoles() {
   const clans = await prisma.clan.findMany({
