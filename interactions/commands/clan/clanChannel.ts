@@ -1,7 +1,7 @@
 import {
+  type CategoryChannel,
   ChannelType,
   PermissionFlagsBits,
-  type CategoryChannel,
   type TextChannel,
 } from "discord.js";
 import { client } from "~/common/client";

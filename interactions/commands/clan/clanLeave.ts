@@ -2,8 +2,8 @@ import { sprintf } from "sprintf-js";
 import { client } from "~/common/client";
 import { ClanMemberRole } from "~/common/types";
 import { prisma } from "~/prisma";
-import { removeClanRole } from "./clanRole";
 import { clanDeleteChannel } from "./clanChannel";
+import { removeClanRole } from "./clanRole";
 
 export async function clanLeaveCommand({
   userId,

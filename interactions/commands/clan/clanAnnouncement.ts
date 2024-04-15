@@ -8,10 +8,10 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
 import {
-  ClanMemberRole,
-  InteractionType,
   type AnyInteraction,
+  ClanMemberRole,
   type InteractionContext,
+  InteractionType,
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { upsertClanChannel } from "./clanChannel";

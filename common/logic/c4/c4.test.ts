@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { type Board, SlotState, GameState } from "./c4types";
+import { type Board, GameState, SlotState } from "./c4types";
 import { calculateWinner } from "./calculateWinner";
 import { createEmptyBoard } from "./createEmptyBoard";
 import { mergeBoards } from "./mergeBoards";

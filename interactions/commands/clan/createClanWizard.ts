@@ -27,8 +27,8 @@ import {
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
-import { addClanRole, clanRoleUpdate, validateClanName } from "./clanRole";
 import { upsertClanChannel } from "./clanChannel";
+import { addClanRole, clanRoleUpdate, validateClanName } from "./clanRole";
 
 const CLAN_CREATE_PRICE = 500_000;
 

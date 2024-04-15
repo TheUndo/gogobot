@@ -1,4 +1,4 @@
-import { SlotState, type Board, GameState, type Slot } from "./c4types";
+import { type Board, GameState, type Slot, SlotState } from "./c4types";
 import { directions } from "./constants";
 
 export function calculateWinner(board: Board): Board {

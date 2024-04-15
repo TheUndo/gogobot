@@ -16,9 +16,9 @@ import {
   InteractionType,
 } from "~/common/types";
 import { prisma } from "~/prisma";
+import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
 import { clanRoleUpdate, validateClanName } from "./clanRole";
-import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 
 function generalSettings({
   description,
