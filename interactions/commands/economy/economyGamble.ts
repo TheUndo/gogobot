@@ -196,10 +196,10 @@ export const gamble = {
 
     const possibleOutcomes = [
       -2,
+      -2,
       -1,
       0,
       0,
-      1,
       1,
       2,
       2,
@@ -383,7 +383,7 @@ export async function gambleInteractionButton(
     },
     data: {
       balance: {
-        increment: result * bet,
+        increment: Math.floor(result * bet),
       },
     },
   });
