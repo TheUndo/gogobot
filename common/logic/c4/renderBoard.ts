@@ -1,10 +1,10 @@
 import path from "node:path";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { type Board, SlotState } from "./c4types";
+import { type Board, SlotState, type Slot, GameState } from "./c4types";
 
-export async function renderBoard(board: Board) {
+export async function renderBoard(board: Board): Promise<void> {
   const boardImage = await loadImage(
-    path.join(__dirname, "assets", "board.jpg"),
+    path.join(__dirname, "assets", "board.png"),
   );
   const redImage = await loadImage(path.join(__dirname, "assets", "red.png"));
   const yellowImage = await loadImage(
@@ -13,66 +13,54 @@ export async function renderBoard(board: Board) {
 
   const canvas = createCanvas(boardImage.width, boardImage.height);
   const ctx = canvas.getContext("2d");
+
   ctx.drawImage(boardImage, 0, 0, boardImage.width, boardImage.height);
+
+  switch (board.gameState) {
+    case GameState.RedTurn:
+      ctx.drawImage(redImage, 200, 200, 1000, 1000);
+      break;
+    case GameState.YellowTurn:
+      ctx.drawImage(yellowImage, 100, 100, 1000, 1000);
+      break;
+  }
+
+  const lines: Slot[] = board.winningSlots?.length
+    ? [board.winningSlots.at(0), board.winningSlots.at(-1)].filter(
+        (v): v is Slot => v != null,
+      )
+    : [];
 
   for (const row of board.slots) {
     for (const slot of row) {
       if (slot.state === SlotState.Empty) {
         continue;
       }
-      const x = slot.x * 137.8 - 13.2;
-      const y = slot.y * 138 - 13;
+      const size = 201;
+      const x = slot.x * 137.8 - 14;
+      const y = slot.y * 137.8 + 106.5;
       if (slot.state === SlotState.Red) {
-        ctx.drawImage(redImage, x, y, 200, 200);
+        ctx.drawImage(redImage, x, y, size, size);
       } else {
-        ctx.drawImage(yellowImage, x, y, 200, 200);
+        ctx.drawImage(yellowImage, x, y, size, size);
       }
     }
+  }
+
+  if (lines.length > 0) {
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 10;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    for (const line of lines) {
+      const x = line.x * 137.8 + 90;
+      const y = line.y * 137.8 + 206;
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
   }
 
   const jpegData = await canvas.encode("jpeg");
 
   await Bun.write(path.join(__dirname, "board.jpeg"), jpegData);
 }
-
-await renderBoard({
-  slots: [
-    [
-      {
-        x: 0,
-        y: 0,
-        state: SlotState.Red,
-      },
-      {
-        x: 0,
-        y: 1,
-        state: SlotState.Yellow,
-      },
-      {
-        x: 1,
-        y: 1,
-        state: SlotState.Yellow,
-      },
-      {
-        x: 6,
-        y: 5,
-        state: SlotState.Yellow,
-      },
-      {
-        x: 4,
-        y: 4,
-        state: SlotState.Yellow,
-      },
-      {
-        x: 6,
-        y: 1,
-        state: SlotState.Yellow,
-      },
-      {
-        x: 2,
-        y: 5,
-        state: SlotState.Yellow,
-      },
-    ],
-  ],
-});

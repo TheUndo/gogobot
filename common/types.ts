@@ -91,6 +91,7 @@ export enum InteractionType {
   LeaderBoardChangeType = "LEADER_BOARD_CHANGE_TYPE",
   ClanListChangePage = "CLAN_LIST_PREVIOUS_PAGE",
   ClanListJoinClan = "CLAN_LIST_JOIN_CLAN",
+  ClanMakeAnnouncement = "CLAN_MAKE_ANNOUNCEMENT",
   Gamble = "GAMBLE",
 }
 

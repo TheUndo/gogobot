@@ -2,24 +2,20 @@ import type { Board } from "./c4types";
 
 export function mergeBoards(baseBoard: Board, overridingBoard: Board) {
   return {
-    ...overridingBoard,
+    ...baseBoard,
     slots: baseBoard.slots.map((row, x) => {
-      const correspondingRow = overridingBoard.slots[x];
-
-      if (!correspondingRow) {
-        return row;
-      }
-
       return row.map((slot, y) => {
-        const correspondingSlot = correspondingRow[y];
+        const correspondingSlot = overridingBoard.slots
+          .flat(1)
+          .find((s) => s.x === x && s.y === y);
 
         if (!correspondingSlot) {
           return slot;
         }
 
         return {
-          x: slot.x,
-          y: slot.y,
+          x,
+          y,
           state: correspondingSlot.state,
         };
       });

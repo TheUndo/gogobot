@@ -2,7 +2,8 @@ import { sprintf } from "sprintf-js";
 import { client } from "~/common/client";
 import { ClanMemberRole } from "~/common/types";
 import { prisma } from "~/prisma";
-import { removeClanRole } from "./clanUtils";
+import { removeClanRole } from "./clanRole";
+import { clanDeleteChannel } from "./clanChannel";
 
 export async function clanLeaveCommand({
   userId,
@@ -63,6 +64,7 @@ export async function clanLeaveCommand({
 
   try {
     if (clan._count.members === 1) {
+      await clanDeleteChannel(clan.id);
       await prisma.$transaction([
         prisma.clanInvitation.deleteMany({
           where: {

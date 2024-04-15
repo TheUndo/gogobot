@@ -27,7 +27,8 @@ import {
 import { addCurrency } from "~/common/utils/addCurrency";
 import { formatNumber } from "~/common/utils/formatNumber";
 import { prisma } from "~/prisma";
-import { addClanRole, clanRoleUpdate, validateClanName } from "./clanUtils";
+import { addClanRole, clanRoleUpdate, validateClanName } from "./clanRole";
+import { upsertClanChannel } from "./clanChannel";
 
 const CLAN_CREATE_PRICE = 500_000;
 
@@ -474,6 +475,7 @@ export async function clanCreateNamePrompt(
 
   await clanRoleUpdate(clan.id);
   await addClanRole(clan.id, interaction.user.id);
+  await upsertClanChannel(clan.id);
 
   await message
     .edit({

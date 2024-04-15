@@ -132,9 +132,11 @@ model Clan {
 
   lastNameChange DateTime @default(now())
 
-  roleId String?
+  roleId    String?
+  channelId String?
 
-  treasuryBalance Int @default(0)
+  treasuryBalance Int                @default(0)
+  announcements   ClanAnnouncement[]
 
   @@unique([slug, discordGuildId])
 }
@@ -207,4 +209,14 @@ model GuildConfig {
   id String @id @default(cuid())
 
   economyChannelId String?
+}
+
+model ClanAnnouncement {
+  id String @id @default(cuid())
+
+  clan            Clan     @relation(fields: [clanId], references: [id])
+  message         String
+  authorDiscordId String
+  createdAt       DateTime @default(now())
+  clanId          String
 }

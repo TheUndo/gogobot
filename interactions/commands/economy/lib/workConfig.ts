@@ -11,7 +11,7 @@ export const coolDowns: Record<WorkType, number> = {
   [WorkType.Weekly]: 1000 * 60 * 60 * 24 * 7 - 1000 * 60 * 60,
   [WorkType.Rob]: 1000 * 60 * 60 * 3,
   [WorkType.Fish]: 1000 * 60 * 30,
-  [WorkType.Gamble]: 1000 * 60 * 60 * 14,
+  [WorkType.Gamble]: 1000 * 60 * 60 * 4,
 };
 
 export const workNames: Record<WorkType, string> = {
@@ -35,5 +35,5 @@ export const workCommandUses: Record<WorkType, number> = {
   [WorkType.Weekly]: 1,
   [WorkType.Rob]: 1,
   [WorkType.Fish]: 3,
-  [WorkType.Gamble]: 4,
+  [WorkType.Gamble]: 8,
 };

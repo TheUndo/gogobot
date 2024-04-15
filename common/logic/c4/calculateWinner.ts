@@ -1,59 +1,69 @@
-import { type Board, type Slot, SlotState } from "./c4types";
+import { SlotState, type Board, GameState, type Slot } from "./c4types";
+import { directions } from "./constants";
 
-export function calculateWinner(board: Board): SlotState {
-  const { slots } = board;
-  /** all horizontal columns of the connect 4 board */
-  const columns: Slot[][] = slots;
+export function calculateWinner(board: Board): Board {
+  const { slots, moveCount } = board;
 
-  /** all vertical columns of the connect 4 board */
-  const rows: Slot[][] = Array.from({ length: 6 }, (_, i) =>
-    slots.map((row) => {
-      const slot = row[i];
-      if (!slot) {
-        throw new Error("Invalid slot");
-      }
-      return slot;
-    }),
-  );
-
-  /** all diagonals of the connect 4 board */
-  const diagonals: Slot[][] = (() => {
-    const result: Slot[][] = [];
-
-    for (let i = -3; i < 4; i++) {
-      const diagonal: Slot[] = [];
-      for (let j = 0; j < 6; j++) {
-        const x = i + j;
-        if (x < 0 || x >= 7) {
-          continue;
-        }
-        const slot = slots[j]?.[x];
-        if (!slot) {
-          continue;
-        }
-        diagonal.push(slot);
-      }
-      result.push(diagonal);
+  if (typeof moveCount === "number") {
+    if (moveCount >= 42) {
+      return {
+        ...board,
+        gameState: GameState.Draw,
+      };
     }
 
-    return result;
-  })();
-
-  const allLines = [...columns, ...rows, ...diagonals];
-
-  for (const line of allLines) {
-    for (let i = 0; i < line.length - 3; i++) {
-      const [first, second, third, fourth] = line.slice(i, i + 4);
-      if (
-        first &&
-        first.state !== SlotState.Empty &&
-        first?.state === second?.state &&
-        first?.state === third?.state &&
-        first?.state === fourth?.state
-      ) {
-        return first.state;
-      }
+    if (moveCount < 7) {
+      return board;
     }
   }
-  return SlotState.Empty;
+
+  for (const direction of directions) {
+    let stack: Slot[] = [];
+    for (const coordinate of direction) {
+      const slot = slots[coordinate.y]?.[coordinate.x];
+
+      if (!slot) {
+        continue;
+      }
+
+      if (slot.state === SlotState.Empty) {
+        if (stack.length >= 4) {
+          break;
+        }
+        stack = [];
+        continue;
+      }
+
+      const last = stack.at(-1);
+
+      if (!last) {
+        stack.push(slot);
+        continue;
+      }
+
+      if (last.state === slot.state) {
+        stack.push(slot);
+      } else {
+        if (stack.length >= 4) {
+          break;
+        }
+        stack = [slot];
+      }
+    }
+
+    if (stack.length >= 4) {
+      const last = stack.at(-1);
+      if (!last) {
+        continue;
+      }
+      return {
+        ...board,
+        gameState:
+          last.state === SlotState.Red ? GameState.RedWin : GameState.YellowWin,
+        winningSlots: stack,
+      };
+    }
+  }
+
+  return board;
 }

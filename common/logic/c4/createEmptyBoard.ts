@@ -1,6 +1,8 @@
-import { type Board, SlotState } from "./c4types";
+import { type Board, SlotState, GameState } from "./c4types";
 
-export function createEmptyBoard(): Board {
+export function createEmptyBoard(
+  turn?: SlotState.Yellow | SlotState.Red,
+): Board {
   const slots = Array.from({ length: 7 }, (_, x) =>
     Array.from({ length: 6 }, (_, y) => ({
       x,
@@ -9,5 +11,9 @@ export function createEmptyBoard(): Board {
     })),
   );
 
-  return { slots };
+  return {
+    slots,
+    gameState:
+      turn === SlotState.Yellow ? GameState.YellowTurn : GameState.RedTurn,
+  };
 }

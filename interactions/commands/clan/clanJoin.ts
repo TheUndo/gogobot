@@ -15,7 +15,7 @@ import {
 import { prisma } from "~/prisma";
 import { debugPrint } from "~/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
-import { addClanRole } from "./clanUtils";
+import { addClanRole } from "./clanRole";
 
 export async function clanJoin(
   interactionContext: InteractionContext,

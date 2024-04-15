@@ -13,6 +13,8 @@ import { clanPromote } from "./clanPromote";
 import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanSetChannel } from "./clanSetChannel";
+import { clanAnnouncementCommand } from "./clanAnnouncement";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -106,6 +108,28 @@ export const clan = {
             .setRequired(true)
             .setDescription("Amount to deposit. Put 0 for all"),
         ),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("set-clan-channel")
+        .setDescription("Set the clan channel")
+        .addStringOption((option) =>
+          option
+            .setName("clan")
+            .setDescription("The clan's name")
+            .setRequired(true),
+        )
+        .addChannelOption((option) =>
+          option
+            .setName("channel")
+            .setDescription("The channel to set as the clan channel")
+            .setRequired(true),
+        ),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("announcement")
+        .setDescription("Make a clan announcement"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -225,6 +249,26 @@ export const clan = {
             amount: interaction.options.getString("amount") ?? "0",
           }),
         );
+      case "set-clan-channel":
+        return await interaction.reply(
+          await clanSetChannel(
+            interaction.user.id,
+            guildId,
+            interaction.options.getString("clan") ?? "",
+            interaction.options.getChannel("channel")?.id ?? "",
+          ),
+        );
+      case "announcement": {
+        const result = await clanAnnouncementCommand(
+          guildId,
+          interaction.user.id,
+        );
+
+        if ("modal" in result) {
+          return await interaction.showModal(result.modal);
+        }
+        return await interaction.reply(result);
+      }
       default:
         return await interaction.reply({
           ephemeral: true,

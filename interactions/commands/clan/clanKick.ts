@@ -2,7 +2,7 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { ClanMemberRole } from "~/common/types";
 import { prisma } from "~/prisma";
-import { removeClanRole } from "./clanUtils";
+import { removeClanRole } from "./clanRole";
 
 type Options = {
   authorId: string;

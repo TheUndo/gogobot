@@ -38,6 +38,7 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { clanAnnouncementModalSubmission } from "~/interactions/commands/clan/clanAnnouncement";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {
@@ -137,6 +138,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
           ));
         case InteractionType.Gamble:
           return void (await gambleInteractionButton(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.ClanMakeAnnouncement:
+          return void (await clanAnnouncementModalSubmission(
             interactionContext,
             interaction,
           ));
