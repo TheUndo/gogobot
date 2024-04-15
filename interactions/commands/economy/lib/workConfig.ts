@@ -35,5 +35,5 @@ export const workCommandUses: Record<WorkType, number> = {
   [WorkType.Weekly]: 1,
   [WorkType.Rob]: 1,
   [WorkType.Fish]: 3,
-  [WorkType.Gamble]: 8,
+  [WorkType.Gamble]: 5,
 };
