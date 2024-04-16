@@ -9,15 +9,15 @@ import {
   type AnyInteraction,
   ClanJoinSetting,
   ClanMemberRole,
+  Colors,
   type InteractionContext,
   InteractionType,
-  Colors,
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { debugPrint } from "~/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
-import { addClanRole } from "./clanRole";
 import { clanNotification } from "./clanNotification";
+import { addClanRole } from "./clanRole";
 
 export async function clanJoin(
   interactionContext: InteractionContext,

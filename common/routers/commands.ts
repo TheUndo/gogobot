@@ -19,6 +19,7 @@ import { fish } from "~/interactions/commands/economy/economyFish";
 import { gamble } from "~/interactions/commands/economy/economyGamble";
 import { gift } from "~/interactions/commands/economy/economyGift";
 import { leaderBoard } from "~/interactions/commands/economy/economyLeaderboard";
+import { prostitute } from "~/interactions/commands/economy/economyProstitute";
 import { rob } from "~/interactions/commands/economy/economyRob";
 import { spawn } from "~/interactions/commands/economy/economySpawn";
 import { weekly } from "~/interactions/commands/economy/economyWeekly";
@@ -38,7 +39,6 @@ import { unsubscribe } from "~/interactions/commands/unsubscribe";
 import { virus } from "~/interactions/commands/virus";
 import { welcome } from "~/interactions/commands/welcome";
 import type { Command } from "../types";
-import { prostitute } from "~/interactions/commands/economy/economyProstitute";
 
 const commandsRegistrar: Command[] = [
   ping,

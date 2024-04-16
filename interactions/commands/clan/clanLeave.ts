@@ -3,8 +3,8 @@ import { client } from "~/common/client";
 import { ClanMemberRole, Colors } from "~/common/types";
 import { prisma } from "~/prisma";
 import { clanDeleteChannel } from "./clanChannel";
-import { removeClanRole } from "./clanRole";
 import { clanNotification } from "./clanNotification";
+import { removeClanRole } from "./clanRole";
 
 export async function clanLeaveCommand({
   userId,
