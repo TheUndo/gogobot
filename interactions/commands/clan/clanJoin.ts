@@ -393,6 +393,15 @@ export async function clanRequestJoinApprove(
     }),
   ]);
 
+  await Promise.all([
+    addClanRole(clan.id, interactionContext.userDiscordId),
+    clanNotification(
+      clan.id,
+      sprintf("<@%s> has joined the clan.", interactionContext.userDiscordId),
+      Colors.Success,
+    ),
+  ]);
+
   return await interaction.update({
     content: sprintf(
       "Join request approved by <@%s>. <@%s> has joined **%s**",
