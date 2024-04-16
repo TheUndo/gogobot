@@ -11,11 +11,13 @@ import {
   ClanMemberRole,
   type InteractionContext,
   InteractionType,
+  Colors,
 } from "~/common/types";
 import { prisma } from "~/prisma";
 import { debugPrint } from "~/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
 import { addClanRole } from "./clanRole";
+import { clanNotification } from "./clanNotification";
 
 export async function clanJoin(
   interactionContext: InteractionContext,
@@ -241,7 +243,14 @@ export async function clanJoin(
     })
     .catch(() => null);
 
-  await addClanRole(clanToJoin.id, interaction.user.id);
+  await Promise.all([
+    addClanRole(clanToJoin.id, interaction.user.id),
+    clanNotification(
+      clanToJoin.id,
+      sprintf("<@%s> has joined the clan.", interaction.user.id),
+      Colors.Success,
+    ),
+  ]);
 
   return await interaction.reply({
     content: sprintf("You have joined **%s**. Welcome!", clanToJoin.name),

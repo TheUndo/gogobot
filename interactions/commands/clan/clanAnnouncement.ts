@@ -110,7 +110,7 @@ export async function clanAnnouncementCommand(
           .setPlaceholder("Enter your message here.")
           .setRequired(true)
           .setStyle(TextInputStyle.Paragraph)
-          .setMaxLength(1000)
+          .setMaxLength(900)
           .setMinLength(20),
       ),
     );
@@ -157,11 +157,11 @@ export async function clanAnnouncementModalSubmission(
 
   const rawMessage = interaction.fields.getField("message").value;
 
-  const message = z.string().min(20).max(1000).safeParse(rawMessage);
+  const message = z.string().min(20).max(900).safeParse(rawMessage);
 
   if (!message.success) {
     return await interaction.reply({
-      content: "Invalid message. Must be between 20 and 1000 characters.",
+      content: "Invalid message. Must be between 20 and 900 characters.",
       ephemeral: true,
     });
   }
@@ -227,7 +227,14 @@ export async function clanAnnouncementModalSubmission(
     });
   }
 
-  const composedMessage = [message.data, sprintf("<@&%s>", role.id)].join("\n");
+  const composedMessage = [
+    message.data,
+    sprintf(
+      "*<@&%s> clan announcement from <@%s>*",
+      role.id,
+      context.data.authorDiscordId,
+    ),
+  ].join("\n\n");
 
   const sentMessage = await channel
     .send({

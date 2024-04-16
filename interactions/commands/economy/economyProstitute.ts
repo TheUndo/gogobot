@@ -16,37 +16,25 @@ import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 enum Scenario {
-  Kraken = "KRAKEN",
-  Whale = "WHALE",
-  Shark = "SHARK",
-  BigFish = "BIG_FISH",
-  SmallFish = "SMALL_FISH",
-  Shoe = "SHOE",
-  Squid = "SQUID",
-  Turtle = "TURTLE",
-  Seaweed = "SEAWEED",
-  Starfish = "STARFISH",
-  HiddenTreasure = "HIDDEN_TREASURE",
-  Jellyfish = "JELLYFISH",
-  Nothing = "NOTHING",
-  PirateAttack = "PIRATE_ATTACK",
+  Hooker = "HOOKER",
+  Gigolo = "GIGOLO",
+  CamGirl = "CAM_GIR",
+  OnlyFans = "ONLY_FANS",
+  SugarBaby = "SUGAR_BABY",
+  MethHead = "METH_HEAD",
+  Scammed = "SCAMMED",
+  TooUgly = "TOO_UGLY",
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Kraken]: 3,
-  [Scenario.Whale]: 10,
-  [Scenario.Shark]: 50,
-  [Scenario.BigFish]: 270,
-  [Scenario.SmallFish]: 300,
-  [Scenario.Shoe]: 100,
-  [Scenario.Squid]: 100,
-  [Scenario.Turtle]: 100,
-  [Scenario.Seaweed]: 100,
-  [Scenario.HiddenTreasure]: 100,
-  [Scenario.Jellyfish]: 100,
-  [Scenario.Starfish]: 100,
-  [Scenario.Nothing]: 30,
-  [Scenario.PirateAttack]: 30,
+  [Scenario.Hooker]: 20,
+  [Scenario.Gigolo]: 20,
+  [Scenario.CamGirl]: 20,
+  [Scenario.OnlyFans]: 20,
+  [Scenario.SugarBaby]: 20,
+  [Scenario.MethHead]: 20,
+  [Scenario.Scammed]: 20,
+  [Scenario.TooUgly]: 20,
 };
 
 const computedOdds = stackOdds(odds);
@@ -58,66 +46,47 @@ const rewards: Record<
     generateReward: () => Promise<number>;
   }
 > = {
-  [Scenario.Whale]: {
-    message: "You caught a whale! 🐋",
-    generateReward: async () => 50_000,
+  [Scenario.Hooker]: {
+    message: "You worked as a hooker.",
+    generateReward: async () => randomNumber(10_000, 15_000),
   },
-  [Scenario.Shark]: {
-    message: "You caught a shark! 🦈",
-    generateReward: async () => 15_000,
-  },
-  [Scenario.BigFish]: {
-    message: "You caught a big fish! 🐟",
-    generateReward: async () => randomNumber(1_000, 1_300),
-  },
-  [Scenario.SmallFish]: {
-    message: "You caught a small fish! 🐠",
-    generateReward: async () => randomNumber(500, 800),
-  },
-  [Scenario.Shoe]: {
-    message: "You caught a shoe! 👞",
-    generateReward: async () => randomNumber(0, 200),
-  },
-  [Scenario.Nothing]: {
-    message: "You caught nothing... 🎣",
-    generateReward: async () => 0,
-  },
-  [Scenario.Squid]: {
-    message: "You caught a squid! 🦑",
-    generateReward: async () => randomNumber(200, 400),
-  },
-  [Scenario.Turtle]: {
-    message: "You caught a turtle! 🐢",
-    generateReward: async () => randomNumber(200, 400),
-  },
-  [Scenario.Seaweed]: {
-    message: "You caught seaweed! 🌿",
-    generateReward: async () => randomNumber(0, 30),
-  },
-  [Scenario.HiddenTreasure]: {
-    message: "You found a hidden treasure! 💰",
+  [Scenario.Gigolo]: {
+    message:
+      "You did some gigolo work which pays less hookers because of income inequality.",
     generateReward: async () => randomNumber(5_000, 10_000),
   },
-  [Scenario.Jellyfish]: {
-    message: "You caught a jellyfish! 🎐",
-    generateReward: async () => randomNumber(0, 500),
+  [Scenario.CamGirl]: {
+    message:
+      "You logged onto a cam site and made a few bucks filming yourself.",
+    generateReward: async () => randomNumber(1_000, 2_000),
   },
-  [Scenario.Starfish]: {
-    message: "You caught a starfish! ⭐",
-    generateReward: async () => randomNumber(0, 400),
+  [Scenario.OnlyFans]: {
+    message: "Your only fans simps paid you.",
+    generateReward: async () => randomNumber(3_000, 4_000),
   },
-  [Scenario.PirateAttack]: {
-    message: "You were attacked by pirates! 💣",
-    generateReward: async () => -randomNumber(5_000, 10_000),
+  [Scenario.SugarBaby]: {
+    message:
+      "Your sugar daddy gave you some pocket money in exchange for some nasty favors.",
+    generateReward: async () => randomNumber(2_000, 2_500),
   },
-  [Scenario.Kraken]: {
-    message: "You were attacked by the Kraken! 🦑",
-    generateReward: async () => -randomNumber(10_000, 20_000),
+  [Scenario.MethHead]: {
+    message: "You spent almost all your hooker money on meth.",
+    generateReward: async () => randomNumber(50, 100),
+  },
+  [Scenario.Scammed]: {
+    message: "You got scammed.",
+    generateReward: async () => -randomNumber(3_000, 5_000),
+  },
+  [Scenario.TooUgly]: {
+    message: "You're too ugly to sell your body.",
+    generateReward: async () => -randomNumber(0, 100),
   },
 };
 
-export const fish = {
-  data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing!"),
+export const prostitute = {
+  data: new SlashCommandBuilder()
+    .setName("prostitute")
+    .setDescription("Sell your body for money."),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;
@@ -144,11 +113,11 @@ export const fish = {
       });
     }
 
-    const coolDown = coolDowns.FISH;
+    const coolDown = coolDowns.PROSTITUTE;
 
     const lastUses = await prisma.work.findMany({
       where: {
-        type: WorkType.Fish,
+        type: WorkType.Prostitute,
         createdAt: {
           gte: new Date(Date.now() - coolDown),
         },
@@ -157,10 +126,10 @@ export const fish = {
       orderBy: {
         createdAt: "desc",
       },
-      take: workCommandUses.FISH,
+      take: workCommandUses.PROSTITUTE,
     });
 
-    if (lastUses.length >= workCommandUses.FISH) {
+    if (lastUses.length >= workCommandUses.PROSTITUTE) {
       const lastUse = lastUses.at(-1);
 
       if (!lastUse) {
@@ -171,7 +140,7 @@ export const fish = {
 
       return await interaction.reply({
         content: sprintf(
-          "You scared all the fish away. Try your luck <t:%s:R>",
+          "You're all spent! You can get back on the streets <t:%s:R>",
           Math.floor((lastUse.createdAt.getTime() + coolDown) / 1000),
         ),
       });
@@ -198,7 +167,7 @@ export const fish = {
     });
 
     const clanBonusMultiplier =
-      reward < 0 ? 0 : userClan?.level ? userClan.level / 20 : 0;
+      reward < 0 ? 0 : userClan?.level ? userClan.level / 30 : 0;
 
     const clanBonus = Math.round(reward * clanBonusMultiplier);
     const totalReward = reward + clanBonus;
@@ -208,7 +177,7 @@ export const fish = {
         data: {
           userDiscordId: interaction.user.id,
           guildDiscordId: guildId,
-          type: WorkType.Fish,
+          type: WorkType.Prostitute,
         },
       }),
       prisma.wallet.update({
@@ -242,18 +211,18 @@ export const fish = {
         ),
       );
 
-    if (lastUses.length === workCommandUses.FISH - 1) {
-      const nextFish = sprintf(
-        "Next fish <t:%d:R>",
+    if (lastUses.length === workCommandUses.PROSTITUTE - 1) {
+      const nextProstitution = sprintf(
+        "Next use <t:%d:R>",
         Math.floor((Date.now() + coolDown) / 1000),
       );
       embed.setDescription(
-        [embed.data.description, nextFish]
+        [embed.data.description, nextProstitution]
           .filter((v): v is string => v != null)
           .join("\n"),
       );
     } else {
-      const count = workCommandUses.FISH - lastUses.length - 1;
+      const count = workCommandUses.PROSTITUTE - lastUses.length - 1;
       const word = count === 1 ? "use" : "uses";
       embed.setFooter({
         text: sprintf("%d %s left", count, word),

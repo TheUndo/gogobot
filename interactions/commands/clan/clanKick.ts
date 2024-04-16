@@ -1,8 +1,9 @@
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ClanMemberRole } from "~/common/types";
+import { ClanMemberRole, Colors } from "~/common/types";
 import { prisma } from "~/prisma";
 import { removeClanRole } from "./clanRole";
+import { clanNotification } from "./clanNotification";
 
 type Options = {
   authorId: string;
@@ -118,16 +119,27 @@ export async function clanKick({ authorId, mentionedId, guildId }: Options) {
     }),
   ]);
 
-  await prisma.clanlessUser
-    .create({
-      data: {
-        guildId,
-        userDiscordId: mentionedId,
-      },
-    })
-    .catch(() => {});
-
-  await removeClanRole(clan.id, mentionedId);
+  await Promise.all([
+    prisma.clanlessUser
+      .create({
+        data: {
+          guildId,
+          userDiscordId: mentionedId,
+        },
+      })
+      .catch(() => {}),
+    removeClanRole(clan.id, mentionedId),
+    clanNotification(
+      clan.id,
+      sprintf(
+        "<@%s> has been kicked out of **%s** by <@%s>",
+        mentionedId,
+        clan.name,
+        kickingMember.discordUserId,
+      ),
+      Colors.Error,
+    ),
+  ]);
 
   return {
     content: sprintf(

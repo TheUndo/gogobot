@@ -1,9 +1,10 @@
 import { sprintf } from "sprintf-js";
 import { client } from "~/common/client";
-import { ClanMemberRole } from "~/common/types";
+import { ClanMemberRole, Colors } from "~/common/types";
 import { prisma } from "~/prisma";
 import { clanDeleteChannel } from "./clanChannel";
 import { removeClanRole } from "./clanRole";
+import { clanNotification } from "./clanNotification";
 
 export async function clanLeaveCommand({
   userId,
@@ -86,6 +87,11 @@ export async function clanLeaveCommand({
             clanId: clan.id,
           },
         }),
+        prisma.clanAnnouncement.deleteMany({
+          where: {
+            clanId: clan.id,
+          },
+        }),
         prisma.clan.delete({
           where: {
             id: userClanMember.clanId,
@@ -131,16 +137,22 @@ export async function clanLeaveCommand({
       }),
     ]);
 
-    await prisma.clanlessUser
-      .create({
-        data: {
-          guildId,
-          userDiscordId: userId,
-        },
-      })
-      .catch(() => {});
-
-    await removeClanRole(clan.id, userId);
+    await Promise.all([
+      prisma.clanlessUser
+        .create({
+          data: {
+            guildId,
+            userDiscordId: userId,
+          },
+        })
+        .catch(() => {}),
+      removeClanRole(clan.id, userId),
+      clanNotification(
+        clan.id,
+        sprintf("<@%s> has left the clan.", userId),
+        Colors.Error,
+      ),
+    ]);
 
     return {
       content: sprintf(
