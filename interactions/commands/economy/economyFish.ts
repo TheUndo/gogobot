@@ -14,6 +14,7 @@ import { prisma } from "~/prisma";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
+import { workTitle } from "./lib/workTitle";
 
 enum Scenario {
   Kraken = "KRAKEN",
@@ -227,7 +228,7 @@ export const fish = {
 
     const embed = new EmbedBuilder()
       .setColor(reward > 0 ? Colors.Success : Colors.Error)
-      .setTitle(sprintf("+%s", makeDollars(formatNumber(totalReward))))
+      .setTitle(workTitle(totalReward))
       .setDescription(
         sprintf(
           "%s%s",
