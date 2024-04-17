@@ -6,8 +6,8 @@ import {
   ClanMemberRole,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { prisma } from "!/prisma";
 
 const clanInvitationContext = z.object({
   clanId: z.string(),

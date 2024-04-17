@@ -1,38 +1,38 @@
 import { Events } from "discord.js";
-import { clanAnnouncementModalSubmission } from "~/interactions/commands/clan/clanAnnouncement";
-import { clanChangeJoinSetting } from "~/interactions/commands/clan/clanChangeJoinSetting";
+import { clanAnnouncementModalSubmission } from "!/interactions/commands/clan/clanAnnouncement";
+import { clanChangeJoinSetting } from "!/interactions/commands/clan/clanChangeJoinSetting";
 import {
   clanInfoButton,
   clanMembersButton,
-} from "~/interactions/commands/clan/clanInfo";
-import { clanInviteReject } from "~/interactions/commands/clan/clanInvite";
+} from "!/interactions/commands/clan/clanInfo";
+import { clanInviteReject } from "!/interactions/commands/clan/clanInvite";
 import {
   clanJoin,
   clanRequestJoinApprove,
   clanRequestJoinReject,
-} from "~/interactions/commands/clan/clanJoin";
-import { clanListChangePage } from "~/interactions/commands/clan/clanList";
+} from "!/interactions/commands/clan/clanJoin";
+import { clanListChangePage } from "!/interactions/commands/clan/clanList";
 import {
   clanCancelLeadershipTransfer,
   clanTransferLeadershipConfirm,
-} from "~/interactions/commands/clan/clanPromote";
+} from "!/interactions/commands/clan/clanPromote";
 import {
   clanSettingsButton,
   clanSettingsModalSubmit,
-} from "~/interactions/commands/clan/clanSettings";
+} from "!/interactions/commands/clan/clanSettings";
 import {
   clanCreateCancelWizard,
   clanCreateNamePrompt,
   createGuildWizardStep2,
-} from "~/interactions/commands/clan/createClanWizard";
-import { gambleInteractionButton } from "~/interactions/commands/economy/economyGamble";
+} from "!/interactions/commands/clan/createClanWizard";
+import { gambleInteractionButton } from "!/interactions/commands/economy/economyGamble";
 import {
   leaderBoardChangeTypeButton,
   leaderBoardClanButton,
   leaderBoardClanChangePage,
   leaderBoardUsersButton,
-} from "~/interactions/commands/economy/economyLeaderboard";
-import { prisma } from "~/prisma";
+} from "!/interactions/commands/economy/economyLeaderboard";
+import { prisma } from "!/prisma";
 import { client } from "../client";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";

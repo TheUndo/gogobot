@@ -1,4 +1,4 @@
-import { randomNumber } from "~/common/utils/randomNumber";
+import { randomNumber } from "!/common/utils/randomNumber";
 
 export function getRandomizedScenario<T extends string>({
   stackedOdds,

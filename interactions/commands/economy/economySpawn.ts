@@ -5,12 +5,12 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import type { Command } from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { safeParseNumber } from "~/common/utils/parseNumber";
-import { prisma } from "~/prisma";
+import { createWallet } from "!/common/logic/economy/createWallet";
+import type { Command } from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { safeParseNumber } from "!/common/utils/parseNumber";
+import { prisma } from "!/prisma";
 
 export const spawn = {
   data: new SlashCommandBuilder()

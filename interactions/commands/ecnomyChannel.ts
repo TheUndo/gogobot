@@ -4,8 +4,8 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { getGuildConfig } from "~/common/logic/guildConfig/getGuildConfig";
-import { prisma } from "~/prisma";
+import { getGuildConfig } from "!/common/logic/guildConfig/getGuildConfig";
+import { prisma } from "!/prisma";
 import type { Command } from "../../common/types";
 
 export const economyChannel = {

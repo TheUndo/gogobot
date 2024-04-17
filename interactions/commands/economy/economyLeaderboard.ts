@@ -8,8 +8,8 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ButtonAction,
@@ -18,11 +18,11 @@ import {
   type Command,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { wrapTag } from "~/common/utils/wrapTag";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { wrapTag } from "!/common/utils/wrapTag";
+import { prisma } from "!/prisma";
 
 export enum LeaderBoardType {
   Bank = "BANK",

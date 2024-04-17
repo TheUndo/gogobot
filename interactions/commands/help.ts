@@ -4,9 +4,9 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { getCommands } from "~/common/routers/commands";
-import { Colors, type Command } from "~/common/types";
-import { makeCommand } from "~/scraper/debug";
+import { getCommands } from "!/common/routers/commands";
+import { Colors, type Command } from "!/common/types";
+import { makeCommand } from "!/scraper/debug";
 
 export const help = {
   data: new SlashCommandBuilder()

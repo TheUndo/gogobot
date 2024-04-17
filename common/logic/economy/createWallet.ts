@@ -1,4 +1,4 @@
-import { prisma } from "~/prisma";
+import { prisma } from "!/prisma";
 
 // Upsert does not work https://github.com/prisma/prisma/issues/22947
 

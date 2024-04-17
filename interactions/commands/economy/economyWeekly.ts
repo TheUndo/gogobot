@@ -4,12 +4,12 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
-import { Colors, type Command } from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { prisma } from "~/prisma";
+import { createWallet } from "!/common/logic/economy/createWallet";
+import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
+import { Colors, type Command } from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { prisma } from "!/prisma";
 import { WorkType, coolDowns } from "./lib/workConfig";
 
 export const weekly = {

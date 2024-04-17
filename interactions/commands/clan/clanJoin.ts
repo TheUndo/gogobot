@@ -2,9 +2,9 @@ import { z } from "zod";
 
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { getUserClan } from "~/common/logic/economy/getUserClan";
-import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
+import { getUserClan } from "!/common/logic/economy/getUserClan";
+import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ClanJoinSetting,
@@ -12,9 +12,9 @@ import {
   Colors,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { prisma } from "~/prisma";
-import { debugPrint } from "~/scraper/logger";
+} from "!/common/types";
+import { prisma } from "!/prisma";
+import { debugPrint } from "!/scraper/logger";
 import { clanInteractionContext } from "./clanInfo";
 import { clanNotification } from "./clanNotification";
 import { addClanRole } from "./clanRole";

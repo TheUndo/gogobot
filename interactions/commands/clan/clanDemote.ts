@@ -1,6 +1,6 @@
 import { sprintf } from "sprintf-js";
-import { ClanMemberRole } from "~/common/types";
-import { prisma } from "~/prisma";
+import { ClanMemberRole } from "!/common/types";
+import { prisma } from "!/prisma";
 import { clanRoles } from "./clan";
 
 type Options = {

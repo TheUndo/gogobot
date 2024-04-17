@@ -10,21 +10,21 @@ import { shuffle } from "remeda";
 import * as R from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
+import { createWallet } from "!/common/logic/economy/createWallet";
+import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import {
   type AnyInteraction,
   Colors,
   type Command,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { safeParseNumber } from "~/common/utils/parseNumber";
-import { randomNumber } from "~/common/utils/randomNumber";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { safeParseNumber } from "!/common/utils/parseNumber";
+import { randomNumber } from "!/common/utils/randomNumber";
+import { prisma } from "!/prisma";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const gamblePayloadContext = z.object({

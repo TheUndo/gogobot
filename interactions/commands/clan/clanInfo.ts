@@ -8,9 +8,9 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
-import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
+import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ClanJoinSetting,
@@ -18,11 +18,11 @@ import {
   Colors,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { wrapTag } from "~/common/utils/wrapTag";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { wrapTag } from "!/common/utils/wrapTag";
+import { prisma } from "!/prisma";
 import { joinSettings } from "./clan";
 import { showClanMembers } from "./clanMembers";
 

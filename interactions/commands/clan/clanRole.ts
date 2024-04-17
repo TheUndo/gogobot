@@ -1,8 +1,8 @@
 import type { Guild, Role } from "discord.js";
 import { z } from "zod";
-import { client } from "~/common/client";
-import { slugify } from "~/common/utils/slugify";
-import { prisma } from "~/prisma";
+import { client } from "!/common/client";
+import { slugify } from "!/common/utils/slugify";
+import { prisma } from "!/prisma";
 
 export async function removeClanRole(
   clanId: string,

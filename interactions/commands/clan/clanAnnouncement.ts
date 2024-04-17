@@ -6,14 +6,14 @@ import {
 import { TextInputStyle } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { notYourInteraction } from "~/common/logic/responses/notYourInteraction";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import {
   type AnyInteraction,
   ClanMemberRole,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { prisma } from "!/prisma";
 import { upsertClanChannel } from "./clanChannel";
 import { clanUpsertRole } from "./clanRole";
 

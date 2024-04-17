@@ -1,7 +1,7 @@
 import { sprintf } from "sprintf-js";
-import { client } from "~/common/client";
-import { ClanMemberRole, Colors } from "~/common/types";
-import { prisma } from "~/prisma";
+import { client } from "!/common/client";
+import { ClanMemberRole, Colors } from "!/common/types";
+import { prisma } from "!/prisma";
 import { clanDeleteChannel } from "./clanChannel";
 import { clanNotification } from "./clanNotification";
 import { removeClanRole } from "./clanRole";

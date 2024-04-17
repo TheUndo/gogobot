@@ -1,7 +1,7 @@
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ClanMemberRole, Colors } from "~/common/types";
-import { prisma } from "~/prisma";
+import { ClanMemberRole, Colors } from "!/common/types";
+import { prisma } from "!/prisma";
 import { clanNotification } from "./clanNotification";
 import { removeClanRole } from "./clanRole";
 

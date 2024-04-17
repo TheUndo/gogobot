@@ -5,40 +5,41 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
-import { env } from "~/env";
-import { adblock } from "~/interactions/commands/adblock";
-import { avatar } from "~/interactions/commands/avatar";
-import { bulk } from "~/interactions/commands/bulk";
-import { clan } from "~/interactions/commands/clan/clan";
-import { deposit } from "~/interactions/commands/deposit";
-import { domains } from "~/interactions/commands/domains";
-import { economyChannel } from "~/interactions/commands/ecnomyChannel";
-import { balance } from "~/interactions/commands/economy/economyBalance";
-import { daily } from "~/interactions/commands/economy/economyDaily";
-import { fish } from "~/interactions/commands/economy/economyFish";
-import { gamble } from "~/interactions/commands/economy/economyGamble";
-import { gift } from "~/interactions/commands/economy/economyGift";
-import { leaderBoard } from "~/interactions/commands/economy/economyLeaderboard";
-import { prostitute } from "~/interactions/commands/economy/economyProstitute";
-import { rob } from "~/interactions/commands/economy/economyRob";
-import { spawn } from "~/interactions/commands/economy/economySpawn";
-import { weekly } from "~/interactions/commands/economy/economyWeekly";
-import { withdraw } from "~/interactions/commands/economy/economyWithdraw";
-import { work } from "~/interactions/commands/economy/economyWork";
-import { format } from "~/interactions/commands/format";
-import { fun } from "~/interactions/commands/fun";
-import { github } from "~/interactions/commands/github";
-import { help } from "~/interactions/commands/help";
-import { ping } from "~/interactions/commands/ping";
-import { releaseDate } from "~/interactions/commands/releaseDate";
-import { showAnime } from "~/interactions/commands/showAnime";
-import { stats } from "~/interactions/commands/stats";
-import { subscribe } from "~/interactions/commands/subscribe";
-import { subscriptions } from "~/interactions/commands/subscriptions";
-import { unsubscribe } from "~/interactions/commands/unsubscribe";
-import { virus } from "~/interactions/commands/virus";
-import { welcome } from "~/interactions/commands/welcome";
+import { env } from "!/env";
+import { adblock } from "!/interactions/commands/adblock";
+import { avatar } from "!/interactions/commands/avatar";
+import { bulk } from "!/interactions/commands/bulk";
+import { clan } from "!/interactions/commands/clan/clan";
+import { deposit } from "!/interactions/commands/deposit";
+import { domains } from "!/interactions/commands/domains";
+import { economyChannel } from "!/interactions/commands/ecnomyChannel";
+import { balance } from "!/interactions/commands/economy/economyBalance";
+import { daily } from "!/interactions/commands/economy/economyDaily";
+import { fish } from "!/interactions/commands/economy/economyFish";
+import { gamble } from "!/interactions/commands/economy/economyGamble";
+import { gift } from "!/interactions/commands/economy/economyGift";
+import { leaderBoard } from "!/interactions/commands/economy/economyLeaderboard";
+import { prostitute } from "!/interactions/commands/economy/economyProstitute";
+import { rob } from "!/interactions/commands/economy/economyRob";
+import { spawn } from "!/interactions/commands/economy/economySpawn";
+import { weekly } from "!/interactions/commands/economy/economyWeekly";
+import { withdraw } from "!/interactions/commands/economy/economyWithdraw";
+import { work } from "!/interactions/commands/economy/economyWork";
+import { format } from "!/interactions/commands/format";
+import { fun } from "!/interactions/commands/fun";
+import { github } from "!/interactions/commands/github";
+import { help } from "!/interactions/commands/help";
+import { ping } from "!/interactions/commands/ping";
+import { releaseDate } from "!/interactions/commands/releaseDate";
+import { showAnime } from "!/interactions/commands/showAnime";
+import { stats } from "!/interactions/commands/stats";
+import { subscribe } from "!/interactions/commands/subscribe";
+import { subscriptions } from "!/interactions/commands/subscriptions";
+import { unsubscribe } from "!/interactions/commands/unsubscribe";
+import { virus } from "!/interactions/commands/virus";
+import { welcome } from "!/interactions/commands/welcome";
 import type { Command } from "../types";
+import { soldier } from "!/interactions/commands/economy/economySoldier";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -73,6 +74,7 @@ const commandsRegistrar: Command[] = [
   fish,
   gamble,
   prostitute,
+  soldier,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

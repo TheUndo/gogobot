@@ -7,15 +7,15 @@ import {
   TextInputStyle,
 } from "discord.js";
 import { z } from "zod";
-import { wrongGuildForInteraction } from "~/common/logic/responses/wrongGuildForInteraction";
-import { wrongInteractionType } from "~/common/logic/responses/wrongInteractionType";
+import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ClanMemberRole,
   type InteractionContext,
   InteractionType,
-} from "~/common/types";
-import { prisma } from "~/prisma";
+} from "!/common/types";
+import { prisma } from "!/prisma";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
 import { clanRoleUpdate, validateClanName } from "./clanRole";

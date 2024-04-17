@@ -1,16 +1,16 @@
-/* import {
+import {
   EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { createWallet } from "~/common/logic/economy/createWallet";
-import { guardEconomyChannel } from "~/common/logic/guildConfig/guardEconomyChannel";
-import { Colors, type Command } from "~/common/types";
-import { addCurrency } from "~/common/utils/addCurrency";
-import { formatNumber } from "~/common/utils/formatNumber";
-import { randomNumber } from "~/common/utils/randomNumber";
-import { prisma } from "~/prisma";
+import { createWallet } from "!/common/logic/economy/createWallet";
+import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
+import { Colors, type Command } from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
+import { formatNumber } from "!/common/utils/formatNumber";
+import { randomNumber } from "!/common/utils/randomNumber";
+import { prisma } from "!/prisma";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
@@ -22,10 +22,9 @@ enum Scenario {
   Navy = "NAVY",
   Marines = "MARINES",
   CoastGuard = "COAST_GUARD",
-  SuicideBomber = "SUICIDE_BOMBER",
-  Terrorist = "TERRORIST",
   Coward = "COWARD",
   InjuredInCombat = "INJURED_IN_COMBAT",
+  DishonorablyDischarged = "DISHONORABLY_DISCHARGED",
 }
 
 const odds: Record<Scenario, number> = {
@@ -34,6 +33,9 @@ const odds: Record<Scenario, number> = {
   [Scenario.Navy]: 10,
   [Scenario.Marines]: 10,
   [Scenario.CoastGuard]: 10,
+  [Scenario.DishonorablyDischarged]: 10,
+  [Scenario.Coward]: 10,
+  [Scenario.InjuredInCombat]: 10,
 };
 
 const computedOdds = stackOdds(odds);
@@ -45,46 +47,43 @@ const rewards: Record<
     generateReward: () => Promise<number>;
   }
 > = {
-  [Scenario.Hooker]: {
-    message: "You worked as a hooker.",
-    generateReward: async () => randomNumber(10_000, 15_000),
+  [Scenario.Infantry]: {
+    message: "You enlisted in the infantry.",
+    generateReward: async () => randomNumber(50_000, 55_000),
   },
-  [Scenario.Gigolo]: {
-    message:
-      "You did some gigolo work which pays less than hookers because of income inequality.",
-    generateReward: async () => randomNumber(5_000, 10_000),
+  [Scenario.AirForce]: {
+    message: "You enlisted in the Air Force.",
+    generateReward: async () => randomNumber(30_000, 35_000),
   },
-  [Scenario.CamGirl]: {
-    message:
-      "You logged onto a cam site and made a few bucks filming yourself.",
-    generateReward: async () => randomNumber(1_000, 2_000),
+  [Scenario.Navy]: {
+    message: "You enlisted in the Navy.",
+    generateReward: async () => randomNumber(30_000, 35_000),
   },
-  [Scenario.OnlyFans]: {
-    message: "Your only fans simps paid you.",
-    generateReward: async () => randomNumber(3_000, 4_000),
+  [Scenario.Marines]: {
+    message: "You enlisted in the Marines.",
+    generateReward: async () => randomNumber(30_000, 35_000),
   },
-  [Scenario.SugarBaby]: {
-    message:
-      "Your sugar daddy gave you some pocket money in exchange for some nasty favors.",
-    generateReward: async () => randomNumber(2_000, 2_500),
+  [Scenario.CoastGuard]: {
+    message: "You enlisted in the Coast Guard.",
+    generateReward: async () => randomNumber(30_000, 35_000),
   },
-  [Scenario.MethHead]: {
-    message: "You spent almost all your hooker money on meth.",
-    generateReward: async () => randomNumber(50, 100),
+  [Scenario.Coward]: {
+    message: "You were too scared to enlist.",
+    generateReward: async () => -randomNumber(5_000, 8_000),
   },
-  [Scenario.Scammed]: {
-    message: "You got scammed.",
-    generateReward: async () => -randomNumber(3_000, 5_000),
+  [Scenario.InjuredInCombat]: {
+    message: "You were injured in combat.",
+    generateReward: async () => -randomNumber(1_000, 3_000),
   },
-  [Scenario.TooUgly]: {
-    message: "You're too ugly to sell your body.",
-    generateReward: async () => -randomNumber(0, 100),
+  [Scenario.DishonorablyDischarged]: {
+    message: "You were dishonorably discharged.",
+    generateReward: async () => -randomNumber(2_000, 3_000),
   },
 };
 
 export const soldier = {
   data: new SlashCommandBuilder()
-    .setName("prostitute")
+    .setName("soldier")
     .setDescription("Become a soldier."),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -112,11 +111,11 @@ export const soldier = {
       });
     }
 
-    const coolDown = coolDowns.PROSTITUTE;
+    const coolDown = coolDowns.SOLDIER;
 
     const lastUses = await prisma.work.findMany({
       where: {
-        type: WorkType.Prostitute,
+        type: WorkType.Soldier,
         createdAt: {
           gte: new Date(Date.now() - coolDown),
         },
@@ -125,10 +124,10 @@ export const soldier = {
       orderBy: {
         createdAt: "desc",
       },
-      take: workCommandUses.PROSTITUTE,
+      take: workCommandUses.SOLDIER,
     });
 
-    if (lastUses.length >= workCommandUses.PROSTITUTE) {
+    if (lastUses.length >= workCommandUses.SOLDIER) {
       const lastUse = lastUses.at(-1);
 
       if (!lastUse) {
@@ -139,7 +138,7 @@ export const soldier = {
 
       return await interaction.reply({
         content: sprintf(
-          "You're all spent! You can get back on the streets <t:%s:R>",
+          "It's peaceful right now. But the war is coming <t:%s:R>",
           Math.floor((lastUse.createdAt.getTime() + coolDown) / 1000),
         ),
       });
@@ -166,7 +165,7 @@ export const soldier = {
     });
 
     const clanBonusMultiplier =
-      reward < 0 ? 0 : userClan?.level ? userClan.level / 30 : 0;
+      reward < 0 ? 0 : userClan?.level ? userClan.level / 20 : 0;
 
     const clanBonus = Math.round(reward * clanBonusMultiplier);
     const totalReward = reward + clanBonus;
@@ -176,7 +175,7 @@ export const soldier = {
         data: {
           userDiscordId: interaction.user.id,
           guildDiscordId: guildId,
-          type: WorkType.Prostitute,
+          type: WorkType.Soldier,
         },
       }),
       prisma.wallet.update({
@@ -210,18 +209,18 @@ export const soldier = {
         ),
       );
 
-    if (lastUses.length === workCommandUses.PROSTITUTE - 1) {
-      const nextProstitution = sprintf(
+    if (lastUses.length === workCommandUses.SOLDIER - 1) {
+      const nextSoldier = sprintf(
         "Next use <t:%d:R>",
         Math.floor((Date.now() + coolDown) / 1000),
       );
       embed.setDescription(
-        [embed.data.description, nextProstitution]
+        [embed.data.description, nextSoldier]
           .filter((v): v is string => v != null)
           .join("\n"),
       );
     } else {
-      const count = workCommandUses.PROSTITUTE - lastUses.length - 1;
+      const count = workCommandUses.SOLDIER - lastUses.length - 1;
       const word = count === 1 ? "use" : "uses";
       embed.setFooter({
         text: sprintf("%d %s left", count, word),
@@ -233,4 +232,3 @@ export const soldier = {
     });
   },
 } satisfies Command;
- */

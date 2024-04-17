@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import { sprintf } from "sprintf-js";
-import type { Colors } from "~/common/types";
-import { prisma } from "~/prisma";
+import type { Colors } from "!/common/types";
+import { prisma } from "!/prisma";
 import { upsertClanChannel } from "./clanChannel";
 
 export async function clanNotification(
