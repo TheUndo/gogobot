@@ -34,7 +34,6 @@ const odds: Record<Scenario, number> = {
   [Scenario.Navy]: 10,
   [Scenario.Marines]: 10,
   [Scenario.CoastGuard]: 10,
-
 };
 
 const computedOdds = stackOdds(odds);
