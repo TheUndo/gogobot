@@ -1,4 +1,4 @@
-import {
+/* import {
   EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
@@ -233,3 +233,4 @@ export const soldier = {
     });
   },
 } satisfies Command;
+ */
