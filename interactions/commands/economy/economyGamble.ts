@@ -1,15 +1,3 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  type Interaction,
-  SlashCommandBuilder,
-} from "discord.js";
-import { shuffle } from "remeda";
-import * as R from "remeda";
-import { sprintf } from "sprintf-js";
-import { z } from "zod";
 import { createWallet } from "!/common/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
@@ -25,6 +13,18 @@ import { formatNumber } from "!/common/utils/formatNumber";
 import { safeParseNumber } from "!/common/utils/parseNumber";
 import { randomNumber } from "!/common/utils/randomNumber";
 import { prisma } from "!/prisma";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
+} from "discord.js";
+import { shuffle } from "remeda";
+import * as R from "remeda";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const gamblePayloadContext = z.object({

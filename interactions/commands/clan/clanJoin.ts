@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { sprintf } from "sprintf-js";
 import { getUserClan } from "!/common/logic/economy/getUserClan";
 import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
@@ -15,6 +13,8 @@ import {
 } from "!/common/types";
 import { prisma } from "!/prisma";
 import { debugPrint } from "!/scraper/logger";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { clanInteractionContext } from "./clanInfo";
 import { clanNotification } from "./clanNotification";
 import { addClanRole } from "./clanRole";

@@ -1,3 +1,8 @@
+import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
+import { getCommands } from "!/common/routers/commands";
+import { Colors, type Command } from "!/common/types";
+import { prisma } from "!/prisma";
+import { makeCommand } from "!/scraper/debug";
 import {
   EmbedBuilder,
   type Interaction,
@@ -5,11 +10,6 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
-import { getCommands } from "!/common/routers/commands";
-import { Colors, type Command } from "!/common/types";
-import { prisma } from "!/prisma";
-import { makeCommand } from "!/scraper/debug";
 import {
   WorkType,
   coolDowns,

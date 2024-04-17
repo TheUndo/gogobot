@@ -1,6 +1,6 @@
-import { sprintf } from "sprintf-js";
 import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
+import { sprintf } from "sprintf-js";
 
 export function workTitle(reward: number) {
   if (reward < 0) {

@@ -1,14 +1,3 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} from "discord.js";
-import { sprintf } from "sprintf-js";
-import { z } from "zod";
 import { client } from "!/common/client";
 import { createWallet } from "!/common/logic/economy/createWallet";
 import { getUserClan } from "!/common/logic/economy/getUserClan";
@@ -27,6 +16,17 @@ import {
 import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
 import { prisma } from "!/prisma";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+} from "discord.js";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
 import { upsertClanChannel } from "./clanChannel";
 import { addClanRole, clanRoleUpdate, validateClanName } from "./clanRole";
 

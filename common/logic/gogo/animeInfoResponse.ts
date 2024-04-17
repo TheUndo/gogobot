@@ -1,3 +1,6 @@
+import { noAnimeFound } from "!/interactions/commands/utils/queryResponses";
+import { prisma } from "!/prisma";
+import { domain } from "!/scraper/utils";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -5,9 +8,6 @@ import {
   EmbedBuilder,
   type InteractionReplyOptions,
 } from "discord.js";
-import { noAnimeFound } from "!/interactions/commands/utils/queryResponses";
-import { prisma } from "!/prisma";
-import { domain } from "!/scraper/utils";
 import { ButtonAction, type ButtonActionFormat, Colors } from "../../types";
 
 export async function animeInfoResponse(animeId: number) {

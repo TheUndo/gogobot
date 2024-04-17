@@ -1,4 +1,3 @@
-import { Events } from "discord.js";
 import { clanAnnouncementModalSubmission } from "!/interactions/commands/clan/clanAnnouncement";
 import { clanChangeJoinSetting } from "!/interactions/commands/clan/clanChangeJoinSetting";
 import {
@@ -33,6 +32,7 @@ import {
   leaderBoardUsersButton,
 } from "!/interactions/commands/economy/economyLeaderboard";
 import { prisma } from "!/prisma";
+import { Events } from "discord.js";
 import { client } from "../client";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";

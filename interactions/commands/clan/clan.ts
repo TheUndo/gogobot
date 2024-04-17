@@ -1,6 +1,6 @@
+import { ClanJoinSetting, ClanMemberRole, type Command } from "!/common/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
-import { ClanJoinSetting, ClanMemberRole, type Command } from "!/common/types";
 import { clanAnnouncementCommand } from "./clanAnnouncement";
 import { clanDemote } from "./clanDemote";
 import { clanDeposit } from "./clanDeposit";

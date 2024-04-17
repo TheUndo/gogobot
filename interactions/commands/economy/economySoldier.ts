@@ -1,9 +1,3 @@
-import {
-  EmbedBuilder,
-  type Interaction,
-  SlashCommandBuilder,
-} from "discord.js";
-import { sprintf } from "sprintf-js";
 import { createWallet } from "!/common/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
 import { Colors, type Command } from "!/common/types";
@@ -11,6 +5,12 @@ import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
 import { randomNumber } from "!/common/utils/randomNumber";
 import { prisma } from "!/prisma";
+import {
+  EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
+} from "discord.js";
+import { sprintf } from "sprintf-js";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";

@@ -1,11 +1,11 @@
+import { client } from "!/common/client";
+import { prisma } from "!/prisma";
 import {
   type CategoryChannel,
   ChannelType,
   PermissionFlagsBits,
   type TextChannel,
 } from "discord.js";
-import { client } from "!/common/client";
-import { prisma } from "!/prisma";
 import { clanUpsertRole } from "./clanRole";
 
 export async function upsertClanChannel(

@@ -1,8 +1,8 @@
+import { env } from "!/env";
+import { makeCommand } from "!/scraper/debug";
 import { Events } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { env } from "!/env";
-import { makeCommand } from "!/scraper/debug";
 import { client } from "../client";
 import { getCommands } from "./commands";
 

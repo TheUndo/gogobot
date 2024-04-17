@@ -1,13 +1,3 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  type Interaction,
-  SlashCommandBuilder,
-} from "discord.js";
-import { sprintf } from "sprintf-js";
-import { z } from "zod";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
@@ -23,6 +13,16 @@ import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
 import { wrapTag } from "!/common/utils/wrapTag";
 import { prisma } from "!/prisma";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  type Interaction,
+  SlashCommandBuilder,
+} from "discord.js";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
 
 export enum LeaderBoardType {
   Bank = "BANK",

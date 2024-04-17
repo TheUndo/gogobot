@@ -1,6 +1,6 @@
-import { PermissionFlagsBits } from "discord.js";
 import { client } from "!/common/client";
 import { prisma } from "!/prisma";
+import { PermissionFlagsBits } from "discord.js";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 
 export async function clanSetChannel(

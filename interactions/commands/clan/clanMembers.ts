@@ -1,3 +1,6 @@
+import { ClanMemberRole, Colors, InteractionType } from "!/common/types";
+import { capitalize } from "!/common/utils/capitalize";
+import { prisma } from "!/prisma";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -7,9 +10,6 @@ import {
 import * as R from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ClanMemberRole, Colors, InteractionType } from "!/common/types";
-import { capitalize } from "!/common/utils/capitalize";
-import { prisma } from "!/prisma";
 import { clanRoles } from "./clan";
 import type { clanInteractionContext } from "./clanInfo";
 

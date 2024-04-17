@@ -1,11 +1,3 @@
-import {
-  ActionRowBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-} from "@discordjs/builders";
-import { TextInputStyle } from "discord.js";
-import { sprintf } from "sprintf-js";
-import { z } from "zod";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import {
   type AnyInteraction,
@@ -14,6 +6,14 @@ import {
   InteractionType,
 } from "!/common/types";
 import { prisma } from "!/prisma";
+import {
+  ActionRowBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+} from "@discordjs/builders";
+import { TextInputStyle } from "discord.js";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
 import { upsertClanChannel } from "./clanChannel";
 import { clanUpsertRole } from "./clanRole";
 

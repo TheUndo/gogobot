@@ -1,8 +1,3 @@
-import {
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-} from "discord.js";
 import { SelectAction } from "!/common/types";
 import { findAnimeFromQuery } from "!/interactions/commands/utils/findAnimeFromQuery";
 import {
@@ -10,6 +5,11 @@ import {
   noAnimeFound,
 } from "!/interactions/commands/utils/queryResponses";
 import { animeIndex } from "!/search/fuse";
+import {
+  ActionRowBuilder,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
+} from "discord.js";
 import { animeInfoResponse } from "./animeInfoResponse";
 
 export async function animeInfoFromQuery(query: string) {

@@ -1,12 +1,3 @@
-import { ActionRowBuilder } from "@discordjs/builders";
-import {
-  type CacheType,
-  type ChatInputCommandInteraction,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} from "discord.js";
-import { z } from "zod";
 import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
@@ -16,6 +7,15 @@ import {
   InteractionType,
 } from "!/common/types";
 import { prisma } from "!/prisma";
+import { ActionRowBuilder } from "@discordjs/builders";
+import {
+  type CacheType,
+  type ChatInputCommandInteraction,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+} from "discord.js";
+import { z } from "zod";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
 import { clanRoleUpdate, validateClanName } from "./clanRole";
