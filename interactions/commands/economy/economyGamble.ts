@@ -120,9 +120,9 @@ export const gamble = {
       });
     }
 
-    if (bet > 100_000) {
+    if (bet > 300_000) {
       return await interaction.reply({
-        content: "Maximum bet is 100k",
+        content: "Maximum bet is 300k",
         ephemeral: true,
       });
     }
@@ -205,8 +205,8 @@ export const gamble = {
       -2,
       -1,
       0,
-      0,
-      0.5,
+      .5,
+      1,
       1,
       1,
       1,

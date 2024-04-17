@@ -17,25 +17,24 @@ import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
 
 enum Scenario {
-  Hooker = "HOOKER",
-  Gigolo = "GIGOLO",
-  CamGirl = "CAM_GIR",
-  OnlyFans = "ONLY_FANS",
-  SugarBaby = "SUGAR_BABY",
-  MethHead = "METH_HEAD",
-  Scammed = "SCAMMED",
-  TooUgly = "TOO_UGLY",
+  Infantry = "INFANTRY",
+  AirForce = "AIR_FORCE",
+  Navy = "NAVY",
+  Marines = "MARINES",
+  CoastGuard = "COAST_GUARD",
+  SuicideBomber = "SUICIDE_BOMBER",
+  Terrorist = "TERRORIST",
+  Coward = "COWARD",
+  InjuredInCombat = "INJURED_IN_COMBAT",
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Hooker]: 20,
-  [Scenario.Gigolo]: 20,
-  [Scenario.CamGirl]: 20,
-  [Scenario.OnlyFans]: 20,
-  [Scenario.SugarBaby]: 20,
-  [Scenario.MethHead]: 20,
-  [Scenario.Scammed]: 20,
-  [Scenario.TooUgly]: 20,
+  [Scenario.Infantry]: 30,
+  [Scenario.AirForce]: 10,
+  [Scenario.Navy]: 10,
+  [Scenario.Marines]: 10,
+  [Scenario.CoastGuard]: 10,
+
 };
 
 const computedOdds = stackOdds(odds);
@@ -49,26 +48,26 @@ const rewards: Record<
 > = {
   [Scenario.Hooker]: {
     message: "You worked as a hooker.",
-    generateReward: async () => randomNumber(50_000, 55_000),
+    generateReward: async () => randomNumber(10_000, 15_000),
   },
   [Scenario.Gigolo]: {
     message:
       "You did some gigolo work which pays less than hookers because of income inequality.",
-    generateReward: async () => randomNumber(30_000, 35_000),
+    generateReward: async () => randomNumber(5_000, 10_000),
   },
   [Scenario.CamGirl]: {
     message:
       "You logged onto a cam site and made a few bucks filming yourself.",
-    generateReward: async () => randomNumber(10_000, 11_000),
+    generateReward: async () => randomNumber(1_000, 2_000),
   },
   [Scenario.OnlyFans]: {
     message: "Your only fans simps paid you.",
-    generateReward: async () => randomNumber(8_000, 15_000),
+    generateReward: async () => randomNumber(3_000, 4_000),
   },
   [Scenario.SugarBaby]: {
     message:
       "Your sugar daddy gave you some pocket money in exchange for some nasty favors.",
-    generateReward: async () => randomNumber(6_000, 8_500),
+    generateReward: async () => randomNumber(2_000, 2_500),
   },
   [Scenario.MethHead]: {
     message: "You spent almost all your hooker money on meth.",
@@ -84,10 +83,10 @@ const rewards: Record<
   },
 };
 
-export const prostitute = {
+export const soldier = {
   data: new SlashCommandBuilder()
     .setName("prostitute")
-    .setDescription("Sell your body for money."),
+    .setDescription("Become a soldier."),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;

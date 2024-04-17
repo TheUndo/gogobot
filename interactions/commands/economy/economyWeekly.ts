@@ -46,7 +46,7 @@ export const weekly = {
 
     const userId = interaction.user.id;
 
-    const baseReward = 100_000;
+    const baseReward = 250_000;
     const randomBonus = Math.floor(Math.random() * 10_00);
 
     const [lastWork, clan] = await Promise.all([
