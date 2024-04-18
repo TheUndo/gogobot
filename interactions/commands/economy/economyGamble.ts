@@ -1,6 +1,5 @@
 import { createWallet } from "!/common/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
-import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import {
   type AnyInteraction,
   Colors,
@@ -29,30 +28,36 @@ import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const gamblePayloadContext = z.object({
   result: z.number(),
-  outcomeLayout: z.array(z.number()),
+  outcomeLayout: z.array(
+    z.object({
+      result: z.number(),
+      emoji: z.string(),
+    }),
+  ),
   bet: z.number(),
   index: z.number(),
+  emoji: z.string(),
 });
 
 const colors = [
-  ["🔵"],
-  ["🔴"],
-  ["🟢"],
-  ["🟡"],
-  ["🟦"],
-  ["🟧"],
-  ["🟪"],
-  ["🟩"],
-  ["🟠"],
-  ["🟥"],
-  ["🟠"],
-  ["🟣"],
-  ["💚"],
-  ["💜"],
-  ["🧡"],
-  ["💙"],
-  ["💛"],
-  ["🟨"],
+  "🔵",
+  "🔴",
+  "🟢",
+  "🟡",
+  "🟦",
+  "🟧",
+  "🟪",
+  "🟩",
+  "🟠",
+  "🟥",
+  "🟠",
+  "🟣",
+  "💚",
+  "💜",
+  "🧡",
+  "💙",
+  "💛",
+  "🟨",
 ];
 
 export const gamble = {
@@ -178,16 +183,6 @@ export const gamble = {
           type: WorkType.Gamble,
         },
       }),
-      prisma.interaction.updateMany({
-        where: {
-          type: InteractionType.Gamble,
-          userDiscordId: interaction.user.id,
-          guildId,
-        },
-        data: {
-          consumedAt: new Date(),
-        },
-      }),
       prisma.wallet.update({
         where: {
           id: wallet.id,
@@ -220,12 +215,15 @@ export const gamble = {
         : Math.random() > 0.98
           ? randomNumber(50, 100)
           : randomNumber(5, 8),
-    ];
+    ].map((result, i) => ({
+      result,
+      emoji: z.string().parse(colors[i]),
+    }));
 
     const outcomeLayout = shuffle(possibleOutcomes);
 
     const gambleInteractions = await prisma.$transaction(
-      outcomeLayout.map((result, index) =>
+      outcomeLayout.map(({ result, emoji }, index) =>
         prisma.interaction.create({
           data: {
             type: InteractionType.Gamble,
@@ -236,6 +234,7 @@ export const gamble = {
               outcomeLayout,
               index,
               bet,
+              emoji,
             } satisfies z.infer<typeof gamblePayloadContext>),
           },
           select: {
@@ -248,11 +247,9 @@ export const gamble = {
     const buttons: ButtonBuilder[] = [];
 
     for (const [i, gambleInteraction] of gambleInteractions.entries()) {
-      const emojis = colors[i] ?? [];
-      const colorIdx = randomNumber(0, emojis.length - 1);
-      const color = z.string().safeParse(emojis[colorIdx]);
+      const emoji = outcomeLayout[i]?.emoji;
 
-      if (!color.success) {
+      if (!emoji) {
         return await interaction.reply({
           content: "An error occurred. Please try again later.",
         });
@@ -261,7 +258,7 @@ export const gamble = {
       buttons.push(
         new ButtonBuilder()
           .setStyle(ButtonStyle.Secondary)
-          .setEmoji(color.data)
+          .setEmoji(emoji)
           .setCustomId(gambleInteraction.id),
       );
     }
@@ -317,12 +314,6 @@ export async function gambleInteractionButton(
     });
   }
 
-  if (interaction.user.id !== interactionContext.userDiscordId) {
-    return await interaction.reply(
-      notYourInteraction(interactionContext, interaction),
-    );
-  }
-
   if (interactionContext.consumedAt) {
     return await interaction.reply({
       ephemeral: true,
@@ -330,17 +321,6 @@ export async function gambleInteractionButton(
         "Sorry, this interaction is no longer available, try running the command anew.",
     });
   }
-
-  await prisma.interaction.updateMany({
-    where: {
-      type: InteractionType.Gamble,
-      userDiscordId: interactionContext.userDiscordId,
-      guildId: interactionContext.guildId,
-    },
-    data: {
-      consumedAt: new Date(),
-    },
-  });
 
   const context = gamblePayloadContext.safeParse(
     JSON.parse(interactionContext.payload ?? "{}"),
@@ -355,12 +335,42 @@ export async function gambleInteractionButton(
 
   const { result, outcomeLayout, bet, index } = context.data;
 
+  if (interaction.user.id !== interactionContext.userDiscordId) {
+    const picked = outcomeLayout[index];
+    if (!picked) {
+      return await interaction.reply({
+        ephemeral: true,
+        content: "Something went wrong try again later.",
+      });
+    }
+    return {
+      content: interaction.reply(
+        sprintf(
+          "<@%s> suggests %s",
+          interaction.user.id,
+          picked.emoji,
+        ),
+      ),
+    };
+  }
+
+  await prisma.interaction.updateMany({
+    where: {
+      type: InteractionType.Gamble,
+      userDiscordId: interactionContext.userDiscordId,
+      guildId: interactionContext.guildId,
+    },
+    data: {
+      consumedAt: new Date(),
+    },
+  });
+
   const buttons: ButtonBuilder[] = [];
 
   for (const [i, outcome] of outcomeLayout.entries()) {
     buttons.push(
       new ButtonBuilder()
-        .setLabel(addCurrency()(formatNumber(outcome * bet)))
+        .setLabel(addCurrency()(formatNumber(outcome.result * bet)))
         .setStyle(index === i ? ButtonStyle.Primary : ButtonStyle.Secondary)
         .setCustomId(`noop${i}`)
         .setDisabled(true),
