@@ -345,11 +345,7 @@ export async function gambleInteractionButton(
     }
     return {
       content: interaction.reply(
-        sprintf(
-          "<@%s> suggests %s",
-          interaction.user.id,
-          picked.emoji,
-        ),
+        sprintf("<@%s> suggests %s", interaction.user.id, picked.emoji),
       ),
     };
   }
