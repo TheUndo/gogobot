@@ -51,7 +51,7 @@ export async function renderBoard(board: Board): Promise<void> {
     ctx.stroke();
   }
 
-  console.log(board.gameState)
+  console.log(board.gameState);
   const smallSize = 90;
   const smallX = 160;
   const smallY = boardImage.height - 100;
