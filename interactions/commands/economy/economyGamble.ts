@@ -194,7 +194,7 @@ export const gamble = {
       }),
     ]);
 
-    const possibleOutcomes = [
+    const outcomeLayout = shuffle([
       -2,
       -2,
       -1,
@@ -210,12 +210,10 @@ export const gamble = {
       2,
       3,
       Math.random() > 0.9 ? randomNumber(6, 10) : 1,
-    ].map((result, i) => ({
+    ]).map((result, i) => ({
       result,
       emoji: z.string().parse(colors[i]),
     }));
-
-    const outcomeLayout = shuffle(possibleOutcomes);
 
     const gambleInteractions = await prisma.$transaction(
       outcomeLayout.map(({ result, emoji }, index) =>
