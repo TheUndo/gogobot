@@ -209,9 +209,7 @@ export const gamble = {
       2,
       2,
       3,
-      Math.random() > 0.9
-        ? randomNumber(6, 10)
-        : 1,
+      Math.random() > 0.9 ? randomNumber(6, 10) : 1,
     ].map((result, i) => ({
       result,
       emoji: z.string().parse(colors[i]),
