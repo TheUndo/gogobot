@@ -34,7 +34,7 @@ enum Scenario {
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Kraken]: 6,
+  [Scenario.Kraken]: 5,
   [Scenario.Whale]: 40,
   [Scenario.Shark]: 150,
   [Scenario.BigFish]: 370,
@@ -112,8 +112,8 @@ const rewards: Record<
     generateReward: async () => -randomNumber(5_000, 10_000),
   },
   [Scenario.Kraken]: {
-    message: "You caught Cthulhu! 🦑",
-    generateReward: async () => 1_500_000,
+    message: "The Call of Cthulhu! You caught a kraken monster 🦑",
+    generateReward: async () => 1_200_000,
   },
 };
 
