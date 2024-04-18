@@ -13,7 +13,7 @@ export const fun = {
       option
         .setName("options")
         .setDescription("hug kiss diss pat")
-        .addChoices(
+        .setChoices(
           { name: "Kiss", value: "kiss" },
           { name: "Hug", value: "hug" },
           { name: "Pat", value: "pat" },

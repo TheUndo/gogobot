@@ -220,3 +220,33 @@ model ClanAnnouncement {
   createdAt       DateTime @default(now())
   clanId          String
 }
+
+model Connect4Game {
+  id String @id @default(cuid())
+
+  guildId         String
+  channelId       String
+  challenger      String
+  opponent        String
+  board           String
+  currentPlayer   String
+  gameState       String
+  challengerColor String
+  moveTime        Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  endedAt   DateTime?
+}
+
+model Connect4GameInvitation {
+  id String @id @default(cuid())
+
+  challenger      String
+  opponent        String?
+  challengerColor String
+  moveTime        Int
+  guildId         String
+  channelId       String
+  createdAt       DateTime @default(now())
+}

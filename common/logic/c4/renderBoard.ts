@@ -16,15 +16,6 @@ export async function renderBoard(board: Board): Promise<void> {
 
   ctx.drawImage(boardImage, 0, 0, boardImage.width, boardImage.height);
 
-  switch (board.gameState) {
-    case GameState.RedTurn:
-      ctx.drawImage(redImage, 200, 200, 1000, 1000);
-      break;
-    case GameState.YellowTurn:
-      ctx.drawImage(yellowImage, 100, 100, 1000, 1000);
-      break;
-  }
-
   const lines: Slot[] = board.winningSlots?.length
     ? [board.winningSlots.at(0), board.winningSlots.at(-1)].filter(
         (v): v is Slot => v != null,
@@ -58,6 +49,19 @@ export async function renderBoard(board: Board): Promise<void> {
       ctx.lineTo(x, y);
     }
     ctx.stroke();
+  }
+
+  console.log(board.gameState)
+  const smallSize = 90;
+  const smallX = 160;
+  const smallY = boardImage.height - 100;
+  switch (board.gameState) {
+    case GameState.RedTurn:
+      ctx.drawImage(redImage, smallX, smallY, smallSize, smallSize);
+      break;
+    case GameState.YellowTurn:
+      ctx.drawImage(yellowImage, smallX, smallY, smallSize, smallSize);
+      break;
   }
 
   const jpegData = await canvas.encode("jpeg");

@@ -48,14 +48,13 @@ const colors = [
   "🟧",
   "🟪",
   "🟩",
-  "🟠",
   "🟥",
+  "💙",
   "🟠",
   "🟣",
+  "🧡",
   "💚",
   "💜",
-  "🧡",
-  "💙",
   "💛",
   "🟨",
 ];
@@ -210,9 +209,9 @@ export const gamble = {
       2,
       2,
       3,
-      Math.random() > 0.75
+      Math.random() > 0.9
         ? randomNumber(6, 10)
-        : Math.random() > 0.98
+        : Math.random() > 0.99
           ? randomNumber(50, 100)
           : randomNumber(5, 8),
     ].map((result, i) => ({
@@ -366,6 +365,7 @@ export async function gambleInteractionButton(
   for (const [i, outcome] of outcomeLayout.entries()) {
     buttons.push(
       new ButtonBuilder()
+        .setEmoji(outcome.emoji)
         .setLabel(addCurrency()(formatNumber(outcome.result * bet)))
         .setStyle(index === i ? ButtonStyle.Primary : ButtonStyle.Secondary)
         .setCustomId(`noop${i}`)
