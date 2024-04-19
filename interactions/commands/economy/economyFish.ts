@@ -23,7 +23,7 @@ enum Scenario {
   BigFish = "BIG_FISH",
   SmallFish = "SMALL_FISH",
   Shoe = "SHOE",
-  Squid = "SQUID",
+  Octopus = "OCTOPUS",
   Turtle = "TURTLE",
   Seaweed = "SEAWEED",
   Starfish = "STARFISH",
@@ -40,7 +40,7 @@ const odds: Record<Scenario, number> = {
   [Scenario.BigFish]: 370,
   [Scenario.SmallFish]: 400,
   [Scenario.Shoe]: 100,
-  [Scenario.Squid]: 50,
+  [Scenario.Octopus]: 50,
   [Scenario.Turtle]: 50,
   [Scenario.Seaweed]: 50,
   [Scenario.HiddenTreasure]: 100,
@@ -83,8 +83,8 @@ const rewards: Record<
     message: "You caught nothing... 🎣",
     generateReward: async () => 0,
   },
-  [Scenario.Squid]: {
-    message: "You caught a squid! 🦑",
+  [Scenario.Octopus]: {
+    message: "You caught an octopus! �",
     generateReward: async () => randomNumber(200, 400),
   },
   [Scenario.Turtle]: {
