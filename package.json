@@ -14,7 +14,6 @@
   "dependencies": {
     "@napi-rs/canvas": "^0.1.51",
     "@prisma/client": "^5.12.1",
-    "@types/node": "^20.11.27",
     "cheerio": "^1.0.0-rc.12",
     "cron": "^3.1.6",
     "discord.js": "^14.14.1",
