@@ -1,3 +1,4 @@
 bunx biome format . --write
 bunx biome check .
 bunx tsc
+bunx tsc -P website/tsconfig.json
