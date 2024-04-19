@@ -277,9 +277,9 @@ async function performRobbery({
           userDiscordId: robberId,
           guildId,
         },
-        immuneUntil: null,
       },
       data: {
+        immuneUntil: null,
         balance: {
           increment: amount,
         },

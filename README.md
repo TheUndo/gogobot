@@ -1,10 +1,12 @@
-<center>
 
-<img src="https://bot.undo.club/logo-small.png" width="100" />
+<div align="center">
+  <img align="center" src="https://bot.undo.club/logo-small.png" width="100" />
+  <center>
+    <h1 align="center">GoGoBot</h1>
+  </center>
+</div>
 
-# GoGoBot
 
-</center>
 Invite bot: https://bot.undo.club
 
 Join the Gogoanime server: https://discord.gg/gogo
