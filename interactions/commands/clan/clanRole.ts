@@ -225,10 +225,10 @@ export async function validateClanName(
     };
   }
 
-  if (/[<>@#*_~`|]/.test(name.data)) {
+  if (/[<>@#*_~`|:]/.test(name.data)) {
     return {
       error:
-        "Clan name has <, >, @, #, *, _, ~, ` or | characters, which are not allowed.",
+        "Clan name has <, >, @, #, *, _, ~, `, : or | characters, which are not allowed.",
     };
   }
 

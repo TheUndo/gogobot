@@ -1,0 +1,30 @@
+/**
+ * Tailwind CSS imports
+ * View the full documentation at https://tailwindcss.com
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #222;
+}
+
+html,
+body {
+  height: 100%;
+  background: #ededed;
+}
+
+body {
+  background-image: radial-gradient(#d6d6d6 1px, transparent 0),
+    radial-gradient(#d6d6d6 1px, transparent 0);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+}
