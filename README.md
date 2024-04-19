@@ -52,5 +52,5 @@ bunx pm2 start ecosystem.config.cjs
 - language: [TypeScript](https://www.typescriptlang.org/)
 - sdk: [Discord.js](https://discord.js.org)
 - pm: [pm2](https://pm2.io/)
-- frontend: [qwik](https://qwik.dev)
+- frontend: [Qwik](https://qwik.dev)
 - PaaS: [Cloudflare pages](https://pages.dev)
