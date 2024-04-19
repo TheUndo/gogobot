@@ -1,6 +1,6 @@
 <center>
 
-![Logo](https://bot.undo.club/logo-small.png)
+<img src="https://bot.undo.club/logo-small.png" width="100" />
 
 # GoGoBot
 
