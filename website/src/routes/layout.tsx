@@ -1,5 +1,5 @@
 import { Slot, component$ } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -15,3 +15,30 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 export default component$(() => {
   return <Slot />;
 });
+
+
+export const head: DocumentHead = {
+  meta: [
+    {
+      name: "description",
+      content:
+        "The best economy/clan/anime Discord bot! Official Gogoanime Discord bot.",
+    },
+    {
+      property: "og:title",
+      content: "GoGoBot",
+    },
+    {
+      property: "og:description",
+      content: "GoGoBot is an economy/clan/anime Discord bot!",
+    },
+    {
+      property: "og:image",
+      content: "/logo-small.png",
+    },
+    {
+      property: "og:image:alt",
+      content: "GoGoBot logo",
+    },
+  ],
+};
