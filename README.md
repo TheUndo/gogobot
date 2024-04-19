@@ -1,6 +1,7 @@
 # GoGoBot
 
 Invite bot: https://bot.undo.club
+
 Join the Gogoanime server: https://discord.gg/gogo
 
 - Clans
