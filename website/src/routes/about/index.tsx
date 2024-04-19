@@ -5,7 +5,7 @@ import Features from "~/components/features";
 export default component$(() => {
   return (
     <div class="mx-auto w-[min(100%_-_48px,500px)]">
-      <div class="h-20" />
+      <div class="h-5 md:h-20" />
       <Link class="link" href="/">
         Back
       </Link>
@@ -30,7 +30,7 @@ export default component$(() => {
       <h2 class="text-xl font-medium">Technology Overview</h2>
       <div class="h-3" />
       <p>
-        The bot is written in
+        The bot is written in{" "}
         <a class="link" href="https://typescriptlang.org">
           TypeScript
         </a>{" "}
