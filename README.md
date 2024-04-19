@@ -1,5 +1,10 @@
+<center>
+
+![Logo](https://bot.undo.club/logo-small.png)
+
 # GoGoBot
 
+</center>
 Invite bot: https://bot.undo.club
 
 Join the Gogoanime server: https://discord.gg/gogo

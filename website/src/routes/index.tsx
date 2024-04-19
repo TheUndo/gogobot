@@ -39,7 +39,7 @@ export const head: DocumentHead = {
     },
     {
       property: "og:image",
-      content: "/apple-touch-icon.png",
+      content: "/logo-small.png",
     },
     {
       property: "og:image:alt",
