@@ -16,7 +16,6 @@ export default component$(() => {
   return <Slot />;
 });
 
-
 export const head: DocumentHead = {
   meta: [
     {

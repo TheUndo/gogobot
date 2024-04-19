@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { Link, type DocumentHead } from "@builder.io/qwik-city";
+import { type DocumentHead, Link } from "@builder.io/qwik-city";
 import Button from "~/components/button";
 
 export default component$(() => {
@@ -9,7 +9,10 @@ export default component$(() => {
         <h1 class="font-bold text-4xl text-center">GoGoBot</h1>
         <div class="h-10" />
         <p class="text-center">
-          Multi-purpose discord bot. <Link href="/about" class="link">Learn more</Link>
+          Multi-purpose discord bot.{" "}
+          <Link href="/about" class="link">
+            Learn more
+          </Link>
         </p>
         <div class="h-3" />
         <div class="flex justify-center gap-1">
