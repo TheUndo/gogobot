@@ -29,5 +29,21 @@ export const head: DocumentHead = {
       content:
         "The best economy/clan/anime Discord bot! Official Gogoanime Discord bot.",
     },
+    {
+      property: "og:title",
+      content: "GoGoBot",
+    },
+    {
+      property: "og:description",
+      content: "GoGoBot is an economy/clan/anime Discord bot!",
+    },
+    {
+      property: "og:image",
+      content: "/apple-touch-icon.png",
+    },
+    {
+      property: "og:image:alt",
+      content: "GoGoBot logo",
+    },
   ],
 };
