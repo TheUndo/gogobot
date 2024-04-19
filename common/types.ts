@@ -107,3 +107,7 @@ export enum ClanJoinSetting {
   Approval = "APPROVAL",
   Closed = "CLOSED",
 }
+
+export enum TransactionType {
+  ClanDeposit = "CLAN_DEPOSIT",
+}

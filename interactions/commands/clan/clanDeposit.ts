@@ -1,4 +1,5 @@
 import { createWallet } from "!/common/logic/economy/createWallet";
+import { TransactionType } from "!/common/types";
 import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
 import { safeParseNumber } from "!/common/utils/parseNumber";
@@ -88,6 +89,29 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
         treasuryBalance: {
           increment: amountToDeposit,
         },
+      },
+    }),
+    prisma.transaction.create({
+      data: {
+        amount: amountToDeposit,
+        type: TransactionType.ClanDeposit,
+        clanId: clan.id,
+        userDiscordId: authorId,
+        guildId,
+      },
+    }),
+    prisma.clanMember.update({
+      where: {
+        clanId_discordUserId: {
+          clanId: clan.id,
+          discordUserId: authorId,
+        },
+      },
+      data: {
+        contributed: {
+          increment: amountToDeposit,
+        },
+        lastContribution: new Date(),
       },
     }),
   ]);

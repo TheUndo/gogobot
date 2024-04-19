@@ -162,13 +162,15 @@ model ClanStatistics {
 }
 
 model ClanMember {
-  id            String   @id @default(cuid())
-  joinedAt      DateTime @default(now())
-  clan          Clan     @relation(fields: [clanId], references: [id])
-  clanId        String
-  guildId       String
-  discordUserId String
-  role          String
+  id               String    @id @default(cuid())
+  joinedAt         DateTime  @default(now())
+  clan             Clan      @relation(fields: [clanId], references: [id])
+  clanId           String
+  guildId          String
+  discordUserId    String
+  role             String
+  contributed      Int       @default(0)
+  lastContribution DateTime?
 
   @@unique([guildId, discordUserId])
   @@unique([clanId, discordUserId])
@@ -219,6 +221,16 @@ model ClanAnnouncement {
   authorDiscordId String
   createdAt       DateTime @default(now())
   clanId          String
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  userDiscordId String
+  guildId       String
+  clanId        String?
+  amount        Int
+  type          String
+  createdAt     DateTime @default(now())
 }
 
 model Connect4Game {
