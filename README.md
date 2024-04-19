@@ -1,8 +1,14 @@
-# Gogo Robot
+# GoGoBot
 
-The official Gogoanime Discord Robot.
-
+Invite bot: https://bot.undo.club
 Join the Gogoanime server: https://discord.gg/gogo
+
+- Clans
+- Economy
+- Anime
+- And more!
+
+The official [Gogoanime](https://anitaku.so) Discord Robot.
 
 ## Installation
 
@@ -46,3 +52,5 @@ bunx pm2 start ecosystem.config.cjs
 - language: [TypeScript](https://www.typescriptlang.org/)
 - sdk: [Discord.js](https://discord.js.org)
 - pm: [pm2](https://pm2.io/)
+- frontend: [qwik](https://qwik.dev)
+- PaaS: [Cloudflare pages](https://pages.dev)
