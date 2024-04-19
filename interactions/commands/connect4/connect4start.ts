@@ -10,7 +10,7 @@ type Options = {
 
 export async function connect4start({
   guildId,
-  channelId,
+  /* channelId, */
   authorId,
   mentionedId,
 }: Options) {

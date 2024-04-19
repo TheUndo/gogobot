@@ -8,7 +8,7 @@ export const client = new Client({
 client.login(process.env.DISCORD_TOKEN);
 
 await new Promise((r) => {
-  client.once(Events.ClientReady, (c) => {
+  client.once(Events.ClientReady, () => {
     console.log("ready.");
     r(undefined);
   });

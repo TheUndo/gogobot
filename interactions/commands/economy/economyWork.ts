@@ -101,7 +101,7 @@ async function createWorkEmbed({ guildId, userId }: Options) {
     const available: Availability[] = [];
     const unavailable: Availability[] = [];
 
-    for (const [rawType, cooldown] of Object.entries(coolDowns)) {
+    for (const [rawType] of Object.entries(coolDowns)) {
       const type = z.nativeEnum(WorkType).parse(rawType);
 
       const usesOfType = lastUsed.flat(1).filter((d) => d.type === type);

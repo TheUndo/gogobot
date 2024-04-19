@@ -13,8 +13,16 @@
     "rules": {
       "recommended": true,
       "correctness": {
+        "noUnusedLabels": "error",
+        "noUnusedVariables": "error",
         "noUnusedImports": "error"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
+  },
+  "files": {
+    "ignore": ["website/dist/*", "website/server/*"]
   }
 }

@@ -194,9 +194,9 @@ export async function scrapeAnimePage(page: number) {
     status: string;
   }[] = [];
 
-  $(".listing li[title]").each(function (i, el) {
+  $(".listing li[title]").each(function () {
     const title = $(this).attr("title");
-    const nameDisplay = $(title).find("a.bigChar").first().text().trim();
+    const _nameDisplay = $(title).find("a.bigChar").first().text().trim();
 
     const types = (() => {
       const types: [string, string][] = [];
