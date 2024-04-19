@@ -1,5 +1,7 @@
 import { ClanMemberRole, Colors, InteractionType } from "!/common/types";
+import { addCurrency } from "!/common/utils/addCurrency";
 import { capitalize } from "!/common/utils/capitalize";
+import { formatNumber } from "!/common/utils/formatNumber";
 import { prisma } from "!/prisma";
 import {
   ActionRowBuilder,
@@ -12,8 +14,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { clanRoles } from "./clan";
 import type { clanInteractionContext } from "./clanInfo";
-import { addCurrency } from "!/common/utils/addCurrency";
-import { formatNumber } from "!/common/utils/formatNumber";
 
 type Options = {
   authorId: string;
