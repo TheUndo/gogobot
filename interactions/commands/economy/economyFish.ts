@@ -84,7 +84,7 @@ const rewards: Record<
     generateReward: async () => 0,
   },
   [Scenario.Octopus]: {
-    message: "You caught an octopus! �",
+    message: "You caught an octopus! 🐙",
     generateReward: async () => randomNumber(200, 400),
   },
   [Scenario.Turtle]: {
