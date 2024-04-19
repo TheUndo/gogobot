@@ -28,7 +28,5 @@
   "scripts": {
     "prepare": "husky"
   },
-  "workspaces": [
-    "website"
-  ]
+  "workspaces": ["website"]
 }
