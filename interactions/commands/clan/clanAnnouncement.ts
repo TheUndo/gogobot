@@ -66,7 +66,8 @@ export async function clanAnnouncementCommand(
     )
   ) {
     return {
-      content: "You must be a clan leader or co-leader to make a clan announcement.",
+      content:
+        "You must be a clan leader or co-leader to make a clan announcement.",
       ephemeral: true,
     };
   }
