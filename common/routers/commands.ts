@@ -12,6 +12,7 @@ import { fish } from "!/interactions/commands/economy/economyFish";
 import { gamble } from "!/interactions/commands/economy/economyGamble";
 import { gift } from "!/interactions/commands/economy/economyGift";
 import { leaderBoard } from "!/interactions/commands/economy/economyLeaderboard";
+import { mine } from "!/interactions/commands/economy/economyMine";
 import { prostitute } from "!/interactions/commands/economy/economyProstitute";
 import { rob } from "!/interactions/commands/economy/economyRob";
 import { soldier } from "!/interactions/commands/economy/economySoldier";
@@ -32,7 +33,6 @@ import { subscriptions } from "!/interactions/commands/subscriptions";
 import { unsubscribe } from "!/interactions/commands/unsubscribe";
 import { virus } from "!/interactions/commands/virus";
 import { welcome } from "!/interactions/commands/welcome";
-import { mine } from "!/interactions/commands/economy/economyMine";
 
 import {
   type CacheType,
