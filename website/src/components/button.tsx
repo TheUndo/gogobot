@@ -20,8 +20,7 @@ export default component$(
           appearance === "default" && "border-gray-700 border-2",
           appearance === "ghost" &&
             "bg-transparent border-0 hover:underline hover:bg-transparent hover:bg-gray-100",
-        ]}
-      >
+        ]}>
         <Slot />
       </Cmp>
     );
