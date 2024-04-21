@@ -122,10 +122,10 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
     return await clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been demoted to %s in **%s**.",
+        "<@%s> has been demoted to **%s** by <@%s>.",
         mentionedId,
         clanRoles[ClanMemberRole.Member],
-        clan.name,
+        demotingMember.discordUserId,
       ),
       Colors.Warning,
     );
@@ -147,10 +147,10 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
     return await clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been demoted to %s in **%s**.",
+        "<@%s> has been demoted to **%s** by <@%s>.",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
-        clan.name,
+        demotingMember.discordUserId,
       ),
       Colors.Warning,
     );
@@ -179,10 +179,10 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
     return await clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been demoted to %s in **%s**.",
+        "<@%s> has been demoted to **%s** in <@%s>.",
         mentionedId,
         clanRoles[ClanMemberRole.Officer],
-        clan.name,
+        demotingMember.discordUserId,
       ),
       Colors.Warning,
     );

@@ -128,10 +128,10 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
     return clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been promoted to %s in **%s**! Seniors can invite members.",
+        "<@%s> has been promoted to **%s** by <@%s>!",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
-        clan.name,
+        promotingMember.discordUserId,
       ),
       Colors.Success,
     );
@@ -153,10 +153,10 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
     return await clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been promoted to %s in **%s**. Officers can kick and invite members.",
+        "<@%s> has been promoted to **%s** by <@%s>!",
         mentionedId,
         clanRoles[ClanMemberRole.Officer],
-        clan.name,
+        promotingMember.discordUserId,
       ),
       Colors.Success,
     );
@@ -185,10 +185,10 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
     return await clanSendNotificationOrMessage(
       clan.id,
       sprintf(
-        "<@%s> has been promoted to %s in **%s**. Co-leaders can do almost everything the leader can.",
+        "<@%s> has been promoted to **%s** by <@%s>!",
         mentionedId,
         clanRoles[ClanMemberRole.CoLeader],
-        clan.name,
+        promotingMember.discordUserId,
       ),
       Colors.Success,
     );
@@ -474,7 +474,7 @@ export async function clanCancelLeadershipTransfer(
         .setColor(Colors.Error)
         .setDescription(
           sprintf(
-            "The leadership transfer of **%s** has been canceled",
+            "The leadership transfer of **%s** has been canceled.",
             clan.name,
           ),
         ),
