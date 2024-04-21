@@ -1,11 +1,17 @@
+import { GameState, SlotState } from "!/common/logic/c4/c4types";
+import { createEmptyBoard } from "!/common/logic/c4/createEmptyBoard";
 import { createWallet } from "!/common/logic/economy/createWallet";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
+import {
+  type AnyInteraction,
+  Colors,
+  type InteractionContext,
+  InteractionType,
+} from "!/common/types";
 import { addCurrency } from "!/common/utils/addCurrency";
 import { formatNumber } from "!/common/utils/formatNumber";
 import { safeParseNumber } from "!/common/utils/parseNumber";
 import { prisma } from "!/prisma";
-import { sprintf } from "sprintf-js";
-import { z } from "zod";
-import { connect4clockTimes } from "./connect4config";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -13,15 +19,9 @@ import {
   EmbedBuilder,
   type InteractionReplyOptions,
 } from "discord.js";
-import {
-  Colors,
-  InteractionType,
-  type AnyInteraction,
-  type InteractionContext,
-} from "!/common/types";
-import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
-import { createEmptyBoard } from "!/common/logic/c4/createEmptyBoard";
-import { GameState, SlotState } from "!/common/logic/c4/c4types";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { connect4clockTimes } from "./connect4config";
 import { connect4display } from "./connect4display";
 
 type Options = {

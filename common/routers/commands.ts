@@ -33,6 +33,8 @@ import { unsubscribe } from "!/interactions/commands/unsubscribe";
 import { virus } from "!/interactions/commands/virus";
 import { welcome } from "!/interactions/commands/welcome";
 
+import type { Command } from "!/common/types";
+import { leaderBoard } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import {
   type CacheType,
   type ChatInputCommandInteraction,
@@ -40,8 +42,6 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
-import type { Command } from "!/common/types";
-import { leaderBoard } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 
 const commandsRegistrar: Command[] = [
   ping,

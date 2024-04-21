@@ -1,9 +1,9 @@
-import type { AnySelectMenuInteraction, CacheType } from "discord.js";
+import { SelectAction } from "!/common/types";
 import { showAnime } from "!/interactions/selects/showAnime";
 import { subscribe } from "!/interactions/selects/subscribe";
 import { unsubscribe } from "!/interactions/selects/unsubscribe";
 import { unsubscribeFromSubscriptions } from "!/interactions/selects/unsubscribeFromSubscriptions";
-import { SelectAction } from "!/common/types";
+import type { AnySelectMenuInteraction, CacheType } from "discord.js";
 
 /** @deprecated */
 export async function selectRouter(

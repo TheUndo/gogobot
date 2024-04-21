@@ -3,9 +3,9 @@ import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionT
 import {
   type AnyInteraction,
   ClanMemberRole,
+  Colors,
   type InteractionContext,
   InteractionType,
-  Colors,
 } from "!/common/types";
 import { prisma } from "!/prisma";
 import { ActionRowBuilder } from "@discordjs/builders";
@@ -16,12 +16,12 @@ import {
   TextInputBuilder,
   TextInputStyle,
 } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
-import { clanRoleUpdate } from "./clanRole";
 import { clanNotification } from "./clanNotification";
-import { sprintf } from "sprintf-js";
+import { clanRoleUpdate } from "./clanRole";
 
 function generalSettings({
   description,

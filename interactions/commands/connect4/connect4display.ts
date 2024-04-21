@@ -8,8 +8,8 @@ import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  StringSelectMenuBuilder,
   type InteractionReplyOptions,
+  StringSelectMenuBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { match } from "ts-pattern";

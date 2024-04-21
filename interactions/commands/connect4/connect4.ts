@@ -1,8 +1,8 @@
 import type { Command } from "!/common/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
-import { connect4start } from "./connect4start";
 import { connect4clockTimes } from "./connect4config";
+import { connect4start } from "./connect4start";
 
 export const connect4 = {
   data: new SlashCommandBuilder()

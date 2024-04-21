@@ -1,8 +1,8 @@
 import { ClanMemberRole } from "!/common/types";
 import { prisma } from "!/prisma";
 import { sprintf } from "sprintf-js";
-import { clanRoles } from "./clanConfig";
 import { z } from "zod";
+import { clanRoles } from "./clanConfig";
 import { clanSendNotificationOrMessage } from "./clanSendNotificationOrMessage";
 
 type Options = {

@@ -1,10 +1,10 @@
 import { ClanMemberRole, Colors } from "!/common/types";
 import { prisma } from "!/prisma";
 import type { InteractionReplyOptions } from "discord.js";
-import { clanRoleUpdate, validateClanName } from "./clanRole";
+import { sprintf } from "sprintf-js";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanNotification } from "./clanNotification";
-import { sprintf } from "sprintf-js";
+import { clanRoleUpdate, validateClanName } from "./clanRole";
 
 type Options = {
   authorId: string;

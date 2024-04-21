@@ -1,12 +1,12 @@
 import { Column, GameState, boardSchema } from "!/common/logic/c4/c4types";
+import { checkColumn } from "!/common/logic/c4/checkColumn";
+import { makeMove } from "!/common/logic/c4/makeMove";
 import type { AnyInteraction, InteractionContext } from "!/common/types";
 import { prisma } from "!/prisma";
 import { sprintf } from "sprintf-js";
-import { connect4interactionContext } from "./connect4config";
 import { z } from "zod";
-import { makeMove } from "!/common/logic/c4/makeMove";
+import { connect4interactionContext } from "./connect4config";
 import { connect4display } from "./connect4display";
-import { checkColumn } from "!/common/logic/c4/checkColumn";
 
 export async function connect4move(
   interactionContext: InteractionContext,

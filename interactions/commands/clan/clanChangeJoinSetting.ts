@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
@@ -6,14 +5,15 @@ import {
   type AnyInteraction,
   ClanJoinSetting,
   ClanMemberRole,
-  type InteractionContext,
   Colors,
+  type InteractionContext,
 } from "!/common/types";
 import { prisma } from "!/prisma";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { joinSettings } from "./clanConfig";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
 import { clanNotification } from "./clanNotification";
-import { sprintf } from "sprintf-js";
-import { joinSettings } from "./clanConfig";
 
 export async function clanChangeJoinSetting(
   interactionContext: InteractionContext,
@@ -92,7 +92,8 @@ export async function clanChangeJoinSetting(
     )
   ) {
     return await interaction.reply({
-      content: "Only the clan leader and co-leaders can change availability settings.",
+      content:
+        "Only the clan leader and co-leaders can change availability settings.",
       ephemeral: true,
     });
   }

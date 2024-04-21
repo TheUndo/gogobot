@@ -1,7 +1,7 @@
-import { describe, it, expect } from "bun:test";
-import { makeMove } from "./makeMove";
-import { createEmptyBoard } from "./createEmptyBoard";
+import { describe, expect, it } from "bun:test";
 import { type Board, Column, SlotState } from "./c4types";
+import { createEmptyBoard } from "./createEmptyBoard";
+import { makeMove } from "./makeMove";
 import { columnFullMessage } from "./makeMove";
 
 describe("connect 4 make move", () => {

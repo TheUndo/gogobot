@@ -23,8 +23,8 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { showClanMembers } from "./clanMembers";
 import { joinSettings } from "./clanConfig";
+import { showClanMembers } from "./clanMembers";
 
 export const clanInteractionContext = z.object({
   clanId: z.string(),

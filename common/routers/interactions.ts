@@ -24,7 +24,10 @@ import {
   clanCreateNamePrompt,
   createGuildWizardStep2,
 } from "!/interactions/commands/clan/createClanWizard";
+import { connect4move } from "!/interactions/commands/connect4/connect4move";
+import { connect4accept } from "!/interactions/commands/connect4/connect4start";
 import { gambleInteractionButton } from "!/interactions/commands/economy/economyGamble";
+import { leaderBoardClanChangeType } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import { prisma } from "!/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
@@ -33,9 +36,6 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
-import { connect4accept } from "!/interactions/commands/connect4/connect4start";
-import { connect4move } from "!/interactions/commands/connect4/connect4move";
-import { leaderBoardClanChangeType } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {

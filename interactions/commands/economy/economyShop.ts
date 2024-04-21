@@ -1,6 +1,6 @@
 import { guardEconomyChannel } from "!/common/logic/guildConfig/guardEconomyChannel";
-import { type Interaction, SlashCommandBuilder } from "discord.js";
 import type { Command } from "!/common/types";
+import { type Interaction, SlashCommandBuilder } from "discord.js";
 
 export const shop = {
   data: new SlashCommandBuilder()

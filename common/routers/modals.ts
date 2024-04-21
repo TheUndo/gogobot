@@ -1,8 +1,8 @@
-import type { CacheType, ModalSubmitInteraction } from "discord.js";
+import { ModalAction } from "!/common/types";
 import { showAnime } from "!/interactions/modals/showAnime";
 import { subscribe } from "!/interactions/modals/subscribe";
 import { unsubscribe } from "!/interactions/modals/unsubscribe";
-import { ModalAction } from "!/common/types";
+import type { CacheType, ModalSubmitInteraction } from "discord.js";
 
 /** @deprecated */
 export async function modalRouter(
