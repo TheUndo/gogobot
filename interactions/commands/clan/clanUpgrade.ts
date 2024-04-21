@@ -45,13 +45,14 @@ export async function clanUpgradeCommand({ authorId, guildId }: Options) {
   if (
     ![
       ClanMemberRole.Leader,
+      ClanMemberRole.CoLeader,
       ClanMemberRole.Officer,
       ClanMemberRole.Senior,
     ].includes(z.nativeEnum(ClanMemberRole).parse(clanMember.role))
   ) {
     return {
       content:
-        "You must be a clan leader, officer, or senior to upgrade the clan.",
+        "You must be a clan leader, co-leader, officer, or senior to upgrade the clan.",
       ephemeral: true,
     };
   }
