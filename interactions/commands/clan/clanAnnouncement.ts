@@ -60,9 +60,13 @@ export async function clanAnnouncementCommand(
     };
   }
 
-  if (clanMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(clanMember.role),
+    )
+  ) {
     return {
-      content: "You must be a clan leader to make a clan announcement.",
+      content: "You must be a clan leader or co-leader to make a clan announcement.",
       ephemeral: true,
     };
   }
