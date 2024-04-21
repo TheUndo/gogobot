@@ -362,7 +362,7 @@ export async function gambleInteractionButton(
     buttons.push(
       new ButtonBuilder()
         .setEmoji(outcome.emoji)
-        .setLabel(addCurrency()(formatNumber(outcome.result * bet)))
+        .setLabel(addCurrency()(formatNumber(Math.round(outcome.result * bet))))
         .setStyle(index === i ? ButtonStyle.Primary : ButtonStyle.Secondary)
         .setCustomId(`noop${i}`)
         .setDisabled(true),
@@ -377,7 +377,7 @@ export async function gambleInteractionButton(
         "You bet **%s** %s **%s**",
         addCurrency()(formatNumber(bet)),
         result >= 1 ? "and won" : result === 0 ? "and got" : "and lost",
-        addCurrency()(formatNumber(Math.abs(result * bet))),
+        addCurrency()(formatNumber(Math.round(Math.abs(result * bet)))),
       ),
     );
 
@@ -396,7 +396,7 @@ export async function gambleInteractionButton(
     },
     data: {
       balance: {
-        increment: Math.floor(result * bet),
+        increment: Math.round(result * bet),
       },
     },
   });
