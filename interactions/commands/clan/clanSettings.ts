@@ -205,7 +205,11 @@ export async function clanSettingsButton(
     });
   }
 
-  if (userClanMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(userClanMember.role),
+    )
+  ) {
     return await interaction.reply({
       content: "Only the clan leader and co-leaders can change the settings",
       ephemeral: true,
