@@ -330,12 +330,16 @@ export async function clanRequestJoinApprove(
   }
 
   if (
-    ![ClanMemberRole.Leader, ClanMemberRole.Officer].includes(
-      z.nativeEnum(ClanMemberRole).parse(userClanMember.role),
-    )
+    ![
+      ClanMemberRole.Leader,
+      ClanMemberRole.CoLeader,
+      ClanMemberRole.Officer,
+      ClanMemberRole.Senior,
+    ].includes(z.nativeEnum(ClanMemberRole).parse(userClanMember.role))
   ) {
     return await interaction.reply({
-      content: "Only officers and leaders can approve join requests",
+      content:
+        "Only the clan leader, co-leaders, officers and seniors can approve join requests",
       ephemeral: true,
     });
   }
