@@ -49,23 +49,23 @@ const rewards: Record<
   { message: string; generateReward: () => Promise<number> }
 > = {
   [Resources.Copper]: {
-    message: "You found Copper! ⛏️",
+    message: "You found copper! ⛏️",
     generateReward: async () => randomNumber(500, 1_000),
   },
   [Resources.Silver]: {
-    message: "You found Silver! ⛏️",
+    message: "You found silver! ⛏️",
     generateReward: async () => randomNumber(5_000, 10_000),
   },
   [Resources.Iron]: {
-    message: "You found Iron! ⛏️",
+    message: "You found iron! ⛏️",
     generateReward: async () => randomNumber(30_000, 50_000),
   },
   [Resources.Gold]: {
-    message: "You found Gold! ⛏️",
+    message: "You found gold! ⛏️",
     generateReward: async () => randomNumber(75_000, 100_000),
   },
   [Resources.Emerald]: {
-    message: "You found Emerald! ⛏️",
+    message: "You found an emerald! ⛏️",
     generateReward: async () => randomNumber(250_000, 500_000),
   },
   [Resources.Diamond]: {
@@ -77,7 +77,7 @@ const rewards: Record<
     generateReward: async () => -randomNumber(7_000, 10_000),
   },
   [Resources.DeadEnd]: {
-    message: "You reached a Dead End and had to return empty handed. 🧱",
+    message: "You reached a dead end and had to return empty handed. 🧱",
     generateReward: async () => 0,
   },
   [Resources.Nothing]: {

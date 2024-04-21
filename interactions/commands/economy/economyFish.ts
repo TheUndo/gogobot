@@ -35,9 +35,9 @@ enum Scenario {
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Kraken]: 5,
+  [Scenario.Kraken]: 3,
   [Scenario.Whale]: 40,
-  [Scenario.LochNessMonster]: 4,
+  [Scenario.LochNessMonster]: 6,
   [Scenario.Shark]: 150,
   [Scenario.BigFish]: 370,
   [Scenario.SmallFish]: 400,
