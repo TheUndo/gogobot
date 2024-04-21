@@ -177,7 +177,7 @@ export const mine = {
     });
 
     const clanBonusMultiplier =
-      reward < 0 ? 0 : userClan?.level ? userClan.level / 20 : 0;
+      reward < 0 ? 0 : userClan?.level ? userClan.level / 40 : 0;
 
     const clanBonus = Math.round(reward + clanBonusMultiplier);
     const totalReward = reward + clanBonus;
@@ -217,7 +217,7 @@ export const mine = {
             ? sprintf(
                 "Clan Bonus: **+%s** (%s)",
                 makeDollars(formatNumber(clanBonus)),
-                `${((clanBonusMultiplier + 1) * 100 - 100).toFixed(0)}`,
+                `${((clanBonusMultiplier + 1) * 100 - 100).toFixed(0)}%`,
               )
             : "",
         ),
