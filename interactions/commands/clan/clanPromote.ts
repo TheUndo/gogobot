@@ -6,17 +6,18 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { notYourInteraction } from "../../../common/logic/responses/notYourInteraction";
-import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ClanMemberRole,
   Colors,
   type InteractionContext,
   InteractionType,
-} from "../../../common/types";
-import { prisma } from "../../../prisma";
-import { clanRoles } from "./clan";
+} from "!/common/types";
+import { prisma } from "!/prisma";
+import { clanRoles } from "./clanConfig";
+import { clanSendNotificationOrMessage } from "./clanSendNotificationOrMessage";
 
 type Options = {
   authorId: string;
@@ -73,9 +74,13 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
     };
   }
 
-  if (promotingMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(promotingMember.role),
+    )
+  ) {
     return {
-      content: "Only the clan leader can promote members.",
+      content: "Only the leader and co-leaders can promote members.",
       ephemeral: true,
     };
   }
@@ -120,14 +125,15 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
       },
     });
 
-    return {
-      content: sprintf(
+    return clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
         "<@%s> has been promoted to %s in **%s**! Seniors can invite members.",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
         clan.name,
       ),
-    };
+    );
   }
 
   if (memberToPromote.role === ClanMemberRole.Senior) {
@@ -143,14 +149,55 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
       },
     });
 
-    return {
-      content: sprintf(
+    return await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
         "<@%s> has been promoted to %s in **%s**. Officers can kick and invite members.",
         mentionedId,
         clanRoles[ClanMemberRole.Officer],
         clan.name,
       ),
-      ephemeral: false,
+    );
+  }
+
+  if (memberToPromote.role === ClanMemberRole.Officer) {
+    if (promotingMember.role === ClanMemberRole.CoLeader) {
+      return {
+        content: "Only the clan leader can promote officers to co-leaders.",
+        ephemeral: true,
+      };
+    }
+
+    await prisma.clanMember.update({
+      where: {
+        clanId_discordUserId: {
+          clanId: clan.id,
+          discordUserId: memberToPromote.discordUserId,
+        },
+      },
+      data: {
+        role: ClanMemberRole.CoLeader,
+      },
+    });
+
+    return await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
+        "<@%s> has been promoted to %s in **%s**. Co-leaders can do almost everything the leader can.",
+        mentionedId,
+        clanRoles[ClanMemberRole.CoLeader],
+        clan.name,
+      ),
+    );
+  }
+
+  if (
+    memberToPromote.role === ClanMemberRole.CoLeader &&
+    promotingMember.role !== ClanMemberRole.Leader
+  ) {
+    return {
+      content: "Only the clan leader can transfer leadership.",
+      ephemeral: true,
     };
   }
 
@@ -248,6 +295,7 @@ export async function clanTransferLeadershipConfirm(
       id: context.data.clanId,
     },
     select: {
+      id: true,
       name: true,
     },
   });
@@ -301,9 +349,9 @@ export async function clanTransferLeadershipConfirm(
     });
   }
 
-  if (memberToPromote.role !== ClanMemberRole.Officer) {
+  if (memberToPromote.role !== ClanMemberRole.CoLeader) {
     return await interaction.reply({
-      content: "Only an officer can be promoted to leader.",
+      content: "Only a co-leader can be promoted to leader.",
       ephemeral: true,
     });
   }
@@ -317,7 +365,7 @@ export async function clanTransferLeadershipConfirm(
         },
       },
       data: {
-        role: ClanMemberRole.Officer,
+        role: ClanMemberRole.CoLeader,
       },
     }),
     prisma.clanMember.update({
@@ -341,14 +389,17 @@ export async function clanTransferLeadershipConfirm(
     }),
   ]);
 
-  return await interaction.reply({
-    content: sprintf(
-      "<@%s> has been promoted to leader of **%s** by <@%s>!",
-      context.data.newLeaderUserId,
-      clan.name,
-      context.data.oldLeaderUserId,
+  return interaction.reply(
+    await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
+        "<@%s> has been promoted to leader of **%s** by <@%s>!",
+        context.data.newLeaderUserId,
+        clan.name,
+        context.data.oldLeaderUserId,
+      ),
     ),
-  });
+  );
 }
 
 export async function clanCancelLeadershipTransfer(

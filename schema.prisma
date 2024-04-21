@@ -241,14 +241,15 @@ model Connect4Game {
   challenger      String
   opponent        String
   board           String
-  currentPlayer   String
   gameState       String
   challengerColor String
   moveTime        Int
+  wagerAmount     Int?
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  endedAt   DateTime?
+  lastMoveAt DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  endedAt    DateTime?
 }
 
 model Connect4GameInvitation {
@@ -260,5 +261,7 @@ model Connect4GameInvitation {
   moveTime        Int
   guildId         String
   channelId       String
+  wagerAmount     Int?
   createdAt       DateTime @default(now())
+  voided          Boolean  @default(false)
 }

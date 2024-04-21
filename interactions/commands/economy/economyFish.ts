@@ -21,6 +21,7 @@ enum Scenario {
   Whale = "WHALE",
   Shark = "SHARK",
   BigFish = "BIG_FISH",
+  LochNessMonster = "LOCH_NESS_MONSTER",
   SmallFish = "SMALL_FISH",
   Shoe = "SHOE",
   Octopus = "OCTOPUS",
@@ -36,6 +37,7 @@ enum Scenario {
 const odds: Record<Scenario, number> = {
   [Scenario.Kraken]: 5,
   [Scenario.Whale]: 40,
+  [Scenario.LochNessMonster]: 4,
   [Scenario.Shark]: 150,
   [Scenario.BigFish]: 370,
   [Scenario.SmallFish]: 400,
@@ -62,6 +64,10 @@ const rewards: Record<
   [Scenario.Whale]: {
     message: "You caught a whale! 🐋",
     generateReward: async () => 50_000,
+  },
+  [Scenario.LochNessMonster]: {
+    message: "You caught the Loch Ness Monster! 🐉",
+    generateReward: async () => 300_000,
   },
   [Scenario.Shark]: {
     message: "You caught a shark! 🦈",
@@ -100,7 +106,7 @@ const rewards: Record<
     generateReward: async () => randomNumber(5_000, 10_000),
   },
   [Scenario.Jellyfish]: {
-    message: "You caught a jellyfish! 🎐",
+    message: "You caught a jellyfish! 🪼",
     generateReward: async () => randomNumber(0, 500),
   },
   [Scenario.Starfish]: {
@@ -112,7 +118,7 @@ const rewards: Record<
     generateReward: async () => -randomNumber(5_000, 10_000),
   },
   [Scenario.Kraken]: {
-    message: "The Call of Cthulhu! You caught a kraken monster 🦑",
+    message: "The Call of Cthulhu! You caught a kraken monster. 🦑",
     generateReward: async () => 1_200_000,
   },
 };

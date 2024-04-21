@@ -23,8 +23,8 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { joinSettings } from "./clan";
 import { showClanMembers } from "./clanMembers";
+import { joinSettings } from "./clanConfig";
 
 export const clanInteractionContext = z.object({
   clanId: z.string(),
@@ -258,7 +258,13 @@ export async function showClanInfo({
     },
   });
 
-  if (authorMember && authorMember.role !== ClanMemberRole.Leader) {
+  const authorIsCoLeaderOrLeader =
+    authorMember &&
+    [ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(authorMember.role),
+    );
+
+  if (!authorIsCoLeaderOrLeader) {
     embed.addFields({
       name: "Availability",
       value: joinSettings[settingsJoin.data],
@@ -269,7 +275,7 @@ export async function showClanInfo({
   const firstRow = new ActionRowBuilder<StringSelectMenuBuilder>();
   const secondRow = new ActionRowBuilder<ButtonBuilder>();
 
-  if (authorMember?.clanId === clan.id && leader.discordUserId === authorId) {
+  if (authorMember?.clanId === clan.id && authorIsCoLeaderOrLeader) {
     firstRow.addComponents(
       new StringSelectMenuBuilder()
         .setCustomId(changeJoinSettingInteraction.id)

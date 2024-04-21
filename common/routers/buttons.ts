@@ -1,10 +1,9 @@
 import type { ButtonInteraction, CacheType } from "discord.js";
-import { leaderBoardChangePage } from "../../interactions/buttons/leaderBoardChangePage";
-import { showSubscribeModal } from "../../interactions/buttons/showSubscribeModal";
-import { subscribe } from "../../interactions/buttons/subscribe";
-import { subscriptionListChangePage } from "../../interactions/buttons/subscriptionListChangePage";
-import { unsubscribe } from "../../interactions/buttons/unsubscribe";
-import { ButtonAction } from "../types";
+import { showSubscribeModal } from "!/interactions/buttons/showSubscribeModal";
+import { subscribe } from "!/interactions/buttons/subscribe";
+import { subscriptionListChangePage } from "!/interactions/buttons/subscriptionListChangePage";
+import { unsubscribe } from "!/interactions/buttons/unsubscribe";
+import { ButtonAction } from "!/common/types";
 
 /** @deprecated */
 export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
@@ -27,7 +26,5 @@ export async function buttonRouter(interaction: ButtonInteraction<CacheType>) {
       return await showSubscribeModal(interaction);
     case ButtonAction.SubscriptionListChangePage:
       return await subscriptionListChangePage(interaction, data);
-    case ButtonAction.LeaderBoardChangePage:
-      return await leaderBoardChangePage(interaction, data);
   }
 }

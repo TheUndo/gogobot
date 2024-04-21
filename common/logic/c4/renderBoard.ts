@@ -2,7 +2,7 @@ import path from "node:path";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { type Board, GameState, type Slot, SlotState } from "./c4types";
 
-export async function renderBoard(board: Board): Promise<void> {
+export async function renderBoard(board: Board): Promise<Buffer> {
   const boardImage = await loadImage(
     path.join(__dirname, "assets", "board.png"),
   );
@@ -51,7 +51,6 @@ export async function renderBoard(board: Board): Promise<void> {
     ctx.stroke();
   }
 
-  console.log(board.gameState);
   const smallSize = 90;
   const smallX = 160;
   const smallY = boardImage.height - 100;
@@ -66,5 +65,6 @@ export async function renderBoard(board: Board): Promise<void> {
 
   const jpegData = await canvas.encode("jpeg");
 
-  await Bun.write(path.join(__dirname, "board.jpeg"), jpegData);
+  /* await Bun.write(path.join(__dirname, "board.jpeg"), jpegData); */
+  return jpegData;
 }

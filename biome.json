@@ -6,7 +6,8 @@
   "formatter": {
     "indentWidth": 2,
     "indentStyle": "space",
-    "lineEnding": "lf"
+    "lineEnding": "lf",
+    "formatWithErrors": true
   },
   "linter": {
     "enabled": true,
@@ -24,5 +25,11 @@
   },
   "files": {
     "ignore": ["website/dist/*", "website/server/*"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
   }
 }

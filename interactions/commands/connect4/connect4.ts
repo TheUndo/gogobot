@@ -2,6 +2,7 @@ import type { Command } from "!/common/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 import { connect4start } from "./connect4start";
+import { connect4clockTimes } from "./connect4config";
 
 export const connect4 = {
   data: new SlashCommandBuilder()
@@ -20,25 +21,24 @@ export const connect4 = {
         )
         .addStringOption((option) =>
           option
-            .setName("your color")
+            .setName("your_color")
             .setDescription("The color YOU want to play as")
             .setChoices(
-              { name: "red", value: "red" },
+              { name: "red (first move)", value: "red" },
               { name: "yellow", value: "yellow" },
-            ),
+            )
+            .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("time")
             .setDescription("The amount of time each player has to make a move")
-            .setChoices(
-              { name: "5 seconds", value: "5" },
-              { name: "30 seconds", value: "30" },
-              { name: "1 minute", value: "60" },
-              { name: "5 minutes", value: (60 * 5).toString() },
-              { name: "10 minutes", value: (60 * 10).toString() },
-              { name: "30 minutes", value: (60 * 30).toString() },
-            ),
+            .setChoices(...connect4clockTimes),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("wager")
+            .setDescription("The amount of money you want to wager"),
         ),
     )
     .addSubcommand((subCommand) =>
@@ -58,15 +58,24 @@ export const connect4 = {
     const subcommand = interaction.options.getSubcommand();
 
     switch (subcommand) {
-      case "start":
+      case "challenge":
         return await interaction.reply(
           await connect4start({
+            mentionedIsBot: interaction.options.getUser("user")?.bot === true,
             guildId,
             channelId: interaction.channelId,
             authorId: interaction.user.id,
             mentionedId: z
               .string()
               .parse(interaction.options.getUser("user")?.id),
+            challengerColor: z
+              .string()
+              .parse(interaction.options.getString("your_color")),
+            clockTime: z
+              .string()
+              .parse(
+                interaction.options.getString("time") ?? (60 * 5).toString(),
+              ),
           }),
         );
 

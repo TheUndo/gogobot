@@ -1,4 +1,4 @@
-import { ClanJoinSetting, ClanMemberRole, type Command } from "!/common/types";
+import type { Command } from "!/common/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 import { clanAnnouncementCommand } from "./clanAnnouncement";
@@ -12,9 +12,10 @@ import { clanListCommand } from "./clanList";
 import { clanMembersCommand } from "./clanMembers";
 import { clanPromote } from "./clanPromote";
 import { clanSetChannel } from "./clanSetChannel";
-import { clanChangeNameCommand, clanSettingsCommand } from "./clanSettings";
+import { clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanChangeName } from "./clanChangeName";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -93,7 +94,13 @@ export const clan = {
     .addSubcommand((subCommand) =>
       subCommand
         .setName("change-name")
-        .setDescription("Change your clan's name"),
+        .setDescription("Change your clan's name")
+        .addStringOption((option) =>
+          option
+            .setName("name")
+            .setDescription("The new name")
+            .setRequired(true),
+        ),
     )
     .addSubcommand((subCommand) =>
       subCommand.setName("list").setDescription("List all clans in the server"),
@@ -228,11 +235,13 @@ export const clan = {
           }),
         );
       case "change-name":
-        return void (await clanChangeNameCommand({
-          userId: interaction.user.id,
-          guildId,
-          interaction,
-        }));
+        return await interaction.reply(
+          await clanChangeName({
+            authorId: interaction.user.id,
+            guildId,
+            name: interaction.options.getString("name") ?? "",
+          }),
+        );
       case "list":
         return await interaction.reply(
           await clanListCommand({
@@ -277,16 +286,3 @@ export const clan = {
     }
   },
 } satisfies Command;
-
-export const clanRoles: Record<ClanMemberRole, string> = {
-  [ClanMemberRole.Leader]: "leader",
-  [ClanMemberRole.Officer]: "officer",
-  [ClanMemberRole.Senior]: "senior",
-  [ClanMemberRole.Member]: "member",
-};
-
-export const joinSettings: Record<ClanJoinSetting, string> = {
-  [ClanJoinSetting.Open]: "Open",
-  [ClanJoinSetting.Approval]: "Invite only",
-  [ClanJoinSetting.Closed]: "Closed",
-};

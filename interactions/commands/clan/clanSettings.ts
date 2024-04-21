@@ -5,6 +5,7 @@ import {
   ClanMemberRole,
   type InteractionContext,
   InteractionType,
+  Colors,
 } from "!/common/types";
 import { prisma } from "!/prisma";
 import { ActionRowBuilder } from "@discordjs/builders";
@@ -18,7 +19,9 @@ import {
 import { z } from "zod";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
-import { clanRoleUpdate, validateClanName } from "./clanRole";
+import { clanRoleUpdate } from "./clanRole";
+import { clanNotification } from "./clanNotification";
+import { sprintf } from "sprintf-js";
 
 function generalSettings({
   description,
@@ -110,9 +113,13 @@ export async function clanSettingsCommand({
     });
   }
 
-  if (userClanMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(userClanMember.role),
+    )
+  ) {
     return interaction.reply({
-      content: "Only the clan leader can change the settings.",
+      content: "Only the clan leader and co-leaders can change the settings.",
       ephemeral: true,
     });
   }
@@ -142,73 +149,6 @@ export async function clanSettingsCommand({
         banner: clan.settingsBanner,
         logo: clan.settingsLogo,
       }),
-    }),
-  );
-}
-
-export async function clanChangeNameCommand({
-  userId,
-  guildId,
-  interaction,
-}: {
-  userId: string;
-  guildId: string;
-  interaction: ChatInputCommandInteraction<CacheType>;
-}) {
-  const userClanMember = await prisma.clanMember.findFirst({
-    where: {
-      discordUserId: userId,
-      clan: {
-        discordGuildId: guildId,
-      },
-    },
-  });
-
-  if (!userClanMember) {
-    return interaction.reply({
-      content: "You are not in a clan.",
-      ephemeral: true,
-    });
-  }
-
-  if (userClanMember.role !== ClanMemberRole.Leader) {
-    return interaction.reply({
-      content: "Only the clan leader can change the clan's name.",
-      ephemeral: true,
-    });
-  }
-
-  const clan = await prisma.clan.findUnique({
-    where: {
-      id: userClanMember.clanId,
-    },
-  });
-
-  if (!clan) {
-    return interaction.reply({
-      content: "Clan not found",
-      ephemeral: true,
-    });
-  }
-
-  return await interaction.showModal(
-    await clanSettingsModal({
-      clanId: userClanMember.clanId,
-      userId,
-      guildId,
-      fields: [
-        new ActionRowBuilder<TextInputBuilder>().addComponents(
-          new TextInputBuilder()
-            .setCustomId("name")
-            .setLabel("Name")
-            .setPlaceholder("Clan name")
-            .setStyle(TextInputStyle.Short)
-            .setMaxLength(32)
-            .setMinLength(1)
-            .setRequired(true)
-            .setValue(clan.name),
-        ),
-      ],
     }),
   );
 }
@@ -267,7 +207,7 @@ export async function clanSettingsButton(
 
   if (userClanMember.role !== ClanMemberRole.Leader) {
     return await interaction.reply({
-      content: "Only the clan leader can change the settings",
+      content: "Only the clan leader and co-leaders can change the settings",
       ephemeral: true,
     });
   }
@@ -394,9 +334,13 @@ export async function clanSettingsModalSubmit(
     });
   }
 
-  if (userClanMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(userClanMember.role),
+    )
+  ) {
     return await interaction.reply({
-      content: "Only the clan leader can change the settings",
+      content: "Only the clan leader and co-leaders can change the settings",
       ephemeral: true,
     });
   }
@@ -489,10 +433,6 @@ export async function clanSettingsModalSubmit(
     issues.push("Invalid logo URL");
   }
 
-  const rawName = interaction.fields.fields.find(
-    (v) => v.customId === "name",
-  )?.value;
-
   const currentClan = await prisma.clan.findUnique({
     where: {
       id: context.data.clanId,
@@ -504,33 +444,6 @@ export async function clanSettingsModalSubmit(
       content: "Clan not found",
       ephemeral: true,
     });
-  }
-
-  if (rawName && rawName !== currentClan.name) {
-    if (
-      currentClan.lastNameChange.getTime() + 1000 * 60 * 60 * 48 >
-      new Date().getTime()
-    ) {
-      issues.push("You can only change the clan name once every 48 hours");
-    } else {
-      const result = await validateClanName(rawName, guildId);
-
-      if ("error" in result) {
-        issues.push(result.error);
-      } else {
-        const { slug, name } = result;
-        await prisma.clan.update({
-          where: {
-            id: context.data.clanId,
-          },
-          data: {
-            name,
-            slug,
-            lastNameChange: new Date(),
-          },
-        });
-      }
-    }
   }
 
   await prisma.clan.update({
@@ -558,6 +471,12 @@ export async function clanSettingsModalSubmit(
   await clanRoleUpdate(context.data.clanId);
   await upsertClanChannel(context.data.clanId).then((channel) =>
     channel ? updateClanChannel(context.data.clanId, channel) : undefined,
+  );
+
+  await clanNotification(
+    context.data.clanId,
+    sprintf("<@%s> updated the clan settings", interaction.user.id),
+    Colors.Info,
   );
 
   if (issues.length) {

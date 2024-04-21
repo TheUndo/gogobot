@@ -8,19 +8,23 @@ export async function clanNotification(
   clanId: string,
   message: string,
   color: Colors,
-) {
+): Promise<{ ok: boolean }> {
   const clan = await prisma.clan.findUnique({
     where: { id: clanId },
   });
 
   if (!clan) {
-    return;
+    return {
+      ok: false,
+    };
   }
 
   const channel = await upsertClanChannel(clan.id);
 
   if (!channel) {
-    return;
+    return {
+      ok: false,
+    };
   }
 
   const embed = new EmbedBuilder()
@@ -31,7 +35,17 @@ export async function clanNotification(
       iconURL: clan.settingsLogo ?? undefined,
     });
 
-  await channel.send({ embeds: [embed] }).catch((e) => {
-    console.error("Error sending clan notification", e);
-  });
+  return await channel
+    .send({ embeds: [embed] })
+    .catch((e) => {
+      console.error("Error sending clan notification", e);
+      return {
+        ok: false,
+      };
+    })
+    .then(() => {
+      return {
+        ok: true,
+      };
+    });
 }

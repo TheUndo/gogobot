@@ -12,8 +12,8 @@ import {
 import * as R from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { clanRoles } from "./clan";
 import type { clanInteractionContext } from "./clanInfo";
+import { clanRoles } from "./clanConfig";
 
 type Options = {
   authorId: string;

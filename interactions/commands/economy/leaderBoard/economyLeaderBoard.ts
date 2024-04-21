@@ -1,9 +1,6 @@
-import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
-  ButtonAction,
-  type ButtonActionFormat,
   Colors,
   type Command,
   type InteractionContext,
@@ -24,13 +21,20 @@ import {
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 
-export enum LeaderBoardType {
+enum LeaderBoardType {
   Bank = "BANK",
   Wallet = "WALLET",
 }
 
+enum LeaderBoardVariant {
+  Users = "USERS",
+  Clans = "CLANS",
+}
+
 const leaderBoardChangeTypeContext = z.object({
   type: z.nativeEnum(LeaderBoardType),
+  page: z.number().int().min(1),
+  variant: z.nativeEnum(LeaderBoardVariant),
 });
 
 export const leaderBoard = {
@@ -80,7 +84,7 @@ export const leaderBoard = {
       }
       case "wallet": {
         return await interaction.reply(
-          await createLeaderBoard({
+          await createLeaderUserBoard({
             userId: interaction.user.id,
             guildId,
             page: 1,
@@ -90,7 +94,7 @@ export const leaderBoard = {
       }
       default: {
         return await interaction.reply(
-          await createLeaderBoard({
+          await createLeaderUserBoard({
             userId: interaction.user.id,
             guildId,
             page: 1,
@@ -111,7 +115,7 @@ type Options = {
 
 const pageSize = 15;
 
-export async function createLeaderBoard({
+export async function createLeaderUserBoard({
   userId,
   guildId,
   page = 1,
@@ -241,46 +245,73 @@ export async function createLeaderBoard({
 
   embed.setDescription(listItems.join("\n"));
 
-  const [leaderBoardChangeTypeInteraction, showClanLBInteraction] =
-    await prisma.$transaction([
-      prisma.interaction.create({
-        data: {
-          type: InteractionType.LeaderBoardChangeType,
-          guildId,
-          userDiscordId: userId,
-          payload: JSON.stringify({
-            type:
-              type === LeaderBoardType.Bank
-                ? LeaderBoardType.Wallet
-                : LeaderBoardType.Bank,
-          } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
-        },
-      }),
-      prisma.interaction.create({
-        data: {
-          type: InteractionType.LeaderBoardShowClans,
-          guildId,
-          userDiscordId: userId,
-        },
-      }),
-    ]);
+  const [
+    leaderBoardPreviousPageInteraction,
+    leaderBoardNextPageInteraction,
+    leaderBoardChangeTypeInteraction,
+    showClanLBInteraction,
+  ] = await prisma.$transaction([
+    prisma.interaction.create({
+      data: {
+        type: InteractionType.LeaderBoardChangeType,
+        guildId,
+        userDiscordId: userId,
+        payload: JSON.stringify({
+          type,
+          page: page - 1,
+          variant: LeaderBoardVariant.Users,
+        } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
+      },
+    }),
+    prisma.interaction.create({
+      data: {
+        type: InteractionType.LeaderBoardChangeType,
+        guildId,
+        userDiscordId: userId,
+        payload: JSON.stringify({
+          type,
+          page: page + 1,
+          variant: LeaderBoardVariant.Users,
+        } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
+      },
+    }),
+    prisma.interaction.create({
+      data: {
+        type: InteractionType.LeaderBoardChangeType,
+        guildId,
+        userDiscordId: userId,
+        payload: JSON.stringify({
+          type:
+            type === LeaderBoardType.Bank
+              ? LeaderBoardType.Wallet
+              : LeaderBoardType.Bank,
+          page: 1,
+          variant: LeaderBoardVariant.Users,
+        } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
+      },
+    }),
+    prisma.interaction.create({
+      data: {
+        type: InteractionType.LeaderBoardChangeType,
+        guildId,
+        userDiscordId: userId,
+        payload: JSON.stringify({
+          type: LeaderBoardType.Bank,
+          page: 1,
+          variant: LeaderBoardVariant.Clans,
+        } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
+      },
+    }),
+  ]);
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(
-        `${ButtonAction.LeaderBoardChangePage}+${
-          page - 1
-        }` satisfies ButtonActionFormat,
-      )
+      .setCustomId(leaderBoardPreviousPageInteraction.id)
       .setEmoji("⬅️")
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(page === 1),
     new ButtonBuilder()
-      .setCustomId(
-        `${ButtonAction.LeaderBoardChangePage}+${
-          page + 1
-        }` satisfies ButtonActionFormat,
-      )
+      .setCustomId(leaderBoardNextPageInteraction.id)
       .setEmoji("➡️")
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(page === pages),
@@ -298,113 +329,6 @@ export async function createLeaderBoard({
     embeds: [embed],
     components: [row],
   };
-}
-
-export async function leaderBoardChangeTypeButton(
-  interactionContext: InteractionContext,
-  interaction: AnyInteraction,
-) {
-  if (!interaction.isButton()) {
-    return await interaction.reply(
-      wrongInteractionType(interactionContext, interaction),
-    );
-  }
-
-  if (interaction.user.id !== interactionContext.userDiscordId) {
-    return await interaction.reply(
-      notYourInteraction(interactionContext, interaction),
-    );
-  }
-
-  const context = leaderBoardChangeTypeContext.safeParse(
-    JSON.parse(interactionContext.payload ?? "{}"),
-  );
-
-  if (!context.success) {
-    return await interaction.reply({
-      content: "An error occurred. Please try again later.",
-    });
-  }
-
-  const guildId = interaction.guildId;
-
-  if (!guildId) {
-    return await interaction.reply(
-      "This command can only be used in a server.",
-    );
-  }
-
-  return await interaction.update(
-    await createLeaderBoard({
-      userId: interaction.user.id,
-      guildId,
-      page: 1,
-      type: context.data.type,
-    }),
-  );
-}
-export async function leaderBoardUsersButton(
-  interactionContext: InteractionContext,
-  interaction: AnyInteraction,
-) {
-  if (!interaction.isButton()) {
-    return interaction.reply(
-      wrongInteractionType(interactionContext, interaction),
-    );
-  }
-
-  if (interaction.user.id !== interactionContext.userDiscordId) {
-    return await interaction.reply(
-      notYourInteraction(interactionContext, interaction),
-    );
-  }
-
-  const guildId = interaction.guildId;
-
-  if (!guildId) {
-    return interaction.reply("This command can only be used in a server.");
-  }
-
-  return interaction.update(
-    await createLeaderBoard({
-      userId: interaction.user.id,
-      guildId,
-      page: 1,
-      type: LeaderBoardType.Bank,
-    }),
-  );
-}
-
-export async function leaderBoardClanButton(
-  interactionContext: InteractionContext,
-  interaction: AnyInteraction,
-) {
-  if (!interaction.isButton()) {
-    return interaction.reply(
-      wrongInteractionType(interactionContext, interaction),
-    );
-  }
-
-  if (interaction.user.id !== interactionContext.userDiscordId) {
-    return await interaction.reply(
-      notYourInteraction(interactionContext, interaction),
-    );
-  }
-
-  const guildId = interaction.guildId;
-
-  if (!guildId) {
-    return interaction.reply("This command can only be used in a server.");
-  }
-
-  return interaction.update(
-    await createClanLeaderBoard({
-      userId: interaction.user.id,
-      guildId,
-      page: 1,
-      type: LeaderBoardType.Bank,
-    }),
-  );
 }
 
 async function createClanLeaderBoard({ userId, guildId, page = 1 }: Options) {
@@ -450,9 +374,14 @@ async function createClanLeaderBoard({ userId, guildId, page = 1 }: Options) {
 
   const showNormalLBInteraction = await prisma.interaction.create({
     data: {
-      type: InteractionType.LeaderBoardShowUsers,
+      type: InteractionType.LeaderBoardChangeType,
       guildId,
       userDiscordId: userId,
+      payload: JSON.stringify({
+        type: LeaderBoardType.Bank,
+        page: 1,
+        variant: LeaderBoardVariant.Users,
+      } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
     },
   });
 
@@ -491,18 +420,26 @@ async function createClanLeaderBoard({ userId, guildId, page = 1 }: Options) {
     await prisma.$transaction([
       prisma.interaction.create({
         data: {
-          type: InteractionType.LeaderBoardClanChangeChangePage,
+          type: InteractionType.LeaderBoardChangeType,
           guildId,
           userDiscordId: userId,
-          payload: (page - 1).toString(),
+          payload: JSON.stringify({
+            type: LeaderBoardType.Bank,
+            page: page - 1,
+            variant: LeaderBoardVariant.Clans,
+          } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
         },
       }),
       prisma.interaction.create({
         data: {
-          type: InteractionType.LeaderBoardClanChangeChangePage,
+          type: InteractionType.LeaderBoardChangeType,
           guildId,
           userDiscordId: userId,
-          payload: (page + 1).toString(),
+          payload: JSON.stringify({
+            type: LeaderBoardType.Bank,
+            page: page + 1,
+            variant: LeaderBoardVariant.Clans,
+          } satisfies z.infer<typeof leaderBoardChangeTypeContext>),
         },
       }),
     ]);
@@ -527,46 +464,54 @@ async function createClanLeaderBoard({ userId, guildId, page = 1 }: Options) {
   };
 }
 
-export async function leaderBoardClanChangePage(
+export async function leaderBoardClanChangeType(
   interactionContext: InteractionContext,
   interaction: AnyInteraction,
 ) {
   if (!interaction.isButton()) {
-    return interaction.reply(
-      wrongInteractionType(interactionContext, interaction),
-    );
-  }
-
-  if (interaction.user.id !== interactionContext.userDiscordId) {
     return await interaction.reply(
-      notYourInteraction(interactionContext, interaction),
+      wrongInteractionType(interactionContext, interaction),
     );
   }
 
   const guildId = interaction.guildId;
 
   if (!guildId) {
-    return interaction.reply("This command can only be used in a server.");
+    return await interaction.reply({
+      content: "This command can only be used in a server.",
+      ephemeral: true,
+    });
   }
 
-  const page = z.coerce
-    .number()
-    .int()
-    .min(1)
-    .safeParse(interactionContext.payload);
-
-  if (!page.success) {
-    return interaction.reply(
-      "Invalid page number, please try again with a valid page number.",
-    );
-  }
-
-  return interaction.update(
-    await createClanLeaderBoard({
-      userId: interaction.user.id,
-      guildId,
-      page: page.data,
-      type: LeaderBoardType.Bank,
-    }),
+  const context = leaderBoardChangeTypeContext.safeParse(
+    JSON.parse(interactionContext.payload ?? "{}"),
   );
+
+  if (!context.success) {
+    return await interaction.reply({
+      content: "Unable to parse leader board context. Contact developers.",
+      ephemeral: true,
+    });
+  }
+
+  const content =
+    context.data.variant === LeaderBoardVariant.Clans
+      ? await createClanLeaderBoard({
+          userId: interaction.user.id,
+          guildId,
+          page: context.data.page,
+          type: context.data.type,
+        })
+      : await createLeaderUserBoard({
+          userId: interaction.user.id,
+          guildId,
+          page: context.data.page,
+          type: context.data.type,
+        });
+
+  if (interaction.user.id !== interactionContext.userDiscordId) {
+    return await interaction.reply(content);
+  }
+
+  return await interaction.update(content);
 }

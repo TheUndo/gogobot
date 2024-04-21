@@ -32,6 +32,7 @@ export async function clanInvite({
             in: [
               ClanMemberRole.Leader,
               ClanMemberRole.Officer,
+              ClanMemberRole.CoLeader,
               ClanMemberRole.Senior,
             ],
           },

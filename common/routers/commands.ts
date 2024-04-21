@@ -11,7 +11,6 @@ import { daily } from "!/interactions/commands/economy/economyDaily";
 import { fish } from "!/interactions/commands/economy/economyFish";
 import { gamble } from "!/interactions/commands/economy/economyGamble";
 import { gift } from "!/interactions/commands/economy/economyGift";
-import { leaderBoard } from "!/interactions/commands/economy/economyLeaderboard";
 import { mine } from "!/interactions/commands/economy/economyMine";
 import { prostitute } from "!/interactions/commands/economy/economyProstitute";
 import { rob } from "!/interactions/commands/economy/economyRob";
@@ -41,7 +40,8 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
-import type { Command } from "../types";
+import type { Command } from "!/common/types";
+import { leaderBoard } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -78,6 +78,7 @@ const commandsRegistrar: Command[] = [
   prostitute,
   soldier,
   mine,
+  /* connect4, */
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

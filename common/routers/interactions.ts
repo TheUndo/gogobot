@@ -25,12 +25,6 @@ import {
   createGuildWizardStep2,
 } from "!/interactions/commands/clan/createClanWizard";
 import { gambleInteractionButton } from "!/interactions/commands/economy/economyGamble";
-import {
-  leaderBoardChangeTypeButton,
-  leaderBoardClanButton,
-  leaderBoardClanChangePage,
-  leaderBoardUsersButton,
-} from "!/interactions/commands/economy/economyLeaderboard";
 import { prisma } from "!/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
@@ -39,6 +33,9 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { connect4accept } from "!/interactions/commands/connect4/connect4start";
+import { connect4move } from "!/interactions/commands/connect4/connect4move";
+import { leaderBoardClanChangeType } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   if ("customId" in interaction && !interaction.customId.includes("+")) {
@@ -111,28 +108,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
             interactionContext,
             interaction,
           ));
-        case InteractionType.LeaderBoardShowClans:
-          return void (await leaderBoardClanButton(
-            interactionContext,
-            interaction,
-          ));
-        case InteractionType.LeaderBoardShowUsers:
-          return void (await leaderBoardUsersButton(
-            interactionContext,
-            interaction,
-          ));
-        case InteractionType.LeaderBoardClanChangeChangePage:
-          return void (await leaderBoardClanChangePage(
-            interactionContext,
-            interaction,
-          ));
         case InteractionType.ClanListChangePage:
           return void (await clanListChangePage(
             interactionContext,
             interaction,
           ));
         case InteractionType.LeaderBoardChangeType:
-          return void (await leaderBoardChangeTypeButton(
+          return void (await leaderBoardClanChangeType(
             interactionContext,
             interaction,
           ));
@@ -146,6 +128,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
             interactionContext,
             interaction,
           ));
+        case InteractionType.Connect4AcceptInvitation:
+          return void (await connect4accept(interactionContext, interaction));
+        case InteractionType.Connect4Move:
+          return void (await connect4move(interactionContext, interaction));
       }
     }
   }

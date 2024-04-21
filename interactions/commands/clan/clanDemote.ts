@@ -1,7 +1,9 @@
 import { ClanMemberRole } from "!/common/types";
 import { prisma } from "!/prisma";
 import { sprintf } from "sprintf-js";
-import { clanRoles } from "./clan";
+import { clanRoles } from "./clanConfig";
+import { z } from "zod";
+import { clanSendNotificationOrMessage } from "./clanSendNotificationOrMessage";
 
 type Options = {
   authorId: string;
@@ -52,9 +54,13 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
     };
   }
 
-  if (demotingMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(demotingMember.role),
+    )
+  ) {
     return {
-      content: "Only the clan leader can promote members.",
+      content: "Only the clan leader and co-leaders can demote members.",
       ephemeral: true,
     };
   }
@@ -86,6 +92,20 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
     };
   }
 
+  if (memberToDemote.role === ClanMemberRole.Member) {
+    return {
+      content: "This member is already a member.",
+      ephemeral: true,
+    };
+  }
+
+  if (memberToDemote.role === ClanMemberRole.Leader) {
+    return {
+      content: "You cannot demote the clan leader.",
+      ephemeral: true,
+    };
+  }
+
   if (memberToDemote.role === ClanMemberRole.Senior) {
     await prisma.clanMember.update({
       where: {
@@ -99,14 +119,15 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
       },
     });
 
-    return {
-      content: sprintf(
+    return await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
         "<@%s> has been demoted to %s in **%s**.",
         mentionedId,
         clanRoles[ClanMemberRole.Member],
         clan.name,
       ),
-    };
+    );
   }
 
   if (memberToDemote.role === ClanMemberRole.Officer) {
@@ -122,15 +143,46 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
       },
     });
 
-    return {
-      content: sprintf(
+    return await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
         "<@%s> has been demoted to %s in **%s**.",
         mentionedId,
         clanRoles[ClanMemberRole.Senior],
         clan.name,
       ),
-      ephemeral: true,
-    };
+    );
+  }
+
+  if (memberToDemote.role === ClanMemberRole.CoLeader) {
+    if (demotingMember.role !== ClanMemberRole.Leader) {
+      return {
+        content: "Only the clan leader can demote co-leaders.",
+        ephemeral: true,
+      };
+    }
+
+    await prisma.clanMember.update({
+      where: {
+        clanId_discordUserId: {
+          clanId: clan.id,
+          discordUserId: memberToDemote.discordUserId,
+        },
+      },
+      data: {
+        role: ClanMemberRole.Officer,
+      },
+    });
+
+    return await clanSendNotificationOrMessage(
+      clan.id,
+      sprintf(
+        "<@%s> has been demoted to %s in **%s**.",
+        mentionedId,
+        clanRoles[ClanMemberRole.Officer],
+        clan.name,
+      ),
+    );
   }
 
   return {

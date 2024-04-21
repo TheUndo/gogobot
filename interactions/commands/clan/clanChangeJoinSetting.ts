@@ -1,15 +1,19 @@
 import { z } from "zod";
-import { notYourInteraction } from "../../../common/logic/responses/notYourInteraction";
-import { wrongGuildForInteraction } from "../../../common/logic/responses/wrongGuildForInteraction";
-import { wrongInteractionType } from "../../../common/logic/responses/wrongInteractionType";
+import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
+import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
+import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
 import {
   type AnyInteraction,
   ClanJoinSetting,
   ClanMemberRole,
   type InteractionContext,
-} from "../../../common/types";
-import { prisma } from "../../../prisma";
+  Colors,
+} from "!/common/types";
+import { prisma } from "!/prisma";
 import { clanInteractionContext, showClanInfo } from "./clanInfo";
+import { clanNotification } from "./clanNotification";
+import { sprintf } from "sprintf-js";
+import { joinSettings } from "./clanConfig";
 
 export async function clanChangeJoinSetting(
   interactionContext: InteractionContext,
@@ -61,7 +65,7 @@ export async function clanChangeJoinSetting(
 
   if (!clan) {
     return await interaction.reply({
-      content: "Clan not found",
+      content: "Clan not found.",
       ephemeral: true,
     });
   }
@@ -77,14 +81,18 @@ export async function clanChangeJoinSetting(
 
   if (!userClanMember) {
     return await interaction.reply({
-      content: "You are not in this clan",
+      content: "You are not in this clan.",
       ephemeral: true,
     });
   }
 
-  if (userClanMember.role !== ClanMemberRole.Leader) {
+  if (
+    ![ClanMemberRole.Leader, ClanMemberRole.CoLeader].includes(
+      z.nativeEnum(ClanMemberRole).parse(userClanMember.role),
+    )
+  ) {
     return await interaction.reply({
-      content: "Only the clan leader can change settings",
+      content: "Only the clan leader and co-leaders can change availability settings.",
       ephemeral: true,
     });
   }
@@ -106,6 +114,16 @@ export async function clanChangeJoinSetting(
       settingsJoin: value.data,
     },
   });
+
+  await clanNotification(
+    clan.id,
+    sprintf(
+      "<@%s> has changed the clan's join setting to **%s**",
+      interaction.user.id,
+      joinSettings[value.data],
+    ),
+    Colors.Info,
+  );
 
   return await interaction.update(
     await showClanInfo({

@@ -3,7 +3,6 @@ import { type Board, GameState, SlotState } from "./c4types";
 import { calculateWinner } from "./calculateWinner";
 import { createEmptyBoard } from "./createEmptyBoard";
 import { mergeBoards } from "./mergeBoards";
-import { renderBoard } from "./renderBoard";
 
 describe("connect 4 calculate winner", () => {
   it("should calculate horizontal winner", () => {
@@ -72,7 +71,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it("should calculate left diagonal winner", async () => {
+  it("should calculate left diagonal winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -83,20 +82,6 @@ describe("connect 4 calculate winner", () => {
         ],
       ],
     });
-
-    await renderBoard(
-      calculateWinner(
-        mergeBoards(createEmptyBoard(), {
-          slots: [
-            [
-              { x: 0, y: 0, state: SlotState.Red },
-              { x: 0, y: 1, state: SlotState.Red },
-              { x: 0, y: 2, state: SlotState.Red },
-            ],
-          ],
-        }),
-      ),
-    );
 
     expect(calculateWinner(board).gameState).toBe(GameState.RedWin);
   });
