@@ -54,11 +54,11 @@ const rewards: Record<
   },
   [Resources.Silver]: {
     message: "You found silver! ⛏️",
-    generateReward: async () => randomNumber(5_000, 10_000),
+    generateReward: async () => randomNumber(30_000, 50_000),
   },
   [Resources.Iron]: {
     message: "You found iron! ⛏️",
-    generateReward: async () => randomNumber(30_000, 50_000),
+    generateReward: async () => randomNumber(5_000, 10_000),
   },
   [Resources.Gold]: {
     message: "You found gold! ⛏️",
