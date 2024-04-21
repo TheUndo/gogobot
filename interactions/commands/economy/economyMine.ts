@@ -34,8 +34,8 @@ const odds: Record<Resources, number> = {
   [Resources.Silver]: 100,
   [Resources.Iron]: 30,
   [Resources.Gold]: 20,
-  [Resources.Emerald]: 7,
-  [Resources.Diamond]: 3,
+  [Resources.Emerald]: 4,
+  [Resources.Diamond]: 1,
   [Resources.RockSlide]: 30,
   [Resources.DeadEnd]: 30,
   [Resources.Nothing]: 30,
@@ -70,7 +70,7 @@ const rewards: Record<
   },
   [Resources.Diamond]: {
     message: "You found Diamond! 💎",
-    generateReward: async () => randomNumber(1_000_0000, 1_950_000),
+    generateReward: async () => randomNumber(1_000_0000, 1_200_000),
   },
   [Resources.RockSlide]: {
     message: "You were caught on a rockslide and had to pay for injuries. 🩹",
