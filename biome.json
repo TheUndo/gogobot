@@ -18,6 +18,9 @@
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
       },
+      "style": {
+        "useBlockStatements": "error"
+      },
       "security": {
         "noDangerouslySetInnerHtml": "off"
       }
@@ -29,7 +32,9 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "semicolons": "always"
+      "semicolons": "always",
+      "bracketSameLine": true,
+      "arrowParentheses": "always"
     }
   }
 }
