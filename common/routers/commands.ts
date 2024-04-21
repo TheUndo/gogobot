@@ -32,6 +32,8 @@ import { subscriptions } from "!/interactions/commands/subscriptions";
 import { unsubscribe } from "!/interactions/commands/unsubscribe";
 import { virus } from "!/interactions/commands/virus";
 import { welcome } from "!/interactions/commands/welcome";
+import { mine } from "!/interactions/commands/economy/economyMine";
+
 import {
   type CacheType,
   type ChatInputCommandInteraction,
@@ -75,6 +77,7 @@ const commandsRegistrar: Command[] = [
   gamble,
   prostitute,
   soldier,
+  mine,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
