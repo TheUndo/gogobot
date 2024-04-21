@@ -179,7 +179,7 @@ export const mine = {
     const clanBonusMultiplier =
       reward < 0 ? 0 : userClan?.level ? userClan.level / 40 : 0;
 
-    const clanBonus = Math.round(reward + clanBonusMultiplier);
+    const clanBonus = Math.round(reward * clanBonusMultiplier);
     const totalReward = reward + clanBonus;
 
     await prisma.$transaction([
@@ -190,12 +190,10 @@ export const mine = {
           type: WorkType.Mine,
         },
       }),
-
       prisma.wallet.update({
         where: {
           id: wallet.id,
         },
-
         data: {
           balance: {
             increment: totalReward,
@@ -213,7 +211,7 @@ export const mine = {
         sprintf(
           "%s%s",
           message,
-          clanBonusMultiplier > 0 && reward > 0
+          clanBonusMultiplier > 0 && totalReward > 0
             ? sprintf(
                 "Clan Bonus: **+%s** (%s)",
                 makeDollars(formatNumber(clanBonus)),

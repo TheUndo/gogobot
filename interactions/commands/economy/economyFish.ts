@@ -239,7 +239,7 @@ export const fish = {
         sprintf(
           "%s%s",
           message,
-          clanBonusMultiplier > 0 && reward > 0
+          clanBonusMultiplier > 0 && totalReward > 0
             ? sprintf(
                 " Clan bonus: **+%s** (%s)",
                 makeDollars(formatNumber(clanBonus)),
