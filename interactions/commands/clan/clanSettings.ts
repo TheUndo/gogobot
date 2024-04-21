@@ -211,7 +211,7 @@ export async function clanSettingsButton(
     )
   ) {
     return await interaction.reply({
-      content: "Only the clan leader and co-leaders can change the settings",
+      content: "Only the clan leader and co-leaders can change the settings.",
       ephemeral: true,
     });
   }
@@ -344,7 +344,7 @@ export async function clanSettingsModalSubmit(
     )
   ) {
     return await interaction.reply({
-      content: "Only the clan leader and co-leaders can change the settings",
+      content: "Only the clan leader and co-leaders can change the settings.",
       ephemeral: true,
     });
   }
@@ -402,7 +402,7 @@ export async function clanSettingsModalSubmit(
     .safeParse(rawAbbreviation);
 
   if (rawAbbreviation && !abbreviation.success) {
-    issues.push("Invalid clan tag, use alphanumeric tag 1-4 characters");
+    issues.push("Invalid clan tag, use alphanumeric tag 1-4 characters.");
   }
 
   const rawBanner = interaction.fields.fields.find(
@@ -479,7 +479,7 @@ export async function clanSettingsModalSubmit(
 
   await clanNotification(
     context.data.clanId,
-    sprintf("<@%s> updated the clan settings", interaction.user.id),
+    sprintf("<@%s> updated the clan settings.", interaction.user.id),
     Colors.Info,
   );
 
@@ -493,7 +493,7 @@ export async function clanSettingsModalSubmit(
   }
 
   return await interaction.reply({
-    content: "Settings updated",
+    content: "Settings updated.",
     ephemeral: true,
   });
 }
