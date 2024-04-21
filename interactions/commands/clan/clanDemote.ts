@@ -1,4 +1,4 @@
-import { ClanMemberRole } from "!/common/types";
+import { ClanMemberRole, Colors } from "!/common/types";
 import { prisma } from "!/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
@@ -127,6 +127,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Member],
         clan.name,
       ),
+      Colors.Warning,
     );
   }
 
@@ -151,6 +152,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Senior],
         clan.name,
       ),
+      Colors.Warning,
     );
   }
 
@@ -182,6 +184,7 @@ export async function clanDemote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Officer],
         clan.name,
       ),
+      Colors.Warning,
     );
   }
 

@@ -2,8 +2,8 @@ import { ClanMemberRole, Colors } from "!/common/types";
 import { prisma } from "!/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { clanNotification } from "./clanNotification";
 import { removeClanRole } from "./clanRole";
+import { clanSendNotificationOrMessage } from "./clanSendNotificationOrMessage";
 
 type Options = {
   authorId: string;
@@ -66,33 +66,45 @@ export async function clanKick({ authorId, mentionedId, guildId }: Options) {
   }
 
   if (
-    ![ClanMemberRole.Leader, ClanMemberRole.Officer].includes(
-      z.nativeEnum(ClanMemberRole).parse(kickingMember.role),
-    )
+    ![
+      ClanMemberRole.Leader,
+      ClanMemberRole.CoLeader,
+      ClanMemberRole.Officer,
+    ].includes(z.nativeEnum(ClanMemberRole).parse(kickingMember.role))
   ) {
     return {
-      content: "You are not a leader or officer of the clan",
+      content: "You are not a leader, co-leader or officer of the clan.",
+      ephemeral: true,
+    };
+  }
+
+  if (memberToKick.discordUserId === authorId) {
+    return {
+      content: "You cannot kick yourself.",
       ephemeral: true,
     };
   }
 
   if (memberToKick.role === ClanMemberRole.Leader) {
     return {
-      content: "You cannot kick the leader",
+      content: "You cannot kick the leader.",
       ephemeral: true,
     };
   }
 
-  if (
-    memberToKick.role === ClanMemberRole.Officer &&
-    kickingMember.role === ClanMemberRole.Officer
-  ) {
-    if (kickingMember.role === ClanMemberRole.Officer) {
-      return {
-        content: "Officers cannot kick other officers",
-        ephemeral: true,
-      };
-    }
+  const myRoleIndex = Object.values(ClanMemberRole).indexOf(
+    z.nativeEnum(ClanMemberRole).parse(kickingMember.role),
+  );
+
+  const memberToKickRoleIndex = Object.values(ClanMemberRole).indexOf(
+    z.nativeEnum(ClanMemberRole).parse(memberToKick.role),
+  );
+
+  if (myRoleIndex >= memberToKickRoleIndex) {
+    return {
+      content: "You cannot kick a member with the same or higher rank.",
+      ephemeral: true,
+    };
   }
 
   await prisma.$transaction([
@@ -129,24 +141,14 @@ export async function clanKick({ authorId, mentionedId, guildId }: Options) {
       })
       .catch(() => {}),
     removeClanRole(clan.id, mentionedId),
-    clanNotification(
-      clan.id,
-      sprintf(
-        "<@%s> has been kicked out of **%s** by <@%s>",
-        mentionedId,
-        clan.name,
-        kickingMember.discordUserId,
-      ),
-      Colors.Error,
-    ),
   ]);
 
-  return {
-    content: sprintf(
-      "<@%s> has been kicked out of **%s** by <@%s>",
-      mentionedId,
-      clan.name,
-      kickingMember.discordUserId,
-    ),
-  };
+  const message = sprintf(
+    "<@%s> has been kicked out of **%s** by <@%s>",
+    mentionedId,
+    clan.name,
+    kickingMember.discordUserId,
+  );
+
+  return await clanSendNotificationOrMessage(clan.id, message, Colors.Error);
 }

@@ -133,6 +133,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Senior],
         clan.name,
       ),
+      Colors.Success,
     );
   }
 
@@ -157,6 +158,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.Officer],
         clan.name,
       ),
+      Colors.Success,
     );
   }
 
@@ -188,6 +190,7 @@ export async function clanPromote({ authorId, mentionedId, guildId }: Options) {
         clanRoles[ClanMemberRole.CoLeader],
         clan.name,
       ),
+      Colors.Success,
     );
   }
 
@@ -398,6 +401,7 @@ export async function clanTransferLeadershipConfirm(
         clan.name,
         context.data.oldLeaderUserId,
       ),
+      Colors.Success,
     ),
   );
 }
