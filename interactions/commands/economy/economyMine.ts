@@ -34,8 +34,8 @@ const odds: Record<Resources, number> = {
   [Resources.Silver]: 100,
   [Resources.Iron]: 30,
   [Resources.Gold]: 20,
-  [Resources.Emerald]: 7,
-  [Resources.Diamond]: 3,
+  [Resources.Emerald]: 4,
+  [Resources.Diamond]: 1,
   [Resources.RockSlide]: 30,
   [Resources.DeadEnd]: 30,
   [Resources.Nothing]: 30,
@@ -70,7 +70,7 @@ const rewards: Record<
   },
   [Resources.Diamond]: {
     message: "You found Diamond! 💎",
-    generateReward: async () => randomNumber(1_000_0000, 1_950_000),
+    generateReward: async () => randomNumber(1_000_0000, 1_200_000),
   },
   [Resources.RockSlide]: {
     message: "You were caught on a rockslide and had to pay for injuries. 🩹",
@@ -177,9 +177,9 @@ export const mine = {
     });
 
     const clanBonusMultiplier =
-      reward < 0 ? 0 : userClan?.level ? userClan.level / 20 : 0;
+      reward < 0 ? 0 : userClan?.level ? userClan.level / 40 : 0;
 
-    const clanBonus = Math.round(reward + clanBonusMultiplier);
+    const clanBonus = Math.round(reward * clanBonusMultiplier);
     const totalReward = reward + clanBonus;
 
     await prisma.$transaction([
@@ -190,12 +190,10 @@ export const mine = {
           type: WorkType.Mine,
         },
       }),
-
       prisma.wallet.update({
         where: {
           id: wallet.id,
         },
-
         data: {
           balance: {
             increment: totalReward,
@@ -213,11 +211,11 @@ export const mine = {
         sprintf(
           "%s%s",
           message,
-          clanBonusMultiplier > 0 && reward > 0
+          clanBonusMultiplier > 0 && totalReward > 0
             ? sprintf(
                 "Clan Bonus: **+%s** (%s)",
                 makeDollars(formatNumber(clanBonus)),
-                `${((clanBonusMultiplier + 1) * 100 - 100).toFixed(0)}`,
+                `${((clanBonusMultiplier + 1) * 100 - 100).toFixed(0)}%`,
               )
             : "",
         ),
