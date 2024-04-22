@@ -1,3 +1,4 @@
+import { getName } from "!/common/logic/discordCache/store";
 import { ClanMemberRole, Colors, InteractionType } from "!/common/types";
 import { addCurrency } from "!/common/utils/addCurrency";
 import { capitalize } from "!/common/utils/capitalize";
@@ -14,7 +15,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { clanRoles } from "./clanConfig";
 import type { clanInteractionContext } from "./clanInfo";
-import { getName } from "!/common/logic/discordCache/store";
 
 type Options = {
   authorId: string;

@@ -31,12 +31,12 @@ import { leaderBoardClanChangeType } from "!/interactions/commands/economy/leade
 import { prisma } from "!/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
+import { setName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
-import { setName } from "../logic/discordCache/store";
 
 client.on(Events.InteractionCreate, async (interaction) => {
   setName({

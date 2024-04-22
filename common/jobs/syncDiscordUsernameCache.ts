@@ -1,6 +1,6 @@
 import { prisma } from "!/prisma";
-import { _userNamesCache } from "../logic/discordCache/store";
 import * as R from "remeda";
+import { _userNamesCache } from "../logic/discordCache/store";
 
 export async function syncDiscordUsernameCache(): Promise<void> {
   const chunked = R.chunk([..._userNamesCache], 100);

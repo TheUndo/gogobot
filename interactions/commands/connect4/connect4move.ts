@@ -4,6 +4,7 @@ import {
   SlotState,
   boardSchema,
 } from "!/common/logic/c4/c4types";
+import { calculateWinner } from "!/common/logic/c4/calculateWinner";
 import { checkColumn } from "!/common/logic/c4/checkColumn";
 import { makeMove } from "!/common/logic/c4/makeMove";
 import type { AnyInteraction, InteractionContext } from "!/common/types";
@@ -12,7 +13,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4interactionContext } from "./connect4config";
 import { connect4display } from "./connect4display";
-import { calculateWinner } from "!/common/logic/c4/calculateWinner";
 
 export async function connect4move(
   interactionContext: InteractionContext,

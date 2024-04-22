@@ -1,3 +1,4 @@
+import { getName } from "!/common/logic/discordCache/store";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
@@ -25,7 +26,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { joinSettings } from "./clanConfig";
 import { showClanMembers } from "./clanMembers";
-import { getName } from "!/common/logic/discordCache/store";
 
 export const clanInteractionContext = z.object({
   clanId: z.string(),

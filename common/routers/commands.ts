@@ -34,6 +34,7 @@ import { virus } from "!/interactions/commands/virus";
 import { welcome } from "!/interactions/commands/welcome";
 
 import type { Command } from "!/common/types";
+import { connect4 } from "!/interactions/commands/connect4/connect4";
 import { leaderBoard } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import {
   type CacheType,
@@ -42,7 +43,6 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
-import { connect4 } from "!/interactions/commands/connect4/connect4";
 
 const commandsRegistrar: Command[] = [
   ping,
