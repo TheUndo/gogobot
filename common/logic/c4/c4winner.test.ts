@@ -31,6 +31,32 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
+  it("should calculate horizontal bottom row winner", () => {
+    const board: Board = mergeBoards(createEmptyBoard(), {
+      slots: [
+        [
+          { x: 2, y: 5, state: SlotState.Red },
+          { x: 3, y: 5, state: SlotState.Red },
+          { x: 4, y: 5, state: SlotState.Red },
+          { x: 5, y: 5, state: SlotState.Red },
+          { x: 6, y: 5, state: SlotState.Red },
+        ],
+      ],
+    });
+
+    const result = calculateWinner(board);
+
+    expect(result.gameState).toBe(GameState.RedWin);
+    expect(result.winningSlots?.length).toBe(5);
+    expect(result.winningSlots).toEqual([
+      { x: 2, y: 5, state: SlotState.Red },
+      { x: 3, y: 5, state: SlotState.Red },
+      { x: 4, y: 5, state: SlotState.Red },
+      { x: 5, y: 5, state: SlotState.Red },
+      { x: 6, y: 5, state: SlotState.Red },
+    ]);
+  });
+
   it("should calculate vertical winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [

@@ -42,6 +42,7 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
+import { connect4 } from "!/interactions/commands/connect4/connect4";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -78,7 +79,7 @@ const commandsRegistrar: Command[] = [
   prostitute,
   soldier,
   mine,
-  /* connect4, */
+  connect4,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

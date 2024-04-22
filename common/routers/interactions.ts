@@ -36,8 +36,15 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { setName } from "../logic/discordCache/store";
 
 client.on(Events.InteractionCreate, async (interaction) => {
+  setName({
+    guildId: interaction.guildId,
+    userId: interaction.user.id,
+    username: interaction.user.username,
+  });
+
   if ("customId" in interaction && !interaction.customId.includes("+")) {
     const interactionContext = await prisma.interaction.findUnique({
       where: {

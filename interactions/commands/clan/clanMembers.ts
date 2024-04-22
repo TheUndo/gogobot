@@ -14,6 +14,7 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { clanRoles } from "./clanConfig";
 import type { clanInteractionContext } from "./clanInfo";
+import { getName } from "!/common/logic/discordCache/store";
 
 type Options = {
   authorId: string;
@@ -105,8 +106,11 @@ export async function showClanMembers({
         .sort((a, b) => a.joinedAt.getTime() - b.joinedAt.getTime())
         .map((member) => {
           return sprintf(
-            "- <@%s> <t:%d:d> %s",
-            member.discordUserId,
+            "- %s <t:%d:d> %s",
+            getName({
+              userId: member.discordUserId,
+              guildId: clan.discordGuildId,
+            }),
             member.joinedAt.getTime() / 1000,
             addCurrency()(formatNumber(member.contributed)),
           );

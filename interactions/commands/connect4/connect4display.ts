@@ -98,6 +98,34 @@ export async function connect4display(
     gameId,
   };
 
+  const name = sprintf(
+    "c4-%s_vs_%s-date_%s-gid_%s",
+    game.challenger,
+    game.opponent,
+    Date.now().toString(),
+    game.id,
+  );
+
+  const file = new AttachmentBuilder(image)
+    .setName(sprintf("%s.jpeg", name))
+    .setDescription("Connect 4 board");
+
+  embed.setImage(sprintf("attachment://%s", file.name));
+
+  const gameEnded = [
+    GameState.Draw,
+    GameState.RedWin,
+    GameState.YellowWin,
+  ].includes(board.data.gameState ?? GameState.RedTurn);
+
+  if (gameEnded) {
+    return {
+      embeds: [embed],
+      content: "",
+      files: [file],
+    };
+  }
+
   const [moveInteraction, forfeitInteraction, drawInteraction] =
     await prisma.$transaction([
       prisma.interaction.create({
@@ -152,20 +180,6 @@ export async function connect4display(
       .setStyle(ButtonStyle.Secondary)
       .setLabel("Propose a draw"),
   );
-
-  const name = sprintf(
-    "c4-%s_vs_%s-date_%s-id_%s",
-    game.challenger,
-    game.opponent,
-    Date.now().toString(),
-    game.id,
-  );
-
-  const file = new AttachmentBuilder(image)
-    .setName(sprintf("%s.jpeg", name))
-    .setDescription("Connect 4 board");
-
-  embed.setImage(sprintf("attachment://%s", file.name));
 
   return {
     embeds: [embed],

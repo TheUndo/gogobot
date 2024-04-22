@@ -25,6 +25,7 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { joinSettings } from "./clanConfig";
 import { showClanMembers } from "./clanMembers";
+import { getName } from "!/common/logic/discordCache/store";
 
 export const clanInteractionContext = z.object({
   clanId: z.string(),
@@ -167,7 +168,10 @@ export async function showClanInfo({
     },
     {
       name: "Leader",
-      value: sprintf("<@%s>", leader.discordUserId),
+      value: getName({
+        userId: leader.discordUserId,
+        guildId: clan.discordGuildId,
+      }),
       inline: true,
     },
     {
