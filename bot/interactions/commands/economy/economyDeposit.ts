@@ -38,7 +38,7 @@ export const deposit = {
 
     const amount = z
       .preprocess(safeParseNumber, z.number().int().min(0))
-      .safeParse(rawAmount?.value || 0);
+      .safeParse(rawAmount?.value || "0");
 
     if (!amount.success) {
       return await interaction.reply(
