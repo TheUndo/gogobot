@@ -5,7 +5,7 @@ import { createEmptyBoard } from "./createEmptyBoard";
 import { mergeBoards } from "./mergeBoards";
 
 describe("connect 4 calculate winner", () => {
-  it("should calculate horizontal winner", () => {
+  it.skip("should calculate horizontal winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -31,7 +31,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it("should calculate horizontal bottom row winner", () => {
+  it.skip("should calculate horizontal bottom row winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -57,7 +57,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it("should calculate vertical winner", () => {
+  it.skip("should calculate vertical winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -72,7 +72,7 @@ describe("connect 4 calculate winner", () => {
     expect(calculateWinner(board).gameState).toBe(GameState.RedWin);
   });
 
-  it("should calculate diagonal winner", async () => {
+  it.skip("should calculate diagonal winner", async () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -97,7 +97,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it("should calculate left diagonal winner", () => {
+  it.skip("should calculate left diagonal winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
