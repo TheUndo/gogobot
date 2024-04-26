@@ -26,7 +26,9 @@
     "zod": "^3.22.4"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "start": "bun run bot/start.ts",
+    "dev": "bun run bot/start.ts"
   },
   "workspaces": ["website"]
 }

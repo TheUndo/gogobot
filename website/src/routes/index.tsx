@@ -37,7 +37,7 @@ export const head: DocumentHead = {
     {
       name: "description",
       content:
-        "The best economy/clan/anime Discord bot! Official Gogoanime Discord bot.",
+        "The best economy/clan/anime Discord bot!",
     },
     {
       property: "og:title",

@@ -37,10 +37,17 @@ After installing open `.env` in your IDE and edit it.
 ### Development
 
 ```sh
-bun .                             # Start bot
-bun scraper/scrapeEverything.ts   # Scrape anime (optional)
-bun scraper/scrapeRecents.ts      # Scrape recents and notify (optional)
-bun scraper/scrapeNews.ts         # Scrape news (optional)
+bun dev
+```
+
+### Gogoanime (Episodes, Anime, News)
+
+Only run these if you want to work on the anime parts
+
+```sh
+bun gogo/scraper/scrapeEverything.ts  # Scrape anime (optional)
+bun gogo/scraper/scrapeRecents.ts     # Scrape recents and notify (optional)
+bun gogo/scraper/scrapeNews.ts        # Scrape news (optional)
 ```
 
 ### Production
