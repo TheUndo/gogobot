@@ -1,6 +1,7 @@
 import type { Command } from "!/bot/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
+import { clanAdminChangeName } from "./clanAdminChangeName";
 import { clanAnnouncementCommand } from "./clanAnnouncement";
 import { clanChangeName } from "./clanChangeName";
 import { clanDemote } from "./clanDemote";
@@ -16,7 +17,6 @@ import { clanSetChannel } from "./clanSetChannel";
 import { clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
-import { clanAdminChangeName } from "./clanAdminChangeName";
 
 export const clan = {
   data: new SlashCommandBuilder()

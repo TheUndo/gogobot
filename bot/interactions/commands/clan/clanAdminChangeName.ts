@@ -1,11 +1,11 @@
-import { PermissionFlagsBits, type InteractionReplyOptions } from "discord.js";
 import { client } from "!/bot/client";
-import { validateClanName } from "./clanRole";
+import { Colors } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
+import { type InteractionReplyOptions, PermissionFlagsBits } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanNotification } from "./clanNotification";
-import { sprintf } from "sprintf-js";
-import { Colors } from "!/bot/types";
+import { validateClanName } from "./clanRole";
 
 type Options = {
   authorId: string;
