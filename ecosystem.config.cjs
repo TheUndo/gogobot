@@ -17,11 +17,5 @@ module.exports = {
       script: "gogo/scraper/scrapeRecents.ts",
       cron_restart: "*/15 * * * *",
     },
-    {
-      name: "news",
-      interpreter: "bun",
-      script: "gogo/scraper/scrapeNews.ts",
-      cron_restart: "*/30 * * * *",
-    },
   ],
 };
