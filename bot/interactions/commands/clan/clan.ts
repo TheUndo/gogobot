@@ -16,6 +16,7 @@ import { clanSetChannel } from "./clanSetChannel";
 import { clanSettingsCommand } from "./clanSettings";
 import { clanUpgradeCommand } from "./clanUpgrade";
 import { createGuildWizardStep1 } from "./createClanWizard";
+import { clanAdminChangeName } from "./clanAdminChangeName";
 
 export const clan = {
   data: new SlashCommandBuilder()
@@ -99,6 +100,29 @@ export const clan = {
           option
             .setName("name")
             .setDescription("The new name")
+            .setRequired(true),
+        ),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("admin-change-name")
+        .setDescription("Change a clan's name as admin")
+        .addStringOption((option) =>
+          option
+            .setName("old_name")
+            .setDescription("The old name")
+            .setRequired(true),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("new_name")
+            .setDescription("The new name")
+            .setRequired(true),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("reason")
+            .setDescription("Why are you changing the name?")
             .setRequired(true),
         ),
     )
@@ -240,6 +264,16 @@ export const clan = {
             authorId: interaction.user.id,
             guildId,
             name: interaction.options.getString("name") ?? "",
+          }),
+        );
+      case "admin-change-name":
+        return await interaction.reply(
+          await clanAdminChangeName({
+            authorId: interaction.user.id,
+            guildId,
+            newClanName: interaction.options.getString("new_name") ?? "",
+            oldClanName: interaction.options.getString("old_name") ?? "",
+            reason: interaction.options.getString("reason") ?? "",
           }),
         );
       case "list":

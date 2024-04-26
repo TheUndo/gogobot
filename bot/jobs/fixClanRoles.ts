@@ -21,7 +21,7 @@ export async function fixClanRoles() {
   });
 
   for (const clan of clans) {
-    const result = await clanRoleUpdate(clan.id);
+    const result = await clanRoleUpdate(clan.id).catch(() => null);
 
     if (!result) {
       continue;
