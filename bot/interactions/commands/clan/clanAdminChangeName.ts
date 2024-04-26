@@ -5,7 +5,7 @@ import { type InteractionReplyOptions, PermissionFlagsBits } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { updateClanChannel, upsertClanChannel } from "./clanChannel";
 import { clanNotification } from "./clanNotification";
-import { validateClanName } from "./clanRole";
+import { clanUpsertRole, validateClanName } from "./clanRole";
 
 type Options = {
   authorId: string;
@@ -87,7 +87,7 @@ export async function clanAdminChangeName({
   });
 
   const channel = await upsertClanChannel(clan.id);
-
+  await clanUpsertRole(clan.id);
   if (channel) {
     await updateClanChannel(clan.id, channel);
   }
