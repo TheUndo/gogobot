@@ -8,6 +8,9 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
 } from "discord.js";
+import { prisma } from "../../../core/db/prisma";
+import { makeCommand } from "../../../gogo/scraper/debug";
+import { domain } from "../../../gogo/scraper/utils";
 import { getCommands } from "../../routers/commands";
 import {
   ButtonAction,
@@ -16,9 +19,6 @@ import {
   type Command,
   SelectAction,
 } from "../../types";
-import { prisma } from "../../../core/db/prisma";
-import { makeCommand } from "../../../gogo/scraper/debug";
-import { domain } from "../../../gogo/scraper/utils";
 
 const pageSize = 25;
 

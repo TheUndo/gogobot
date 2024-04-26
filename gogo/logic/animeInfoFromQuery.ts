@@ -1,9 +1,9 @@
-import { SelectAction } from "!/bot/types";
 import { findAnimeFromQuery } from "!/bot/interactions/commands/utils/findAnimeFromQuery";
 import {
   multipleAnimeFound,
   noAnimeFound,
 } from "!/bot/interactions/commands/utils/queryResponses";
+import { SelectAction } from "!/bot/types";
 import { animeIndex } from "!/core/search/fuse";
 import {
   ActionRowBuilder,

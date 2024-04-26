@@ -11,8 +11,8 @@ import {
   multipleAnimeFound,
   noAnimeFound,
 } from "../../bot/interactions/commands/utils/queryResponses";
-import { ongoingIndex } from "../../core/search/fuse";
 import { SelectAction } from "../../bot/types";
+import { ongoingIndex } from "../../core/search/fuse";
 import { createSubscription } from "./subscribe";
 
 /** Flow to search for anime from query, can be invoked by command or deferred by modal */

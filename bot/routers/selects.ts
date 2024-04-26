@@ -1,8 +1,8 @@
-import { SelectAction } from "!/bot/types";
 import { showAnime } from "!/bot/interactions/selects/showAnime";
 import { subscribe } from "!/bot/interactions/selects/subscribe";
 import { unsubscribe } from "!/bot/interactions/selects/unsubscribe";
 import { unsubscribeFromSubscriptions } from "!/bot/interactions/selects/unsubscribeFromSubscriptions";
+import { SelectAction } from "!/bot/types";
 import type { AnySelectMenuInteraction, CacheType } from "discord.js";
 
 /** @deprecated */

@@ -1,8 +1,8 @@
-import { ButtonAction } from "!/bot/types";
 import { showSubscribeModal } from "!/bot/interactions/buttons/showSubscribeModal";
 import { subscribe } from "!/bot/interactions/buttons/subscribe";
 import { subscriptionListChangePage } from "!/bot/interactions/buttons/subscriptionListChangePage";
 import { unsubscribe } from "!/bot/interactions/buttons/unsubscribe";
+import { ButtonAction } from "!/bot/types";
 import type { ButtonInteraction, CacheType } from "discord.js";
 
 /** @deprecated */

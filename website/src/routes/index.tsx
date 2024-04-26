@@ -36,8 +36,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content:
-        "The best economy/clan/anime Discord bot!",
+      content: "The best economy/clan/anime Discord bot!",
     },
     {
       property: "og:title",

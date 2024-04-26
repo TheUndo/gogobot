@@ -8,8 +8,8 @@ import {
 import { z } from "zod";
 import { client } from "../../bot/client";
 import { ButtonAction, Colors, Language } from "../../bot/types";
-import { env } from "../../core/misc/env";
 import { prisma } from "../../core/db/prisma";
+import { env } from "../../core/misc/env";
 import { notifyDirectly } from "./notifyDirectly";
 import { domain } from "./utils";
 

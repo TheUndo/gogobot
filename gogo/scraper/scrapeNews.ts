@@ -10,8 +10,8 @@ import {
 import { z } from "zod";
 import { client } from "../../bot/client";
 import { Colors, NewsCategory } from "../../bot/types";
-import { env } from "../../core/misc/env";
 import { prisma } from "../../core/db/prisma";
+import { env } from "../../core/misc/env";
 
 const newsDomain = env.NEWS_DOMAIN;
 

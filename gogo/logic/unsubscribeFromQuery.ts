@@ -12,8 +12,8 @@ import {
   multipleAnimeFound,
   noAnimeFound,
 } from "../../bot/interactions/commands/utils/queryResponses";
-import { prisma } from "../../core/db/prisma";
 import { SelectAction } from "../../bot/types";
+import { prisma } from "../../core/db/prisma";
 import { unsubscribeAction } from "./unsubscribe";
 
 /** Flow to search for anime from query, can be invoked by command or deferred by modal */

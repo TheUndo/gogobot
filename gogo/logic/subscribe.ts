@@ -4,11 +4,11 @@ import {
   ButtonStyle,
   EmbedBuilder,
 } from "discord.js";
-import { prisma } from "../../core/db/prisma";
-import { domain } from "../scraper/utils";
 import { client } from "../../bot/client";
 import { activeGuildId } from "../../bot/routers/userJoin";
 import { ButtonAction, type ButtonActionFormat, Colors } from "../../bot/types";
+import { prisma } from "../../core/db/prisma";
+import { domain } from "../scraper/utils";
 
 /**
  * Causes db side effects db creation, checks for existing subscription

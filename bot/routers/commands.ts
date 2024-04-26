@@ -1,10 +1,9 @@
-import { env } from "!/core/misc/env";
 import { avatar } from "!/bot/interactions/commands/avatar";
 import { clan } from "!/bot/interactions/commands/clan/clan";
-import { deposit } from "!/bot/interactions/commands/economy/economyDeposit";
 import { economyChannel } from "!/bot/interactions/commands/ecnomyChannel";
 import { balance } from "!/bot/interactions/commands/economy/economyBalance";
 import { daily } from "!/bot/interactions/commands/economy/economyDaily";
+import { deposit } from "!/bot/interactions/commands/economy/economyDeposit";
 import { fish } from "!/bot/interactions/commands/economy/economyFish";
 import { gamble } from "!/bot/interactions/commands/economy/economyGamble";
 import { gift } from "!/bot/interactions/commands/economy/economyGift";
@@ -25,9 +24,10 @@ import { subscribe } from "!/bot/interactions/commands/subscribe";
 import { subscriptions } from "!/bot/interactions/commands/subscriptions";
 import { unsubscribe } from "!/bot/interactions/commands/unsubscribe";
 import { welcome } from "!/bot/interactions/commands/welcome";
+import { env } from "!/core/misc/env";
 
-import type { Command } from "!/bot/types";
 import { leaderBoard } from "!/bot/interactions/commands/economy/leaderBoard/economyLeaderBoard";
+import type { Command } from "!/bot/types";
 import {
   type CacheType,
   type ChatInputCommandInteraction,

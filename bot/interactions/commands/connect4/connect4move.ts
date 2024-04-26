@@ -7,6 +7,7 @@ import {
 } from "!/bot/logic/c4/c4types";
 import { calculateWinner } from "!/bot/logic/c4/calculateWinner";
 import { checkColumn } from "!/bot/logic/c4/checkColumn";
+import { forfeit } from "!/bot/logic/c4/forfeit";
 import { makeMove } from "!/bot/logic/c4/makeMove";
 import type { AnyInteraction, InteractionContext } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
@@ -14,7 +15,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4interactionContext } from "./connect4config";
 import { connect4display } from "./connect4display";
-import { forfeit } from "!/bot/logic/c4/forfeit";
 
 export async function connect4move(
   interactionContext: InteractionContext,

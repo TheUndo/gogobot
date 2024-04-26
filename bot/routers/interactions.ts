@@ -39,8 +39,8 @@ import { Events } from "discord.js";
 import { client } from "../client";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
-import { commandRouter } from "./commands";
 import { buttonRouter } from "./buttons";
+import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
 

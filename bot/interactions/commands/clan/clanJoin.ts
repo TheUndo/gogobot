@@ -499,7 +499,8 @@ export async function clanRequestJoinReject(
     ].includes(z.nativeEnum(ClanMemberRole).parse(userClanMember.role))
   ) {
     return await interaction.reply({
-      content: "Only the leader, co-leaders and officers can reject join requests",
+      content:
+        "Only the leader, co-leaders and officers can reject join requests",
       ephemeral: true,
     });
   }
