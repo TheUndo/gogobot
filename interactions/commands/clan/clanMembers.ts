@@ -1,3 +1,4 @@
+import { getName } from "!/common/logic/discordCache/store";
 import { ClanMemberRole, Colors, InteractionType } from "!/common/types";
 import { addCurrency } from "!/common/utils/addCurrency";
 import { capitalize } from "!/common/utils/capitalize";
@@ -105,8 +106,11 @@ export async function showClanMembers({
         .sort((a, b) => a.joinedAt.getTime() - b.joinedAt.getTime())
         .map((member) => {
           return sprintf(
-            "- <@%s> <t:%d:d> %s",
-            member.discordUserId,
+            "- %s <t:%d:d> %s",
+            getName({
+              userId: member.discordUserId,
+              guildId: clan.discordGuildId,
+            }),
             member.joinedAt.getTime() / 1000,
             addCurrency()(formatNumber(member.contributed)),
           );

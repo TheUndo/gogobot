@@ -1,3 +1,4 @@
+import { getName } from "!/common/logic/discordCache/store";
 import { notYourInteraction } from "!/common/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "!/common/logic/responses/wrongGuildForInteraction";
 import { wrongInteractionType } from "!/common/logic/responses/wrongInteractionType";
@@ -167,7 +168,10 @@ export async function showClanInfo({
     },
     {
       name: "Leader",
-      value: sprintf("<@%s>", leader.discordUserId),
+      value: getName({
+        userId: leader.discordUserId,
+        guildId: clan.discordGuildId,
+      }),
       inline: true,
     },
     {

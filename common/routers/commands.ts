@@ -34,6 +34,7 @@ import { virus } from "!/interactions/commands/virus";
 import { welcome } from "!/interactions/commands/welcome";
 
 import type { Command } from "!/common/types";
+import { connect4 } from "!/interactions/commands/connect4/connect4";
 import { leaderBoard } from "!/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import {
   type CacheType,
@@ -78,7 +79,7 @@ const commandsRegistrar: Command[] = [
   prostitute,
   soldier,
   mine,
-  /* connect4, */
+  connect4,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

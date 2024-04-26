@@ -69,6 +69,7 @@ export async function connect4start({
     where: {
       guildId,
       challenger: authorId,
+      endedAt: null,
     },
   });
 
@@ -87,6 +88,7 @@ export async function connect4start({
     where: {
       guildId,
       challenger: mentionedId,
+      endedAt: null,
     },
   });
 
@@ -178,7 +180,10 @@ export async function connect4start({
         channelId,
         challenger: authorId,
         opponent: mentionedId,
-        challengerColor: parsedChallengerColor.data,
+        challengerColor:
+          parsedChallengerColor.data === "red"
+            ? SlotState.Red
+            : SlotState.Yellow,
         wagerAmount: parsedWager?.data,
         moveTime: parsedClockTime.data,
       },
@@ -330,9 +335,7 @@ export async function connect4accept(
     );
   }
 
-  const board = createEmptyBoard(
-    invitation.challengerColor === "red" ? SlotState.Red : SlotState.Yellow,
-  );
+  const board = createEmptyBoard(SlotState.Red);
 
   const [_, game] = await prisma.$transaction([
     prisma.connect4GameInvitation.update({

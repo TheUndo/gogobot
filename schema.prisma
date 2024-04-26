@@ -265,3 +265,14 @@ model Connect4GameInvitation {
   createdAt       DateTime @default(now())
   voided          Boolean  @default(false)
 }
+
+model DiscordCacheUserNameCache {
+  id            String   @id @default(cuid())
+  userDiscordId String
+  guildId       String
+  nickname      String?
+  username      String
+  createdAt     DateTime @default(now())
+
+  @@index([userDiscordId, guildId])
+}

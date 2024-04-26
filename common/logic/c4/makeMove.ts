@@ -19,8 +19,11 @@ export function makeMove(
 
   const { columnIndex, slotIndex } = availableSlot;
 
+  const moveCount = (board.moveCount ?? 0) + 1;
+
   return {
     ...board,
+    moveCount,
     gameState:
       board.gameState === GameState.RedTurn
         ? GameState.YellowTurn

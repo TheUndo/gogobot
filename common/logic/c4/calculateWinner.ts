@@ -20,7 +20,7 @@ export function calculateWinner(board: Board): Board {
   for (const direction of directions) {
     let stack: Slot[] = [];
     for (const coordinate of direction) {
-      const slot = slots[coordinate.y]?.[coordinate.x];
+      const slot = slots[coordinate.x]?.[coordinate.y];
 
       if (!slot) {
         continue;
@@ -56,6 +56,7 @@ export function calculateWinner(board: Board): Board {
       if (!last) {
         continue;
       }
+
       return {
         ...board,
         gameState:

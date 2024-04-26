@@ -15,8 +15,8 @@ import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
-
 enum Scenario {
+  Jormungandr = "JORMUNGANDR",
   Kraken = "KRAKEN",
   Whale = "WHALE",
   Shark = "SHARK",
@@ -35,6 +35,7 @@ enum Scenario {
 }
 
 const odds: Record<Scenario, number> = {
+  [Scenario.Jormungandr]: 1,
   [Scenario.Kraken]: 3,
   [Scenario.Whale]: 40,
   [Scenario.LochNessMonster]: 6,
@@ -64,6 +65,11 @@ const rewards: Record<
   [Scenario.Whale]: {
     message: "You caught a whale! 🐋",
     generateReward: async () => 50_000,
+  },
+  [Scenario.Jormungandr]: {
+    message:
+      "The seas roared; the Kraken trembled. The World Serpent **Jörmungandr** graced you with His presence. :snake:",
+    generateReward: async () => 2_000_000,
   },
   [Scenario.LochNessMonster]: {
     message: "You caught the Loch Ness Monster! 🐉",

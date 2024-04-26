@@ -1,4 +1,10 @@
-import { Column, GameState, boardSchema } from "!/common/logic/c4/c4types";
+import {
+  Column,
+  GameState,
+  SlotState,
+  boardSchema,
+} from "!/common/logic/c4/c4types";
+import { calculateWinner } from "!/common/logic/c4/calculateWinner";
 import { checkColumn } from "!/common/logic/c4/checkColumn";
 import { makeMove } from "!/common/logic/c4/makeMove";
 import type { AnyInteraction, InteractionContext } from "!/common/types";
@@ -74,12 +80,24 @@ export async function connect4move(
 
   const isChallenger = game.challenger === interaction.user.id;
 
+  const challengerColor = z
+    .nativeEnum(SlotState)
+    .safeParse(game.challengerColor);
+
+  if (!challengerColor.success) {
+    return await interaction.reply({
+      ephemeral: true,
+      content: "Failed to parse challenger color. Contact developers.",
+    });
+  }
+
   const challengerColorTurn =
-    game.challengerColor === "red" ? GameState.RedTurn : GameState.YellowTurn;
+    challengerColor.data === SlotState.Red
+      ? GameState.RedTurn
+      : GameState.YellowTurn;
 
   const isUserTurn =
     game.gameState === challengerColorTurn ? isChallenger : !isChallenger;
-
   if (!isUserTurn) {
     const checkedColumn = checkColumn(board.data, column.data);
 
@@ -108,14 +126,28 @@ export async function connect4move(
     });
   }
 
+  const checkWinner = calculateWinner(moveMade);
+
+  const gameEnded = [
+    GameState.Draw,
+    GameState.RedWin,
+    GameState.YellowWin,
+  ].includes(
+    z.nativeEnum(GameState).parse(checkWinner.gameState ?? moveMade.gameState),
+  );
+
   await prisma.connect4Game.update({
     where: {
       id: game.id,
     },
     data: {
-      board: JSON.stringify(moveMade),
-      gameState: moveMade.gameState,
+      board: JSON.stringify(checkWinner),
+      gameState: checkWinner.gameState,
       lastMoveAt: new Date(),
+      endedAt: gameEnded ? new Date() : undefined,
+    },
+    select: {
+      id: true,
     },
   });
 
