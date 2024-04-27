@@ -1,11 +1,18 @@
+import { client } from "!/bot/client";
 import { prisma } from "!/core/db/prisma";
 import { outOfTime } from "./outOfTime";
-import type { Board } from "./types";
+import { BinaryColorState, GameState, type Board } from "./types";
+import { connect4display } from "!/bot/interactions/commands/connect4/connect4display";
+import { z } from "zod";
+import { createWallet } from "../economy/createWallet";
 
 type Options = {
   gameId: string;
   board: Board;
 };
+
+/** game ID to timeout */
+export const connect4TimeoutsStore = new Map<string, Timer>();
 
 /**
  * Handles out of time game state.
@@ -17,7 +24,7 @@ export async function handleOutOfTime({
 }: Options): Promise<void> {
   const outOfTimeBoard = outOfTime(board);
 
-  await prisma.connect4Game.update({
+  const game = await prisma.connect4Game.update({
     where: {
       id: gameId,
     },
@@ -27,4 +34,44 @@ export async function handleOutOfTime({
       endedAt: new Date(),
     },
   });
+
+  clearTimeout(connect4TimeoutsStore.get(gameId));
+  connect4TimeoutsStore.delete(gameId);
+
+  if (game.wagerAmount) {
+    const winnerId =
+      z.nativeEnum(BinaryColorState).parse(game.challengerColor) ===
+        BinaryColorState.Red && outOfTimeBoard.gameState === GameState.RedWin
+        ? game.challenger
+        : game.opponent;
+
+    const wallet = await createWallet(winnerId, game.guildId);
+
+    await prisma.wallet.update({
+      where: {
+        id: wallet.id,
+      },
+      data: {
+        balance: {
+          increment: game.wagerAmount * 2,
+        },
+      },
+    });
+  }
+
+  await client.channels
+    .fetch(game.channelId)
+    .then((channel) => {
+      if (channel?.isTextBased()) {
+        return channel.messages.fetch(game.lastMessageId);
+      }
+    })
+    .then(async (message) => {
+      if (!message) {
+        return;
+      }
+
+      return message.edit(await connect4display(gameId));
+    })
+    .catch(console.error);
 }

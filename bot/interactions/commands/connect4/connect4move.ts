@@ -3,7 +3,7 @@ import { determineWinnerOptimized } from "!/bot/logic/c4/determineWinner";
 import { forfeit } from "!/bot/logic/c4/forfeit";
 import { makeMove } from "!/bot/logic/c4/makeMove";
 import {
-  BinaryWinnerState,
+  BinaryColorState,
   Column,
   GameState,
   SlotState,
@@ -15,6 +15,11 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4interactionContext } from "./connect4config";
 import { connect4display } from "./connect4display";
+import {
+  handleOutOfTime,
+  connect4TimeoutsStore,
+} from "!/bot/logic/c4/handleOutOfTime";
+import { createWallet } from "!/bot/logic/economy/createWallet";
 
 export async function connect4move(
   interactionContext: InteractionContext,
@@ -83,7 +88,7 @@ export async function connect4move(
   const isChallenger = game.challenger === interaction.user.id;
 
   const challengerColor = z
-    .nativeEnum(SlotState)
+    .nativeEnum(BinaryColorState)
     .safeParse(game.challengerColor);
 
   if (!challengerColor.success) {
@@ -107,7 +112,7 @@ export async function connect4move(
   }
 
   const challengerColorTurn =
-    challengerColor.data === SlotState.Red
+    challengerColor.data === BinaryColorState.Red
       ? GameState.RedTurn
       : GameState.YellowTurn;
 
@@ -166,14 +171,77 @@ export async function connect4move(
     },
   });
 
-  return void (await interaction
-    .reply(await connect4display(game.id))
-    .then(() => {
-      return interaction.message.edit({
-        content: "",
-        components: [],
+  clearTimeout(connect4TimeoutsStore.get(game.id));
+
+  if (gameEnded) {
+    connect4TimeoutsStore.delete(game.id);
+  } else {
+    connect4TimeoutsStore.set(
+      game.id,
+      setTimeout(() => {
+        void handleOutOfTime({
+          board: moveMade,
+          gameId: game.id,
+        });
+      }, game.moveTime * 1e3),
+    );
+  }
+
+  if (gameEnded && game.wagerAmount) {
+    const draw = checkWinner.gameState === GameState.Draw;
+
+    if (draw) {
+      await prisma.wallet.updateMany({
+        where: {
+          id: {
+            in: [game.challenger, game.opponent],
+          },
+        },
+        data: {
+          balance: {
+            increment: game.wagerAmount,
+          },
+        },
       });
-    }));
+    } else {
+      const winnerId =
+        z.nativeEnum(BinaryColorState).parse(game.challengerColor) ===
+          BinaryColorState.Red && checkWinner.gameState === GameState.RedWin
+          ? game.challenger
+          : game.opponent;
+      await prisma.wallet.update({
+        where: {
+          id: winnerId,
+        },
+        data: {
+          balance: {
+            increment: game.wagerAmount * 2,
+          },
+        },
+      });
+    }
+  }
+
+  return void (await Promise.all([
+    interaction.message.edit({
+      content: "",
+      components: [],
+    }),
+    interaction
+      .reply(await connect4display(game.id))
+      .then((reply) => reply.fetch())
+      .then(async (message) => {
+        return await prisma.connect4Game.update({
+          where: {
+            id: game.id,
+          },
+          data: {
+            lastMessageId: message.id,
+          },
+        });
+      })
+      .catch(console.error),
+  ]));
 }
 
 export async function connect4forfeit(
@@ -227,6 +295,9 @@ export async function connect4forfeit(
     }));
   }
 
+  clearTimeout(connect4TimeoutsStore.get(game.id));
+  connect4TimeoutsStore.delete(game.id);
+
   const gameEnded = [
     GameState.Draw,
     GameState.RedWin,
@@ -251,12 +322,12 @@ export async function connect4forfeit(
 
   const challengerForfeitState =
     game.challengerColor === SlotState.Red
-      ? BinaryWinnerState.Red
-      : BinaryWinnerState.Yellow;
+      ? BinaryColorState.Red
+      : BinaryColorState.Yellow;
   const opponentForfeitState =
-    challengerForfeitState === BinaryWinnerState.Red
-      ? BinaryWinnerState.Yellow
-      : BinaryWinnerState.Red;
+    challengerForfeitState === BinaryColorState.Red
+      ? BinaryColorState.Yellow
+      : BinaryColorState.Red;
 
   const forfeitedBoard = forfeit(
     board.data,
@@ -279,21 +350,24 @@ export async function connect4forfeit(
     },
   });
 
+  if (game.wagerAmount) {
+    const wallet = await createWallet(
+      interaction.user.id === game.challenger ? game.opponent : game.challenger,
+      guildId,
+    );
+    await prisma.wallet.update({
+      where: {
+        id: wallet.id,
+      },
+      data: {
+        balance: {
+          increment: game.wagerAmount * 2,
+        },
+      },
+    });
+  }
+
   return void (await interaction
     .reply(await connect4display(game.id))
-    .then(async (message) => {
-      await prisma.connect4Game.update({
-        where: {
-          id: game.id,
-        },
-        data: {
-          lastMessageId: message.id,
-        },
-      });
-      return await interaction.message.edit({
-        content: "",
-        components: [],
-      });
-    })
     .catch(console.error));
 }

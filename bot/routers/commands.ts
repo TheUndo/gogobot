@@ -1,6 +1,6 @@
 import { avatar } from "!/bot/interactions/commands/avatar";
 import { clan } from "!/bot/interactions/commands/clan/clan";
-/* import { connect4 } from "!/bot/interactions/commands/connect4/connect4"; */
+import { connect4 } from "!/bot/interactions/commands/connect4/connect4";
 import { economyChannel } from "!/bot/interactions/commands/ecnomyChannel";
 import { balance } from "!/bot/interactions/commands/economy/economyBalance";
 import { daily } from "!/bot/interactions/commands/economy/economyDaily";
@@ -71,7 +71,7 @@ const commandsRegistrar: Command[] = [
   gamble,
   soldier,
   mine,
-  /* connect4, */
+  connect4,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

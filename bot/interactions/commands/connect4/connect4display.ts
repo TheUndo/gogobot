@@ -1,6 +1,6 @@
 import { renderBoard } from "!/bot/logic/c4/renderBoard";
 import {
-  BinaryWinnerState,
+  BinaryColorState,
   Column,
   GameState,
   SlotState,
@@ -14,17 +14,16 @@ import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  type InteractionReplyOptions,
   StringSelectMenuBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { match } from "ts-pattern";
-import type { z } from "zod";
+import { z } from "zod";
 import type { connect4interactionContext } from "./connect4config";
+import { addCurrency } from "!/bot/utils/addCurrency";
+import { formatNumber } from "!/bot/utils/formatNumber";
 
-export async function connect4display(
-  gameId: string,
-): Promise<InteractionReplyOptions> {
+export async function connect4display(gameId: string) {
   const game = await prisma.connect4Game.findUnique({
     where: {
       id: gameId,
@@ -49,10 +48,43 @@ export async function connect4display(
 
   embed.setTitle("Connect 4");
 
+  const image = await renderBoard(board.data).catch(() => null);
+
+  if (!image) {
+    return {
+      content: "Failed to render board. Contact developers.",
+    };
+  }
+
+  const name = sprintf(
+    "c4-%s_vs_%s-date_%s-gid_%s",
+    game.challenger,
+    game.opponent,
+    Date.now().toString(),
+    game.id,
+  );
+
+  const file = new AttachmentBuilder(image)
+    .setName(sprintf("%s.jpeg", name))
+    .setDescription("Connect 4 board");
+
+  embed.setImage(sprintf("attachment://%s", file.name));
+
+  if (
+    board.data.gameState &&
+    game.wagerAmount &&
+    [GameState.RedWin, GameState.YellowWin].includes(board.data.gameState)
+  ) {
+    embed.setFields({
+      name: "Prize",
+      value: addCurrency()(formatNumber(game.wagerAmount * 2)),
+    });
+  }
+
   if (board.data.forfeitState) {
     embed.setDescription(
       match(board.data.forfeitState)
-        .with(BinaryWinnerState.Red, () =>
+        .with(BinaryColorState.Red, () =>
           sprintf(
             "<@%s> forfeited, <@%s> wins",
             game.challengerColor === SlotState.Red
@@ -63,7 +95,7 @@ export async function connect4display(
               : game.challenger,
           ),
         )
-        .with(BinaryWinnerState.Yellow, () =>
+        .with(BinaryColorState.Yellow, () =>
           sprintf(
             "<@%s> forfeited, <@%s> wins",
             game.challengerColor === SlotState.Yellow
@@ -79,13 +111,57 @@ export async function connect4display(
 
     embed.setColor(
       match(board.data.forfeitState)
-        .with(BinaryWinnerState.Red, () => 0xffff00)
-        .with(BinaryWinnerState.Yellow, () => 0xff0000)
+        .with(BinaryColorState.Red, () => 0xffff00)
+        .with(BinaryColorState.Yellow, () => 0xff0000)
         .exhaustive(),
     );
 
     return {
       embeds: [embed],
+      content: "",
+      components: [],
+      files: [file],
+    };
+  }
+
+  if (board.data.outOfTime) {
+    const challengerColor = z
+      .nativeEnum(BinaryColorState)
+      .parse(game.challengerColor);
+    const winner =
+      challengerColor === BinaryColorState.Red &&
+      game.gameState === GameState.RedWin
+        ? "challenger"
+        : "opponent";
+
+    embed.setDescription(
+      sprintf(
+        "%s <@%s> ran out of time.\n%s <@%s> wins!",
+        match(board.data.outOfTime)
+          .with(BinaryColorState.Red, () => ":yellow_circle:")
+          .with(BinaryColorState.Yellow, () => ":red_circle:")
+          .run(),
+        winner === "challenger" ? game.challenger : game.opponent,
+        match(board.data.outOfTime)
+          .with(BinaryColorState.Red, () => ":red_circle:")
+          .with(BinaryColorState.Yellow, () => ":yellow_circle:")
+          .run(),
+        winner === "challenger" ? game.opponent : game.challenger,
+      ),
+    );
+
+    embed.setColor(
+      match(board.data.outOfTime)
+        .with(BinaryColorState.Red, () => 0xffff00)
+        .with(BinaryColorState.Yellow, () => 0xff0000)
+        .exhaustive(),
+    );
+
+    return {
+      embeds: [embed],
+      content: "",
+      files: [file],
+      components: [],
     };
   }
 
@@ -136,31 +212,9 @@ export async function connect4display(
       .otherwise(() => Colors.Info),
   );
 
-  const image = await renderBoard(board.data).catch(() => null);
-
-  if (!image) {
-    return {
-      content: "Failed to render board. Contact developers.",
-    };
-  }
-
   const context: z.infer<typeof connect4interactionContext> = {
     gameId,
   };
-
-  const name = sprintf(
-    "c4-%s_vs_%s-date_%s-gid_%s",
-    game.challenger,
-    game.opponent,
-    Date.now().toString(),
-    game.id,
-  );
-
-  const file = new AttachmentBuilder(image)
-    .setName(sprintf("%s.jpeg", name))
-    .setDescription("Connect 4 board");
-
-  embed.setImage(sprintf("attachment://%s", file.name));
 
   const gameEnded = [
     GameState.Draw,

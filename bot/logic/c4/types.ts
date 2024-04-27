@@ -8,7 +8,7 @@ export enum GameState {
   Draw = "DRAW",
 }
 
-export enum BinaryWinnerState {
+export enum BinaryColorState {
   Red = "RED",
   Yellow = "YELLOW",
 }
@@ -40,8 +40,8 @@ export const boardSchema = z.object({
   gameState: z.nativeEnum(GameState).optional(),
   winningSlots: z.array(slot).optional(),
   moves: z.array(z.nativeEnum(Column)).optional(),
-  forfeitState: z.nativeEnum(BinaryWinnerState).optional(),
-  outOfTime: z.nativeEnum(BinaryWinnerState).optional(),
+  forfeitState: z.nativeEnum(BinaryColorState).optional(),
+  outOfTime: z.nativeEnum(BinaryColorState).optional(),
 });
 
 export type Board = z.infer<typeof boardSchema>;

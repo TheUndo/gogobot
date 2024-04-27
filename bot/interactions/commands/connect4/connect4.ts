@@ -39,9 +39,6 @@ export const connect4 = {
             .setName("wager")
             .setDescription("The amount of money you want to wager"),
         ),
-    )
-    .addSubcommand((subCommand) =>
-      subCommand.setName("end").setDescription("End your current game"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -73,6 +70,7 @@ export const connect4 = {
               .parse(
                 interaction.options.getString("time") ?? (60 * 5).toString(),
               ),
+            wager: interaction.options.getString("wager") ?? undefined,
           }),
         );
 

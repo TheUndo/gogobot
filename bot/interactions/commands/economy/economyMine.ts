@@ -10,11 +10,11 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { Colors, type Command } from "../../../types";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
+import { Colors, type Command } from "!/bot/types";
 
 enum Resources {
   Copper = "COPPER", // 1k

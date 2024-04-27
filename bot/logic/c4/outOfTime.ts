@@ -1,4 +1,4 @@
-import { BinaryWinnerState, type Board, GameState } from "./types";
+import { BinaryColorState, type Board, GameState } from "./types";
 
 export function outOfTime(board: Board): Board {
   if (
@@ -15,7 +15,7 @@ export function outOfTime(board: Board): Board {
         : GameState.RedWin,
     outOfTime:
       board.gameState === GameState.RedTurn
-        ? BinaryWinnerState.Red
-        : BinaryWinnerState.Yellow,
+        ? BinaryColorState.Red
+        : BinaryColorState.Yellow,
   };
 }

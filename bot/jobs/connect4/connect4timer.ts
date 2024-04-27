@@ -34,7 +34,7 @@ export async function connect4timer() {
     const now = new Date();
     const timeSinceLastMove = now.getTime() - game.lastMoveAt.getTime();
 
-    if (timeSinceLastMove > game.moveTime) {
+    if (timeSinceLastMove > game.moveTime * 1000) {
       continue;
     }
 

@@ -1,5 +1,5 @@
 import { createEmptyBoard } from "!/bot/logic/c4/createEmptyBoard";
-import { GameState, SlotState } from "!/bot/logic/c4/types";
+import { BinaryColorState, GameState, SlotState } from "!/bot/logic/c4/types";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { notYourInteraction } from "!/bot/logic/responses/notYourInteraction";
 import {
@@ -23,6 +23,10 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4clockTimes } from "./connect4config";
 import { connect4display } from "./connect4display";
+import {
+  connect4TimeoutsStore,
+  handleOutOfTime,
+} from "!/bot/logic/c4/handleOutOfTime";
 
 type Options = {
   mentionedIsBot: boolean;
@@ -103,6 +107,24 @@ export async function connect4start({
     };
   }
 
+  const authorCurrentInvitation = await prisma.connect4GameInvitation.findFirst(
+    {
+      where: {
+        expiresAt: {
+          gte: new Date(),
+        },
+        voided: false,
+      },
+    },
+  );
+
+  if (authorCurrentInvitation) {
+    return {
+      ephemeral: true,
+      content: "You already have a pending invitation.",
+    };
+  }
+
   const wallet = await createWallet(authorId, guildId);
 
   const parsedWager =
@@ -138,7 +160,7 @@ export async function connect4start({
   if (parsedWager && parsedWager.data < 1_000) {
     return {
       ephemeral: true,
-      content: "Minimum wager is 1k",
+      content: "Minimum wager is 1k.",
     };
   }
 
@@ -182,13 +204,15 @@ export async function connect4start({
         opponent: mentionedId,
         challengerColor:
           parsedChallengerColor.data === "red"
-            ? SlotState.Red
-            : SlotState.Yellow,
+            ? BinaryColorState.Red
+            : BinaryColorState.Yellow,
         wagerAmount: parsedWager?.data,
         moveTime: parsedClockTime.data,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 5),
       },
       select: {
         id: true,
+        expiresAt: true,
       },
     }),
     prisma.wallet.update({
@@ -283,15 +307,27 @@ export async function connect4start({
       .setStyle(mentionedId ? ButtonStyle.Danger : ButtonStyle.Secondary),
   );
 
-  embed.addFields({
-    name: "Move time",
-    value: z
-      .string()
-      .parse(connect4clockTimes.find((time) => time.value === clockTime)?.name),
-    inline: true,
-  });
+  embed.addFields(
+    {
+      name: "Move time",
+      value: z
+        .string()
+        .parse(
+          connect4clockTimes.find((time) => time.value === clockTime)?.name,
+        ),
+      inline: true,
+    },
+    {
+      name: "Expires",
+      value: sprintf(
+        "<t:%d:R>",
+        Math.floor(invitation.expiresAt.getTime() / 1000),
+      ),
+      inline: true,
+    },
+  );
 
-  if (parsedWager) {
+  if (parsedWager?.data) {
     embed.addFields({
       name: "Wager",
       value: addCurrency()(formatNumber(parsedWager.data)),
@@ -364,6 +400,35 @@ export async function connect4accept(
     ));
   }
 
+  if (invitation.wagerAmount) {
+    const opponentWallet = await createWallet(interaction.user.id, guildId);
+
+    if (opponentWallet.balance < invitation.wagerAmount) {
+      return void (await interaction.reply({
+        ephemeral: true,
+        content: sprintf(
+          "You don't have enough money in your wallet to accept this challenge. Your balance is %s and the wager is %s.",
+          addCurrency()(formatNumber(opponentWallet.balance)),
+          addCurrency()(formatNumber(invitation.wagerAmount)),
+        ),
+      }));
+    }
+
+    await prisma.wallet.update({
+      where: {
+        userDiscordId_guildId: {
+          userDiscordId: interaction.user.id,
+          guildId,
+        },
+      },
+      data: {
+        balance: {
+          decrement: invitation.wagerAmount,
+        },
+      },
+    });
+  }
+
   const board = createEmptyBoard(SlotState.Red);
 
   const [_, game] = await prisma.$transaction([
@@ -393,7 +458,29 @@ export async function connect4accept(
   ]);
 
   await Promise.all([
-    interaction.reply(await connect4display(game.id)),
+    interaction
+      .reply(await connect4display(game.id))
+      .then((reply) => reply.fetch())
+      .then(async (message) => {
+        await prisma.connect4Game.update({
+          where: {
+            id: game.id,
+          },
+          data: {
+            lastMessageId: message.id,
+          },
+        });
+        connect4TimeoutsStore.set(
+          game.id,
+          setTimeout(() => {
+            void handleOutOfTime({
+              board: board,
+              gameId: game.id,
+            });
+          }, game.moveTime * 1000),
+        );
+      })
+      .catch(console.error),
     interaction.message
       .edit({
         components: [],
