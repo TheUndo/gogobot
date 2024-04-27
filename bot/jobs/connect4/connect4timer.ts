@@ -34,10 +34,11 @@ export async function connect4timer() {
     const now = new Date();
     const timeSinceLastMove = now.getTime() - game.lastMoveAt.getTime();
 
-    if (timeSinceLastMove > game.moveTime * 1000) {
+    if (timeSinceLastMove < game.moveTime * 1000) {
       continue;
     }
 
+    console.log("Game out of time", game.id);
     await handleOutOfTime({
       board: board.data,
       gameId: game.id,
