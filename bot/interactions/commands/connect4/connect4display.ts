@@ -165,6 +165,10 @@ export async function connect4display(gameId: string) {
     };
   }
 
+  const challengerColor = z
+    .nativeEnum(BinaryColorState)
+    .parse(game.challengerColor);
+
   embed.setDescription(
     [
       sprintf("<@%s> vs <@%s>", game.challenger, game.opponent),
@@ -190,13 +194,17 @@ export async function connect4display(gameId: string) {
         .with(GameState.RedWin, () =>
           sprintf(
             "Winner: <@%s> :red_circle:",
-            game.challengerColor === "red" ? game.challenger : game.opponent,
+            challengerColor === BinaryColorState.Red
+              ? game.challenger
+              : game.opponent,
           ),
         )
         .with(GameState.YellowWin, () =>
           sprintf(
             "Winner: <@%s> :yellow_circle:",
-            game.challengerColor === "yellow" ? game.challenger : game.opponent,
+            challengerColor === BinaryColorState.Yellow
+              ? game.challenger
+              : game.opponent,
           ),
         )
         .otherwise(() => "It's a draw!"),
