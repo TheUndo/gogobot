@@ -387,6 +387,7 @@ export async function connect4accept(
         board: JSON.stringify(board),
         gameState: z.nativeEnum(GameState).parse(board.gameState),
         lastMoveAt: new Date(),
+        lastMessageId: interaction.message.id,
       },
     }),
   ]);
