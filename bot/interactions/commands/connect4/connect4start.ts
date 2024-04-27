@@ -1,4 +1,8 @@
 import { createEmptyBoard } from "!/bot/logic/c4/createEmptyBoard";
+import {
+  connect4TimeoutsStore,
+  handleOutOfTime,
+} from "!/bot/logic/c4/handleOutOfTime";
 import { BinaryColorState, GameState, SlotState } from "!/bot/logic/c4/types";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { notYourInteraction } from "!/bot/logic/responses/notYourInteraction";
@@ -23,10 +27,6 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4clockTimes } from "./connect4config";
 import { connect4display } from "./connect4display";
-import {
-  connect4TimeoutsStore,
-  handleOutOfTime,
-} from "!/bot/logic/c4/handleOutOfTime";
 
 type Options = {
   mentionedIsBot: boolean;

@@ -1,6 +1,10 @@
 import { checkColumn } from "!/bot/logic/c4/checkColumn";
 import { determineWinnerOptimized } from "!/bot/logic/c4/determineWinner";
 import { forfeit } from "!/bot/logic/c4/forfeit";
+import {
+  connect4TimeoutsStore,
+  handleOutOfTime,
+} from "!/bot/logic/c4/handleOutOfTime";
 import { makeMove } from "!/bot/logic/c4/makeMove";
 import {
   BinaryColorState,
@@ -9,17 +13,13 @@ import {
   SlotState,
   boardSchema,
 } from "!/bot/logic/c4/types";
+import { createWallet } from "!/bot/logic/economy/createWallet";
 import type { AnyInteraction, InteractionContext } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { connect4interactionContext } from "./connect4config";
 import { connect4display } from "./connect4display";
-import {
-  handleOutOfTime,
-  connect4TimeoutsStore,
-} from "!/bot/logic/c4/handleOutOfTime";
-import { createWallet } from "!/bot/logic/economy/createWallet";
 
 export async function connect4move(
   interactionContext: InteractionContext,

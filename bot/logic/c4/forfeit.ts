@@ -1,4 +1,4 @@
-import { BinaryColorState, GameState, type Board } from "./types";
+import { BinaryColorState, type Board, GameState } from "./types";
 
 export function forfeit(board: Board, forfeitState: BinaryColorState): Board {
   return {

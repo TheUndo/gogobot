@@ -7,6 +7,8 @@ import {
   boardSchema,
 } from "!/bot/logic/c4/types";
 import { Colors, InteractionType } from "!/bot/types";
+import { addCurrency } from "!/bot/utils/addCurrency";
+import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import {
   ActionRowBuilder,
@@ -20,8 +22,6 @@ import { sprintf } from "sprintf-js";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import type { connect4interactionContext } from "./connect4config";
-import { addCurrency } from "!/bot/utils/addCurrency";
-import { formatNumber } from "!/bot/utils/formatNumber";
 
 export async function connect4display(gameId: string) {
   const game = await prisma.connect4Game.findUnique({

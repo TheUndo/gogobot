@@ -1,10 +1,10 @@
 import { client } from "!/bot/client";
-import { prisma } from "!/core/db/prisma";
-import { outOfTime } from "./outOfTime";
-import { BinaryColorState, GameState, type Board } from "./types";
 import { connect4display } from "!/bot/interactions/commands/connect4/connect4display";
+import { prisma } from "!/core/db/prisma";
 import { z } from "zod";
 import { createWallet } from "../economy/createWallet";
+import { outOfTime } from "./outOfTime";
+import { BinaryColorState, type Board, GameState } from "./types";
 
 type Options = {
   gameId: string;

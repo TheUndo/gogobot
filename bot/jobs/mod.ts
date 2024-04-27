@@ -2,8 +2,8 @@ import { CronJob } from "cron";
 import { aggregateClanStatistics } from "./clans/aggregateClanStatistics";
 import { fixClanChannels } from "./clans/fixClanChannels";
 import { fixClanRoles } from "./clans/fixClanRoles";
-import { syncDiscordUsernameCache } from "./misc/syncDiscordUsernameCache";
 import { connect4timer } from "./connect4/connect4timer";
+import { syncDiscordUsernameCache } from "./misc/syncDiscordUsernameCache";
 
 await fixClanRoles();
 await fixClanChannels();

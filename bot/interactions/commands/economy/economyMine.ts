@@ -1,5 +1,6 @@
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
+import { Colors, type Command } from "!/bot/types";
 import { addCurrency } from "!/bot/utils/addCurrency";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { randomNumber } from "!/bot/utils/randomNumber";
@@ -14,7 +15,6 @@ import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
-import { Colors, type Command } from "!/bot/types";
 
 enum Resources {
   Copper = "COPPER", // 1k
