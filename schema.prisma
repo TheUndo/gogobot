@@ -246,10 +246,13 @@ model Connect4Game {
   moveTime        Int
   wagerAmount     Int?
 
+  lastMessageId   String
   lastMoveAt DateTime
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   endedAt    DateTime?
+
+  @@index([endedAt])
 }
 
 model Connect4GameInvitation {

@@ -1,5 +1,6 @@
 import { avatar } from "!/bot/interactions/commands/avatar";
 import { clan } from "!/bot/interactions/commands/clan/clan";
+/* import { connect4 } from "!/bot/interactions/commands/connect4/connect4"; */
 import { economyChannel } from "!/bot/interactions/commands/ecnomyChannel";
 import { balance } from "!/bot/interactions/commands/economy/economyBalance";
 import { daily } from "!/bot/interactions/commands/economy/economyDaily";
@@ -14,6 +15,7 @@ import { spawn } from "!/bot/interactions/commands/economy/economySpawn";
 import { weekly } from "!/bot/interactions/commands/economy/economyWeekly";
 import { withdraw } from "!/bot/interactions/commands/economy/economyWithdraw";
 import { work } from "!/bot/interactions/commands/economy/economyWork";
+import { leaderBoard } from "!/bot/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import { fun } from "!/bot/interactions/commands/fun";
 import { github } from "!/bot/interactions/commands/github";
 import { help } from "!/bot/interactions/commands/help";
@@ -26,7 +28,6 @@ import { unsubscribe } from "!/bot/interactions/commands/unsubscribe";
 import { welcome } from "!/bot/interactions/commands/welcome";
 import { env } from "!/core/misc/env";
 
-import { leaderBoard } from "!/bot/interactions/commands/economy/leaderBoard/economyLeaderBoard";
 import type { Command } from "!/bot/types";
 import {
   type CacheType,
@@ -68,7 +69,6 @@ const commandsRegistrar: Command[] = [
   economyChannel,
   fish,
   gamble,
-  /* prostitute, */
   soldier,
   mine,
   /* connect4, */

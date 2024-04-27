@@ -3,15 +3,15 @@ import { prisma } from "../../../../core/db/prisma";
 /** does not search, only checks for perfect matches */
 export async function findAnimeFromQuery(query: string) {
   const id = query ? Number.parseInt(query) : Number.NaN;
-  const checkAnimeOrName = !Number.isNaN(id)
-    ? await prisma.anime.findUnique({
-        where: {
-          id,
-        },
-      })
-    : await prisma.anime.findFirst({
+  const checkAnimeOrName = Number.isNaN(id)
+    ? await prisma.anime.findFirst({
         where: {
           nameDisplay: query.trim(),
+        },
+      })
+    : await prisma.anime.findUnique({
+        where: {
+          id,
         },
       });
 

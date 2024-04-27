@@ -1,4 +1,4 @@
-import { type Board, GameState, SlotState } from "./c4types";
+import { type Board, GameState, SlotState } from "./types";
 
 export function createEmptyBoard(
   turn?: SlotState.Yellow | SlotState.Red,

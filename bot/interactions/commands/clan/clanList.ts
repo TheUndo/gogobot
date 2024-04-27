@@ -124,9 +124,7 @@ export async function clanListCommand({ authorId, guildId, page }: Options) {
     embed.setTitle(sprintf("Clans Page %d/%d", page, pages));
   }
 
-  if (!clans.length) {
-    embed.setDescription("No clans found.");
-  } else {
+  if (clans.length) {
     const list = clans.map((clan) => {
       const isMyClan = myClan && myClan.id === clan.id ? " (Your Clan)" : "";
       if (clan.settingsAbbreviation) {
@@ -150,6 +148,8 @@ export async function clanListCommand({ authorId, guildId, page }: Options) {
     });
 
     embed.setDescription(list.join("\n"));
+  } else {
+    embed.setDescription("No clans found.");
   }
 
   const [previousPageInteraction, nextPageInteraction] =

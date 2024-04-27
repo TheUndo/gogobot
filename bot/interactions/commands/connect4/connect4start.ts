@@ -1,5 +1,5 @@
-import { GameState, SlotState } from "!/bot/logic/c4/c4types";
 import { createEmptyBoard } from "!/bot/logic/c4/createEmptyBoard";
+import { GameState, SlotState } from "!/bot/logic/c4/types";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { notYourInteraction } from "!/bot/logic/responses/notYourInteraction";
 import {

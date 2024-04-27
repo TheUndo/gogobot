@@ -1,11 +1,11 @@
+import { renderBoard } from "!/bot/logic/c4/renderBoard";
 import {
+  BinaryWinnerState,
   Column,
-  ForfeitState,
   GameState,
   SlotState,
   boardSchema,
-} from "!/bot/logic/c4/c4types";
-import { renderBoard } from "!/bot/logic/c4/renderBoard";
+} from "!/bot/logic/c4/types";
 import { Colors, InteractionType } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
 import {
@@ -49,59 +49,10 @@ export async function connect4display(
 
   embed.setTitle("Connect 4");
 
-  if (!board.data.forfeitState) {
-    embed.setDescription(
-      [
-        sprintf("<@%s> vs <@%s>", game.challenger, game.opponent),
-        match(board.data.gameState)
-          .with(GameState.RedTurn, () =>
-            sprintf(
-              "Turn: <@%s> :red_circle: <t:%d:R>",
-              game.challengerColor === SlotState.Red
-                ? game.challenger
-                : game.opponent,
-              Math.round(game.lastMoveAt.getTime() / 1000) + game.moveTime,
-            ),
-          )
-          .with(GameState.YellowTurn, () =>
-            sprintf(
-              "Turn: <@%s> :yellow_circle: <t:%d:R>",
-              game.challengerColor === SlotState.Yellow
-                ? game.challenger
-                : game.opponent,
-              Math.round(game.lastMoveAt.getTime() / 1000) + game.moveTime,
-            ),
-          )
-          .with(GameState.RedWin, () =>
-            sprintf(
-              "Winner: <@%s> :red_circle:",
-              game.challengerColor === "red" ? game.challenger : game.opponent,
-            ),
-          )
-          .with(GameState.YellowWin, () =>
-            sprintf(
-              "Winner: <@%s> :yellow_circle:",
-              game.challengerColor === "yellow"
-                ? game.challenger
-                : game.opponent,
-            ),
-          )
-          .otherwise(() => "It's a draw!"),
-      ].join("\n"),
-    );
-
-    embed.setColor(
-      match(board.data.gameState)
-        .with(GameState.RedTurn, () => 0xff0000)
-        .with(GameState.YellowTurn, () => 0xffff00)
-        .with(GameState.RedWin, () => 0xff0000)
-        .with(GameState.YellowWin, () => 0xffff00)
-        .otherwise(() => Colors.Info),
-    );
-  } else {
+  if (board.data.forfeitState) {
     embed.setDescription(
       match(board.data.forfeitState)
-        .with(ForfeitState.Red, () =>
+        .with(BinaryWinnerState.Red, () =>
           sprintf(
             "<@%s> forfeited, <@%s> wins",
             game.challengerColor === SlotState.Red
@@ -112,7 +63,7 @@ export async function connect4display(
               : game.challenger,
           ),
         )
-        .with(ForfeitState.Yellow, () =>
+        .with(BinaryWinnerState.Yellow, () =>
           sprintf(
             "<@%s> forfeited, <@%s> wins",
             game.challengerColor === SlotState.Yellow
@@ -128,8 +79,8 @@ export async function connect4display(
 
     embed.setColor(
       match(board.data.forfeitState)
-        .with(ForfeitState.Red, () => 0xffff00)
-        .with(ForfeitState.Yellow, () => 0xff0000)
+        .with(BinaryWinnerState.Red, () => 0xffff00)
+        .with(BinaryWinnerState.Yellow, () => 0xff0000)
         .exhaustive(),
     );
 
@@ -137,6 +88,53 @@ export async function connect4display(
       embeds: [embed],
     };
   }
+
+  embed.setDescription(
+    [
+      sprintf("<@%s> vs <@%s>", game.challenger, game.opponent),
+      match(board.data.gameState)
+        .with(GameState.RedTurn, () =>
+          sprintf(
+            "Turn: <@%s> :red_circle: <t:%d:R>",
+            game.challengerColor === SlotState.Red
+              ? game.challenger
+              : game.opponent,
+            Math.round(game.lastMoveAt.getTime() / 1000) + game.moveTime,
+          ),
+        )
+        .with(GameState.YellowTurn, () =>
+          sprintf(
+            "Turn: <@%s> :yellow_circle: <t:%d:R>",
+            game.challengerColor === SlotState.Yellow
+              ? game.challenger
+              : game.opponent,
+            Math.round(game.lastMoveAt.getTime() / 1000) + game.moveTime,
+          ),
+        )
+        .with(GameState.RedWin, () =>
+          sprintf(
+            "Winner: <@%s> :red_circle:",
+            game.challengerColor === "red" ? game.challenger : game.opponent,
+          ),
+        )
+        .with(GameState.YellowWin, () =>
+          sprintf(
+            "Winner: <@%s> :yellow_circle:",
+            game.challengerColor === "yellow" ? game.challenger : game.opponent,
+          ),
+        )
+        .otherwise(() => "It's a draw!"),
+    ].join("\n"),
+  );
+
+  embed.setColor(
+    match(board.data.gameState)
+      .with(GameState.RedTurn, () => 0xff0000)
+      .with(GameState.YellowTurn, () => 0xffff00)
+      .with(GameState.RedWin, () => 0xff0000)
+      .with(GameState.YellowWin, () => 0xffff00)
+      .otherwise(() => Colors.Info),
+  );
 
   const image = await renderBoard(board.data).catch(() => null);
 
@@ -178,36 +176,26 @@ export async function connect4display(
     };
   }
 
-  const [moveInteraction, forfeitInteraction, drawInteraction] =
-    await prisma.$transaction([
-      prisma.interaction.create({
-        data: {
-          guildId: game.guildId,
-          channelId: game.channelId,
-          type: InteractionType.Connect4Move,
-          userDiscordId: game.challenger,
-          payload: JSON.stringify(context),
-        },
-      }),
-      prisma.interaction.create({
-        data: {
-          guildId: game.guildId,
-          channelId: game.channelId,
-          type: InteractionType.Connect4Forfeit,
-          userDiscordId: game.challenger,
-          payload: JSON.stringify(context),
-        },
-      }),
-      prisma.interaction.create({
-        data: {
-          guildId: game.guildId,
-          channelId: game.channelId,
-          type: InteractionType.Connect4Draw,
-          userDiscordId: game.challenger,
-          payload: JSON.stringify(context),
-        },
-      }),
-    ]);
+  const [moveInteraction, forfeitInteraction] = await prisma.$transaction([
+    prisma.interaction.create({
+      data: {
+        guildId: game.guildId,
+        channelId: game.channelId,
+        type: InteractionType.Connect4Move,
+        userDiscordId: game.challenger,
+        payload: JSON.stringify(context),
+      },
+    }),
+    prisma.interaction.create({
+      data: {
+        guildId: game.guildId,
+        channelId: game.channelId,
+        type: InteractionType.Connect4Forfeit,
+        userDiscordId: game.challenger,
+        payload: JSON.stringify(context),
+      },
+    }),
+  ]);
 
   const row1 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
     new StringSelectMenuBuilder()
@@ -227,10 +215,6 @@ export async function connect4display(
       .setCustomId(forfeitInteraction.id)
       .setStyle(ButtonStyle.Danger)
       .setLabel("Forfeit"),
-    new ButtonBuilder()
-      .setCustomId(drawInteraction.id)
-      .setStyle(ButtonStyle.Secondary)
-      .setLabel("Propose a draw"),
   );
 
   return {

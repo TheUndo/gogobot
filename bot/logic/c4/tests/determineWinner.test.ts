@@ -1,11 +1,11 @@
 import { describe, expect, it } from "bun:test";
-import { type Board, GameState, SlotState } from "./c4types";
-import { calculateWinner } from "./calculateWinner";
-import { createEmptyBoard } from "./createEmptyBoard";
-import { mergeBoards } from "./mergeBoards";
+import { createEmptyBoard } from "../createEmptyBoard";
+import { determineWinner } from "../determineWinner";
+import { mergeBoards } from "../mergeBoards";
+import { type Board, GameState, SlotState } from "../types";
 
 describe("connect 4 calculate winner", () => {
-  it.skip("should calculate horizontal winner", () => {
+  it("should calculate horizontal winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -19,7 +19,7 @@ describe("connect 4 calculate winner", () => {
       ],
     });
 
-    const result = calculateWinner(board);
+    const result = determineWinner(board);
     expect(result.gameState).toBe(GameState.RedWin);
     expect(result.winningSlots).toEqual([
       { x: 0, y: 0, state: SlotState.Red },
@@ -31,7 +31,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it.skip("should calculate horizontal bottom row winner", () => {
+  it("should calculate horizontal bottom row winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -44,7 +44,7 @@ describe("connect 4 calculate winner", () => {
       ],
     });
 
-    const result = calculateWinner(board);
+    const result = determineWinner(board);
 
     expect(result.gameState).toBe(GameState.RedWin);
     expect(result.winningSlots?.length).toBe(5);
@@ -57,7 +57,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it.skip("should calculate vertical winner", () => {
+  it("should calculate vertical winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -69,10 +69,10 @@ describe("connect 4 calculate winner", () => {
       ],
     });
 
-    expect(calculateWinner(board).gameState).toBe(GameState.RedWin);
+    expect(determineWinner(board).gameState).toBe(GameState.RedWin);
   });
 
-  it.skip("should calculate diagonal winner", async () => {
+  it("should calculate diagonal winner", async () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -85,7 +85,7 @@ describe("connect 4 calculate winner", () => {
       ],
     });
 
-    const result = calculateWinner(board);
+    const result = determineWinner(board);
 
     expect(result.gameState).toBe(GameState.RedWin);
     expect(result.winningSlots).toEqual([
@@ -97,7 +97,7 @@ describe("connect 4 calculate winner", () => {
     ]);
   });
 
-  it.skip("should calculate left diagonal winner", () => {
+  it("should calculate left diagonal winner", () => {
     const board: Board = mergeBoards(createEmptyBoard(), {
       slots: [
         [
@@ -109,12 +109,12 @@ describe("connect 4 calculate winner", () => {
       ],
     });
 
-    expect(calculateWinner(board).gameState).toBe(GameState.RedWin);
+    expect(determineWinner(board).gameState).toBe(GameState.RedWin);
   });
 
   it("should calculate no winner", () => {
     const board: Board = createEmptyBoard();
 
-    expect(calculateWinner(board).gameState).toBe(GameState.RedTurn);
+    expect(determineWinner(board).gameState).toBe(GameState.RedTurn);
   });
 });

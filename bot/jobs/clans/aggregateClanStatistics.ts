@@ -1,4 +1,4 @@
-import { prisma } from "../../core/db/prisma";
+import { prisma } from "../../../core/db/prisma";
 
 /** Caches statistics about clans because it is expensive to calculate them. */
 export async function aggregateClanStatistics() {

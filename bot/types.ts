@@ -94,7 +94,6 @@ export enum InteractionType {
   Connect4DeclineInvitation = "CONNECT4_DECLINE_INVITATION",
   Connect4Move = "CONNECT4_MOVE",
   Connect4Forfeit = "CONNECT4_FORFEIT",
-  Connect4Draw = "CONNECT4_DRAW",
 }
 
 export enum ClanMemberRole {

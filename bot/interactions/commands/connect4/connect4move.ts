@@ -1,14 +1,14 @@
+import { checkColumn } from "!/bot/logic/c4/checkColumn";
+import { determineWinnerOptimized } from "!/bot/logic/c4/determineWinner";
+import { forfeit } from "!/bot/logic/c4/forfeit";
+import { makeMove } from "!/bot/logic/c4/makeMove";
 import {
+  BinaryWinnerState,
   Column,
-  ForfeitState,
   GameState,
   SlotState,
   boardSchema,
-} from "!/bot/logic/c4/c4types";
-import { calculateWinner } from "!/bot/logic/c4/calculateWinner";
-import { checkColumn } from "!/bot/logic/c4/checkColumn";
-import { forfeit } from "!/bot/logic/c4/forfeit";
-import { makeMove } from "!/bot/logic/c4/makeMove";
+} from "!/bot/logic/c4/types";
 import type { AnyInteraction, InteractionContext } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
@@ -141,7 +141,7 @@ export async function connect4move(
     }));
   }
 
-  const checkWinner = calculateWinner(moveMade);
+  const checkWinner = determineWinnerOptimized(moveMade);
 
   const gameEnded = [
     GameState.Draw,
@@ -251,12 +251,12 @@ export async function connect4forfeit(
 
   const challengerForfeitState =
     game.challengerColor === SlotState.Red
-      ? ForfeitState.Red
-      : ForfeitState.Yellow;
+      ? BinaryWinnerState.Red
+      : BinaryWinnerState.Yellow;
   const opponentForfeitState =
-    challengerForfeitState === ForfeitState.Red
-      ? ForfeitState.Yellow
-      : ForfeitState.Red;
+    challengerForfeitState === BinaryWinnerState.Red
+      ? BinaryWinnerState.Yellow
+      : BinaryWinnerState.Red;
 
   const forfeitedBoard = forfeit(
     board.data,
@@ -281,10 +281,19 @@ export async function connect4forfeit(
 
   return void (await interaction
     .reply(await connect4display(game.id))
-    .then(() => {
-      return interaction.message.edit({
+    .then(async (message) => {
+      await prisma.connect4Game.update({
+        where: {
+          id: game.id,
+        },
+        data: {
+          lastMessageId: message.id,
+        },
+      });
+      return await interaction.message.edit({
         content: "",
         components: [],
       });
-    }));
+    })
+    .catch(console.error));
 }

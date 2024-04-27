@@ -1,8 +1,11 @@
-import type { Board } from "./c4types";
+import { type Board, Column } from "./types";
 
-export function mergeBoards(baseBoard: Board, overridingBoard: Board) {
+export function mergeBoards(baseBoard: Board, overridingBoard: Board): Board {
   return {
     ...baseBoard,
+    moves: Array.from({
+      length: overridingBoard.slots.flat(1).length,
+    }).map(() => Column.A),
     slots: baseBoard.slots.map((row, x) => {
       return row.map((slot, y) => {
         const correspondingSlot = overridingBoard.slots

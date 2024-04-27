@@ -1,5 +1,5 @@
-import { type Board, Column, SlotState } from "./c4types";
 import { columnFullMessage } from "./makeMove";
+import { type Board, Column, SlotState } from "./types";
 
 export function checkColumn(
   board: Board,

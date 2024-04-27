@@ -1,4 +1,5 @@
-import "./jobs/mod";
-import "./routers/commands";
-import "./routers/interactions";
-import "./routers/userJoin";
+import "!/bot/jobs/mod";
+import "!/bot/routers/commands";
+import "!/bot/routers/interactions";
+import "!/bot/routers/userJoin";
+import "!/core/misc/assertBunVersion";

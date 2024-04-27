@@ -1,6 +1,6 @@
-import type { Board, ForfeitState } from "./c4types";
+import type { BinaryWinnerState, Board } from "./types";
 
-export function forfeit(board: Board, forfeitState: ForfeitState): Board {
+export function forfeit(board: Board, forfeitState: BinaryWinnerState): Board {
   return {
     ...board,
     forfeitState,

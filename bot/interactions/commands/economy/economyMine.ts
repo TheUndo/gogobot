@@ -70,7 +70,7 @@ const rewards: Record<
   },
   [Resources.Diamond]: {
     message: "You found Diamond! 💎",
-    generateReward: async () => randomNumber(1_000_0000, 1_200_000),
+    generateReward: async () => randomNumber(1_000_000, 1_200_000),
   },
   [Resources.RockSlide]: {
     message: "You were caught on a rockslide and had to pay for injuries. 🩹",

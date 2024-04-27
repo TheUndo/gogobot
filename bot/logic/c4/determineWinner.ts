@@ -1,22 +1,30 @@
-import { type Board, GameState, type Slot, SlotState } from "./c4types";
 import { directions } from "./constants";
+import { type Board, GameState, type Slot, SlotState } from "./types";
 
-export function calculateWinner(board: Board): Board {
-  const { slots, moves } = board;
+/**
+ * Adds additional case pruning for faster determining.
+ * Not used when testing.
+ */
+export function determineWinnerOptimized(board: Board): Board {
+  const { moves } = board;
   const moveCount = moves?.length ?? 0;
 
-  if (typeof moveCount === "number") {
-    if (moveCount >= 42) {
-      return {
-        ...board,
-        gameState: GameState.Draw,
-      };
-    }
-
-    if (moveCount < 7) {
-      return board;
-    }
+  if (moveCount >= 42) {
+    return {
+      ...board,
+      gameState: GameState.Draw,
+    };
   }
+
+  if (moveCount < 7) {
+    return board;
+  }
+
+  return determineWinner(board);
+}
+
+export function determineWinner(board: Board): Board {
+  const { slots } = board;
 
   for (const direction of directions) {
     let stack: Slot[] = [];

@@ -1,5 +1,5 @@
-import { type Board, type Column, GameState, SlotState } from "./c4types";
 import { checkColumn } from "./checkColumn";
+import { type Board, type Column, GameState, SlotState } from "./types";
 
 export const columnFullMessage = "This column is full.";
 

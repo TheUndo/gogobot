@@ -19,7 +19,13 @@
         "noUnusedImports": "error"
       },
       "style": {
-        "useBlockStatements": "error"
+        "useBlockStatements": "error",
+        "noNamespace": "error",
+        "noNonNullAssertion": "error",
+        "noShoutyConstants": "error",
+        "noRestrictedGlobals": "error",
+        "noCommaOperator": "error",
+        "noNegationElse": "error"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off"
