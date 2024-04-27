@@ -60,8 +60,16 @@ export async function addClanRole(
     return;
   }
 
-  await member?.roles.add(role.id).catch((e) => {
+  await member?.roles.add(role.id).catch(async (e) => {
     console.error(`Failed to add role to ${userId}`, e);
+    await prisma.clanMember.delete({
+      where: {
+        clanId_discordUserId: {
+          clanId,
+          discordUserId: userId,
+        },
+      },
+    });
     return null;
   });
 }

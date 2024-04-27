@@ -5,9 +5,6 @@ import { fixClanRoles } from "./clans/fixClanRoles";
 import { connect4timer } from "./connect4/connect4timer";
 import { syncDiscordUsernameCache } from "./misc/syncDiscordUsernameCache";
 
-await fixClanRoles();
-await fixClanChannels();
-
 new CronJob("0 * * * *", aggregateClanStatistics).start();
 new CronJob("0 * * * *", fixClanRoles).start();
 new CronJob("0 0 * * *", fixClanChannels).start();
