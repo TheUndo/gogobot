@@ -3,6 +3,9 @@ import { slugify } from "!/bot/utils/slugify";
 import { prisma } from "!/core/db/prisma";
 import type { Guild, Role } from "discord.js";
 import { z } from "zod";
+import { clanNotification } from "./clanNotification";
+import { sprintf } from "sprintf-js";
+import { Colors } from "!/bot/types";
 
 export async function removeClanRole(
   clanId: string,
@@ -62,6 +65,14 @@ export async function addClanRole(
 
   await member?.roles.add(role.id).catch(async (e) => {
     console.error(`Failed to add role to ${userId}`, e);
+    await clanNotification(
+      clanId,
+      sprintf(
+        "The system automatically removed the clan member <@%s> from the clan. The most likely reason is this user left the guild.",
+        userId,
+      ),
+      Colors.Warning,
+    );
     await prisma.clanMember.delete({
       where: {
         clanId_discordUserId: {
