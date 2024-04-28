@@ -1,11 +1,11 @@
 import { client } from "!/bot/client";
+import { Colors } from "!/bot/types";
 import { slugify } from "!/bot/utils/slugify";
 import { prisma } from "!/core/db/prisma";
 import type { Guild, Role } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { clanNotification } from "./clanNotification";
-import { sprintf } from "sprintf-js";
-import { Colors } from "!/bot/types";
 
 export async function removeClanRole(
   clanId: string,
