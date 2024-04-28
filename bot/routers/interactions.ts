@@ -43,6 +43,7 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { shopToolBuy } from "../interactions/commands/economy/shop/economyShopItemBuy";
 
 client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
   // Intercepts all interactions and populate the Discord username cache
@@ -146,6 +147,8 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           return void (await connect4decline(interactionContext, interaction));
         case InteractionType.Connect4Forfeit:
           return void (await connect4forfeit(interactionContext, interaction));
+        case InteractionType.ShopBuyToolMenu:
+          return void (await shopToolBuy(interactionContext, interaction));
       }
     }
   }
