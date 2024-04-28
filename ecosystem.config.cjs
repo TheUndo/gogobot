@@ -3,25 +3,19 @@ module.exports = {
     {
       name: "bot",
       interpreter: "bun",
-      script: "index.ts",
+      script: "bot/start.ts",
     },
     {
       name: "scraper",
       interpreter: "bun",
-      script: "scraper/scrapeEverything.ts",
+      script: "gogo/scraper/scrapeEverything.ts",
       cron_restart: "0 * * * *",
     },
     {
       name: "latest",
       interpreter: "bun",
-      script: "scraper/scrapeRecents.ts",
+      script: "gogo/scraper/scrapeRecents.ts",
       cron_restart: "*/15 * * * *",
-    },
-    {
-      name: "news",
-      interpreter: "bun",
-      script: "scraper/scrapeNews.ts",
-      cron_restart: "*/30 * * * *",
     },
   ],
 };

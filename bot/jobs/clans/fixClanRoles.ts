@@ -1,0 +1,55 @@
+import { clanRoleUpdate } from "!/bot/interactions/commands/clan/clanRole";
+import { prisma } from "!/core/db/prisma";
+
+export async function fixClanRoles() {
+  const clans = await prisma.clan.findMany({
+    where: {
+      roleId: {
+        not: null,
+      },
+    },
+    select: {
+      id: true,
+      discordGuildId: true,
+      roleId: true,
+      members: {
+        select: {
+          discordUserId: true,
+        },
+      },
+    },
+  });
+
+  for (const clan of clans) {
+    const result = await clanRoleUpdate(clan.id).catch(() => null);
+
+    if (!result) {
+      continue;
+    }
+
+    const { guild, role } = result;
+
+    if (!role || !guild) {
+      continue;
+    }
+
+    for (const clanMember of clan.members) {
+      const guildMember = role.members.find(
+        (v) => v.id === clanMember.discordUserId,
+      );
+
+      if (!guildMember) {
+        await guild.members
+          .fetch(clanMember.discordUserId)
+          .then((member) => member?.roles.add(role.id))
+          .catch((e) => {
+            console.error(
+              `Failed to add role to ${clanMember.discordUserId}`,
+              e,
+            );
+            return null;
+          });
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ export default component$(() => {
         <h1 class="font-bold text-4xl text-center">GoGoBot</h1>
         <div class="h-10" />
         <p class="text-center">
-          Multi-purpose discord bot.{" "}
+          Multi-purpose Discord bot.{" "}
           <Link href="/about" class="link">
             Learn more
           </Link>
@@ -36,8 +36,7 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content:
-        "The best economy/clan/anime Discord bot! Official Gogoanime Discord bot.",
+      content: "The best economy/clan/anime Discord bot!",
     },
     {
       property: "og:title",
