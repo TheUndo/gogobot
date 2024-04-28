@@ -9,30 +9,56 @@ export const fun = {
   data: new SlashCommandBuilder()
     .setName("fun")
     .setDescription("Try it out to find out")
-    .addStringOption((option) =>
-      option
-        .setName("options")
-        .setDescription("hug kiss diss pat")
-        .setChoices(
-          { name: "Kiss", value: "kiss" },
-          { name: "Hug", value: "hug" },
-          { name: "Pat", value: "pat" },
-          { name: "Diss", value: "diss" },
-        )
-        .setRequired(true),
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("hug")
+        .setDescription("Hug your friends")
+        .addUserOption((option) =>
+          option
+            .setRequired(true)
+            .setName("user")
+            .setDescription("User to hug"),
+        ),
     )
-    .addUserOption((option) =>
-      option
-        .setName("mention")
-        .setDescription("Mention the user")
-        .setRequired(true),
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("kiss")
+        .setDescription("Kiss your friends")
+        .addUserOption((option) =>
+          option
+            .setRequired(true)
+            .setName("user")
+            .setDescription("User to kiss"),
+        ),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("pat")
+        .setDescription("Pat your friends")
+        .addUserOption((option) =>
+          option
+            .setRequired(true)
+            .setName("user")
+            .setDescription("User to pat"),
+        ),
+    )
+    .addSubcommand((subCommand) =>
+      subCommand
+        .setName("diss")
+        .setDescription("Diss your friends")
+        .addUserOption((option) =>
+          option
+            .setRequired(true)
+            .setName("user")
+            .setDescription("User to diss"),
+        ),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;
     }
-    const query = interaction.options.getString("options");
-    const id = interaction.options.getUser("mention");
+    const query = interaction.options.getSubcommand();
+    const id = interaction.options.getUser("user");
 
     if (query === "hug") {
       const embed = new EmbedBuilder()
