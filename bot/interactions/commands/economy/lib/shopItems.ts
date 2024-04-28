@@ -9,7 +9,14 @@ import {
 
 export const buyToolItems: Record<
   ToolTypes,
-  { id: string; type: ToolTypes; name: string; price: number; durability: number; emoji: string }
+  {
+    id: string;
+    type: ToolTypes;
+    name: string;
+    price: number;
+    durability: number;
+    emoji: string;
+  }
 > = {
   [ToolTypes.StonePickaxe]: {
     id: toolIds.STONE_PICKAXE,
@@ -17,7 +24,7 @@ export const buyToolItems: Record<
     name: toolNames.STONE_PICKAXE,
     price: toolPrices.STONE_PICKAXE,
     durability: toolDurability.STONE_PICKAXE,
-    emoji: toolEmojis.STONE_PICKAXE
+    emoji: toolEmojis.STONE_PICKAXE,
   },
   [ToolTypes.IronPickaxe]: {
     id: toolIds.IRON_PICKAXE,
@@ -25,7 +32,7 @@ export const buyToolItems: Record<
     name: toolNames.IRON_PICKAXE,
     price: toolPrices.IRON_PICKAXE,
     durability: toolDurability.IRON_PICKAXE,
-    emoji: toolEmojis.IRON_PICKAXE
+    emoji: toolEmojis.IRON_PICKAXE,
   },
   [ToolTypes.DiamondPickaxe]: {
     id: toolIds.DIAMOND_PICKAXE,
@@ -33,7 +40,7 @@ export const buyToolItems: Record<
     name: toolNames.DIAMOND_PICKAXE,
     price: toolPrices.DIAMOND_PICKAXE,
     durability: toolDurability.DIAMOND_PICKAXE,
-    emoji: toolEmojis.DIAMOND_PICKAXE
+    emoji: toolEmojis.DIAMOND_PICKAXE,
   },
 };
 

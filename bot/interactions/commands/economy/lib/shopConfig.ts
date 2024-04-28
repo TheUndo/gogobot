@@ -39,6 +39,6 @@ export const toolEmojis: Record<ToolTypes, string> = {
   [ToolTypes.StonePickaxe]: "<:Stone_Pickaxe:1233853170912989308> ",
   [ToolTypes.IronPickaxe]: "<:Iron_Pickaxe:1233853154932559934>",
   [ToolTypes.DiamondPickaxe]: "<:Diamond_Pickaxe:1233853120363102341>",
-}
+};
 
 // Resource Section

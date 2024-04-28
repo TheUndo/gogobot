@@ -94,7 +94,7 @@ export enum InteractionType {
   Connect4DeclineInvitation = "CONNECT4_DECLINE_INVITATION",
   Connect4Move = "CONNECT4_MOVE",
   Connect4Forfeit = "CONNECT4_FORFEIT",
-  ShopBuyToolMenu = "SHOP_BUY_TOOL_MENU"
+  ShopBuyToolMenu = "SHOP_BUY_TOOL_MENU",
 }
 
 export enum ClanMemberRole {
