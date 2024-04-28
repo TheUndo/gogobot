@@ -23,7 +23,7 @@ export const avatar = {
       .setColor(Colors.Info)
       .setImage(
         (() => {
-          const url = new URL(user.displayAvatarURL());
+          const url = new URL(user.displayAvatarURL({forceStatic:false}));
           url.searchParams.set("size", "512");
           return url.toString();
         })(),
