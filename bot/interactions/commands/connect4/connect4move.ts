@@ -120,7 +120,7 @@ export async function connect4move(
     game.gameState === challengerColorTurn ? isChallenger : !isChallenger;
   if (
     !isUserTurn ||
-    [game.challenger, game.opponent].includes(interaction.user.id)
+    ![game.challenger, game.opponent].includes(interaction.user.id)
   ) {
     const checkedColumn = checkColumn(board.data, column.data);
 
