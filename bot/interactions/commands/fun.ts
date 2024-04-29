@@ -16,7 +16,7 @@ const hugGifs = [
   "https://gifdb.com/images/high/anime-hug-chino-and-cocoa-hoto-xna393ybuslvuhq5.gif",
   "https://gifdb.com/images/high/anime-hug-yato-yukine-noragami-18lpzknet9ir9v63.gif",
   "https://gifdb.com/images/high/anime-hug-place-to-place-h1p5rob98pbfn0ya.gif",
-  "https://gifdb.com/images/high/anime-hug-constanze-akko-ckpz3d1ia0qua40k.gif"
+  "https://gifdb.com/images/high/anime-hug-constanze-akko-ckpz3d1ia0qua40k.gif",
 ];
 
 const patGifs = [
@@ -26,8 +26,8 @@ const patGifs = [
   "https://gifdb.com/images/high/cute-anime-umaru-head-pat-rabcmvfkpeuteckt.gif",
   "https://gifdb.com/images/high/sister-head-pat-anime-loop-qdhlnp1zthpr11qd.gif",
   "https://gifdb.com/images/high/hanako-kun-patting-nene-yashiro-7qj3oa9b1gf6089i.gif",
-  "https://gifdb.com/images/high/yakuza-anime-sleeping-with-someone-patting-her-head-ynnrs7hdsolc6nhz.gif"
-]
+  "https://gifdb.com/images/high/yakuza-anime-sleeping-with-someone-patting-her-head-ynnrs7hdsolc6nhz.gif",
+];
 
 const kissGifs = [
   "https://gifdb.com/images/high/anime-kissing-498-x-278-gif-srvx1mau6f5dd3kj.gif",
@@ -39,8 +39,8 @@ const kissGifs = [
   "https://gifdb.com/images/high/anime-kissing-498-x-267-gif-z1vgw7s50sta4hqy.gif",
   "https://gifdb.com/images/high/anime-kissing-498-x-278-gif-o0055bjqc2ms6u3z.gif",
   "https://gifdb.com/images/high/anime-kissing-498-x-277-gif-clgqs0v7l8tq41bz.gif",
-  "https://gifdb.com/images/high/anime-kissing-498-x-261-gif-8puhneqnl555kt6a.gif"
-]
+  "https://gifdb.com/images/high/anime-kissing-498-x-261-gif-8puhneqnl555kt6a.gif",
+];
 
 export const fun = {
   data: new SlashCommandBuilder()
@@ -100,10 +100,7 @@ export const fun = {
     if (query === "hug") {
       const embed = new EmbedBuilder()
         .setDescription("***HUGGIES!!***")
-        .setImage(sprintf(
-          "%s",
-          hugGifs[getRandomArrayIndex(hugGifs.length)]
-        ))
+        .setImage(sprintf("%s", hugGifs[getRandomArrayIndex(hugGifs.length)]))
         .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} hugs ${id}`,
@@ -113,10 +110,7 @@ export const fun = {
     if (query === "kiss") {
       const embed = new EmbedBuilder()
         .setDescription("***KISSIES!!!***")
-        .setImage(sprintf(
-          "%s",
-          kissGifs[getRandomArrayIndex(kissGifs.length)]
-        ))
+        .setImage(sprintf("%s", kissGifs[getRandomArrayIndex(kissGifs.length)]))
         .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} kisses ${id}`,
@@ -126,10 +120,7 @@ export const fun = {
     if (query === "pat") {
       const embed = new EmbedBuilder()
         .setDescription("***Pat Pat!***")
-        .setImage(sprintf(
-          "%s",
-          patGifs[getRandomArrayIndex(patGifs.length)]
-        ))
+        .setImage(sprintf("%s", patGifs[getRandomArrayIndex(patGifs.length)]))
         .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} pats ${id}`,
@@ -148,5 +139,5 @@ export const fun = {
 } satisfies Command;
 
 const getRandomArrayIndex = (max: number) => {
-  return Math.floor(Math.random() * max)
-}
+  return Math.floor(Math.random() * max);
+};
