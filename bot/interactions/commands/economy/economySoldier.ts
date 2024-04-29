@@ -25,6 +25,8 @@ enum Scenario {
   Coward = "COWARD",
   InjuredInCombat = "INJURED_IN_COMBAT",
   DishonorablyDischarged = "DISHONORABLY_DISCHARGED",
+  General = "GENERAL",
+  Traitor = "TRAITOR"
 }
 
 const odds: Record<Scenario, number> = {
@@ -36,6 +38,8 @@ const odds: Record<Scenario, number> = {
   [Scenario.DishonorablyDischarged]: 10,
   [Scenario.Coward]: 10,
   [Scenario.InjuredInCombat]: 10,
+  [Scenario.General]: 5,
+  [Scenario.Traitor]: 5,
 };
 
 const computedOdds = stackOdds(odds);
@@ -48,36 +52,44 @@ const rewards: Record<
   }
 > = {
   [Scenario.Infantry]: {
-    message: "You enlisted in the infantry.",
+    message: "You enlisted in the infantry. 🪖",
     generateReward: async () => randomNumber(50_000, 55_000),
   },
   [Scenario.AirForce]: {
-    message: "You enlisted in the Air Force.",
+    message: "You enlisted in the Air Force. ✈️",
     generateReward: async () => randomNumber(30_000, 35_000),
   },
   [Scenario.Navy]: {
-    message: "You enlisted in the Navy.",
+    message: "You enlisted in the Navy. 🚢",
     generateReward: async () => randomNumber(30_000, 35_000),
   },
   [Scenario.Marines]: {
-    message: "You enlisted in the Marines.",
+    message: "You enlisted in the Marines. 💪",
     generateReward: async () => randomNumber(30_000, 35_000),
   },
   [Scenario.CoastGuard]: {
-    message: "You enlisted in the Coast Guard.",
+    message: "You enlisted in the Coast Guard. ⚓",
     generateReward: async () => randomNumber(30_000, 35_000),
   },
   [Scenario.Coward]: {
-    message: "You were too scared to enlist.",
+    message: "You were too scared to enlist. 😨",
     generateReward: async () => -randomNumber(5_000, 8_000),
   },
   [Scenario.InjuredInCombat]: {
-    message: "You were injured in combat.",
+    message: "You were injured in combat. 🤕",
     generateReward: async () => -randomNumber(1_000, 3_000),
   },
   [Scenario.DishonorablyDischarged]: {
-    message: "You were dishonorably discharged.",
+    message: "You were dishonorably discharged. 😐",
     generateReward: async () => -randomNumber(2_000, 3_000),
+  },
+  [Scenario.General]: {
+    message: "You lead your country to win the war ⚔️ and was promoted to General of the army. 🏅",
+    generateReward: async () => randomNumber(500_000,800_000)
+  },
+  [Scenario.Traitor]: {
+    message: "You betrayed your country and failed miserably and was court marshalled for treason. 💀",
+    generateReward: async() => -randomNumber(100_000,200_000)
   },
 };
 
