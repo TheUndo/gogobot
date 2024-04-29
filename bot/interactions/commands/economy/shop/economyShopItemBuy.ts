@@ -74,8 +74,6 @@ export async function shopToolBuy(
   const item = buyToolItems[Toolvalue.data];
   const itemInInv = inventory?.filter((tool) => tool.itemId === item.id);
 
-  console.table(itemInInv);
-
   if (itemInInv.length >= 1) {
     return await interaction.reply({
       content: "You can only have one pickaxe of each variety.",
