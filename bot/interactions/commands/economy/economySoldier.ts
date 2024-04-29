@@ -26,7 +26,7 @@ enum Scenario {
   InjuredInCombat = "INJURED_IN_COMBAT",
   DishonorablyDischarged = "DISHONORABLY_DISCHARGED",
   General = "GENERAL",
-  Traitor = "TRAITOR"
+  Traitor = "TRAITOR",
 }
 
 const odds: Record<Scenario, number> = {
@@ -84,12 +84,14 @@ const rewards: Record<
     generateReward: async () => -randomNumber(2_000, 3_000),
   },
   [Scenario.General]: {
-    message: "You lead your country to win the war ⚔️ and was promoted to General of the army. 🏅",
-    generateReward: async () => randomNumber(500_000,800_000)
+    message:
+      "You lead your country to win the war ⚔️ and was promoted to General of the army. 🏅",
+    generateReward: async () => randomNumber(500_000, 800_000),
   },
   [Scenario.Traitor]: {
-    message: "You betrayed your country and failed miserably and was court marshalled for treason. 💀",
-    generateReward: async() => -randomNumber(100_000,200_000)
+    message:
+      "You betrayed your country and failed miserably and was court marshalled for treason. 💀",
+    generateReward: async () => -randomNumber(100_000, 200_000),
   },
 };
 
