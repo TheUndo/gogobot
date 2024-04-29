@@ -1,9 +1,46 @@
-import type { Command } from "!/bot/types";
+import { Colors, type Command } from "!/bot/types";
 import {
   EmbedBuilder,
   type Interaction,
   SlashCommandBuilder,
 } from "discord.js";
+import { sprintf } from "sprintf-js";
+
+const hugGifs = [
+  "https://gifdb.com/images/high/anime-hug-himouto-umaru-chan-4tqcvdscmhxje0rn.gif",
+  "https://gifdb.com/images/high/anime-hug-horimiya-e7d8x5azzo1sfufo.gif",
+  "https://gifdb.com/images/high/anime-hug-sakurako-himawari-yuruyuri-z74rw1c95q5t5lxi.gif",
+  "https://gifdb.com/images/high/anime-hug-toilet-bound-hanako-kun-79p54apam6d5ye6x.gif",
+  "https://gifdb.com/images/high/anime-hug-himouto-umaru-chan-4tqcvdscmhxje0rn.gif",
+  "https://gifdb.com/images/high/anime-hug-nagisa-haruka-free-le02k8mejon6ad8x.gif",
+  "https://gifdb.com/images/high/anime-hug-chino-and-cocoa-hoto-xna393ybuslvuhq5.gif",
+  "https://gifdb.com/images/high/anime-hug-yato-yukine-noragami-18lpzknet9ir9v63.gif",
+  "https://gifdb.com/images/high/anime-hug-place-to-place-h1p5rob98pbfn0ya.gif",
+  "https://gifdb.com/images/high/anime-hug-constanze-akko-ckpz3d1ia0qua40k.gif"
+];
+
+const patGifs = [
+  "https://gifdb.com/images/high/cute-anime-couple-head-pat-hw2hz0irnu1f5eqa.gif",
+  "https://gifdb.com/images/high/rem-re-zero-anime-blush-head-pat-97eh0hxn28eoicim.gif",
+  "https://gifdb.com/images/high/hellsing-anime-alucard-head-pat-seras-victoria-e477wd1d6cqx0um9.gif",
+  "https://gifdb.com/images/high/cute-anime-umaru-head-pat-rabcmvfkpeuteckt.gif",
+  "https://gifdb.com/images/high/sister-head-pat-anime-loop-qdhlnp1zthpr11qd.gif",
+  "https://gifdb.com/images/high/hanako-kun-patting-nene-yashiro-7qj3oa9b1gf6089i.gif",
+  "https://gifdb.com/images/high/yakuza-anime-sleeping-with-someone-patting-her-head-ynnrs7hdsolc6nhz.gif"
+]
+
+const kissGifs = [
+  "https://gifdb.com/images/high/anime-kissing-498-x-278-gif-srvx1mau6f5dd3kj.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-280-gif-h9dpoyzyiwm4okco.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-286-gif-r8s18iti2x86fhka.gif",
+  "https://gifdb.com/images/high/anime-kissing-445-x-498-gif-uwqgyxa35zd16wnj.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-273-gif-c8moblgjxczuagjc.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-280-gif-veasxgw1rdayk5z8.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-267-gif-z1vgw7s50sta4hqy.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-278-gif-o0055bjqc2ms6u3z.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-277-gif-clgqs0v7l8tq41bz.gif",
+  "https://gifdb.com/images/high/anime-kissing-498-x-261-gif-8puhneqnl555kt6a.gif"
+]
 
 export const fun = {
   data: new SlashCommandBuilder()
@@ -63,9 +100,11 @@ export const fun = {
     if (query === "hug") {
       const embed = new EmbedBuilder()
         .setDescription("***HUGGIES!!***")
-        .setImage(
-          "https://i.pinimg.com/originals/96/de/2f/96de2ffb76bbc84446461e9a7afa95cb.gif",
-        );
+        .setImage(sprintf(
+          "%s",
+          hugGifs[getRandomArrayIndex(hugGifs.length)]
+        ))
+        .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} hugs ${id}`,
         embeds: [embed],
@@ -74,9 +113,11 @@ export const fun = {
     if (query === "kiss") {
       const embed = new EmbedBuilder()
         .setDescription("***KISSIES!!!***")
-        .setImage(
-          "https://i.pinimg.com/originals/b9/ef/3a/b9ef3a0b2d9ed41e467ed18d8afa8a3a.gif",
-        );
+        .setImage(sprintf(
+          "%s",
+          kissGifs[getRandomArrayIndex(kissGifs.length)]
+        ))
+        .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} kisses ${id}`,
         embeds: [embed],
@@ -85,9 +126,11 @@ export const fun = {
     if (query === "pat") {
       const embed = new EmbedBuilder()
         .setDescription("***Pat Pat!***")
-        .setImage(
-          "https://64.media.tumblr.com/6289c42ea805f475698f02207da0a377/tumblr_p14hcsxPsb1tm1dgio1_500.gif",
-        );
+        .setImage(sprintf(
+          "%s",
+          patGifs[getRandomArrayIndex(patGifs.length)]
+        ))
+        .setColor(Colors.Info);
       return await interaction.reply({
         content: `### ${interaction.user.displayName} pats ${id}`,
         embeds: [embed],
@@ -103,3 +146,7 @@ export const fun = {
     });
   },
 } satisfies Command;
+
+const getRandomArrayIndex = (max: number) => {
+  return Math.floor(Math.random() * max)
+}
