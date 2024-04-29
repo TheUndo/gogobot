@@ -45,6 +45,6 @@ export const workCommandUses: Record<WorkType, number> = {
   [WorkType.Rob]: 1,
   [WorkType.Fish]: 3,
   [WorkType.Gamble]: 5,
-  [WorkType.Soldier]: 1,
+  [WorkType.Soldier]: 2,
   [WorkType.Mine]: 4,
 };
