@@ -28,9 +28,6 @@ export const shop = {
     .setDescription("Buy or Sell Resources/Tools")
     .addSubcommand((subcommand) =>
       subcommand.setName("buy").setDescription("Buy items from the store!"),
-    )
-    .addSubcommand((subcommand) =>
-      subcommand.setName("sell").setDescription("Sell resources gathered"),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {

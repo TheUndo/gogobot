@@ -12,16 +12,16 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
-import { stackOdds } from "./lib/stackOdds";
-import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
-import { workTitle } from "./lib/workTitle";
 import {
+  ToolTypes,
   itemTypes,
   toolEmojis,
   toolIds,
   toolNames,
-  ToolTypes,
 } from "./lib/shopConfig";
+import { stackOdds } from "./lib/stackOdds";
+import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
+import { workTitle } from "./lib/workTitle";
 
 enum Resources {
   Copper = "COPPER", // 1k
@@ -107,8 +107,8 @@ const decrementDurability: Record<Resources, number> = {
   [Resources.RockSlide]: 0,
   [Resources.DeadEnd]: 0,
   [Resources.Nothing]: 0,
-  [Resources.Ambush]: 0
-}
+  [Resources.Ambush]: 0,
+};
 
 export const mine = {
   data: new SlashCommandBuilder()
@@ -273,7 +273,7 @@ export const mine = {
 
         data: {
           durability: {
-            decrement
+            decrement,
           },
         },
       }),
