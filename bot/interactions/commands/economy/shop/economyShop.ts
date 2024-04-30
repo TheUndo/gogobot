@@ -66,7 +66,7 @@ export const shop = {
   },
 } satisfies Command;
 
-//Creates the embed for Shop buy
+/* Creates the embed for Shop buy */
 const formatBuyToolItems = async (user: User, guild: Guild) => {
   const makeDollars = addCurrency();
   const embed = new EmbedBuilder()

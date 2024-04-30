@@ -8,7 +8,7 @@ import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ToolTypes, itemTypes } from "../lib/shopConfig";
+import { ToolTypes, itemType } from "../lib/shopConfig";
 import { buyToolItems } from "../lib/shopItems";
 import { shopBuyMenuContext } from "./economyShop";
 
@@ -65,7 +65,7 @@ export async function shopToolBuy(
 
   const wallet = await createWallet(interactionContext.userDiscordId, guildId);
 
-  const inventory = await prisma.shopItems.findMany({
+  const inventory = await prisma.shopItem.findMany({
     where: {
       walletId: context.data.walletId,
     },
@@ -106,10 +106,10 @@ export async function shopToolBuy(
       },
     }),
 
-    prisma.shopItems.create({
+    prisma.shopItem.create({
       data: {
         itemId: item.id,
-        type: itemTypes.Tools,
+        type: itemType.Tools,
         durability: item.durability,
         walletId: wallet.id,
       },

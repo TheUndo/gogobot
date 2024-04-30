@@ -34,7 +34,6 @@ export const workCommands: Record<WorkType, string> = {
   [WorkType.Rob]: "rob",
   [WorkType.Fish]: "fish",
   [WorkType.Gamble]: "gamble",
-
   [WorkType.Soldier]: "soldier",
   [WorkType.Mine]: "mine",
 };
