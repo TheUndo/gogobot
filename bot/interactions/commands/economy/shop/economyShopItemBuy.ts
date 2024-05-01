@@ -8,7 +8,7 @@ import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ToolTypes, ItemType } from "../lib/shopConfig";
+import { ItemType, ToolTypes } from "../lib/shopConfig";
 import { buyToolItems } from "../lib/shopItems";
 import { shopBuyMenuContext } from "./economyShop";
 

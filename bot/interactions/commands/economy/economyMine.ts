@@ -15,8 +15,8 @@ import { match } from "ts-pattern";
 import { z } from "zod";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import {
-  ToolTypes,
   ItemType,
+  ToolTypes,
   toolEmojis,
   toolIds,
   toolNames,
@@ -298,7 +298,10 @@ export const mine = {
       },
     });
 
-    if (pickaxesUpdated?.durability != null && pickaxesUpdated.durability <= 0) {
+    if (
+      pickaxesUpdated?.durability != null &&
+      pickaxesUpdated.durability <= 0
+    ) {
       await prisma.shopItem.delete({
         where: {
           id: pickaxesUpdated.id,
