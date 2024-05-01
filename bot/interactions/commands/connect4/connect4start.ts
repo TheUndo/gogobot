@@ -555,14 +555,31 @@ export async function connect4decline(
     ));
   }
 
-  await prisma.connect4GameInvitation.update({
-    where: {
-      id: context.data.invitationId,
-    },
-    data: {
-      voided: true,
-    },
-  });
+  const wager = z.number().parse(invitation.wagerAmount);
+
+  await prisma.$transaction([
+    prisma.connect4GameInvitation.update({
+      where: {
+        id: context.data.invitationId,
+      },
+      data: {
+        voided: true,
+      },
+    }),
+    prisma.wallet.update({
+      where: {
+        userDiscordId_guildId: {
+          userDiscordId: invitation.challenger,
+          guildId,
+        },
+      },
+      data: {
+        balance: {
+          increment: wager,
+        },
+      },
+    }),
+  ]);
 
   if (interaction.user.id === invitation.challenger) {
     return void (await interaction.reply({
