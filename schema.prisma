@@ -81,10 +81,25 @@ model Wallet {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  inventory     ShopItem[]
+
   lastRobbed  DateTime?
   immuneUntil DateTime?
 
   @@unique([userDiscordId, guildId])
+}
+
+model ShopItem {
+  id          String  @id @default(cuid())
+  type        String
+  itemId      String
+  durability  Int?
+
+  wallet      Wallet  @relation(fields: [walletId], references: [id])
+  walletId    String
+  
+  purchasedAt DateTime @default(now())
+  @@index([itemId, walletId])
 }
 
 model Bank {

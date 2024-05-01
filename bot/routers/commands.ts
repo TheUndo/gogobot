@@ -27,6 +27,7 @@ import { subscriptions } from "!/bot/interactions/commands/subscriptions";
 import { unsubscribe } from "!/bot/interactions/commands/unsubscribe";
 import { welcome } from "!/bot/interactions/commands/welcome";
 import { env } from "!/core/misc/env";
+import { shop } from "../interactions/commands/economy/shop/economyShop";
 
 import type { Command } from "!/bot/types";
 import {
@@ -71,6 +72,7 @@ const commandsRegistrar: Command[] = [
   gamble,
   soldier,
   mine,
+  shop,
   connect4,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,

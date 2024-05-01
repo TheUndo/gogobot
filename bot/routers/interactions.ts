@@ -37,6 +37,7 @@ import { leaderBoardClanChangeType } from "!/bot/interactions/commands/economy/l
 import { prisma } from "!/core/db/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
+import { shopToolBuy } from "../interactions/commands/economy/shop/economyShopItemBuy";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
@@ -146,6 +147,8 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           return void (await connect4decline(interactionContext, interaction));
         case InteractionType.Connect4Forfeit:
           return void (await connect4forfeit(interactionContext, interaction));
+        case InteractionType.ShopBuyToolMenu:
+          return void (await shopToolBuy(interactionContext, interaction));
       }
     }
   }

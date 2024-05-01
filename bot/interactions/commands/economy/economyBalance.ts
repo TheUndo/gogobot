@@ -79,8 +79,33 @@ export const balance = {
       });
     }
 
+    const parts = [
+      {
+        name: sprintf("**Wallet**: %s", walletBalance),
+        predicate: true,
+      },
+      {
+        name: sprintf("**Bank**: %s", bankBalance),
+        predicate: true,
+      },
+      {
+        name:
+          wallet.immuneUntil && wallet.immuneUntil.getTime() > Date.now()
+            ? sprintf(
+                "**Immunity expires** <t:%d:R>",
+                Math.floor(wallet.immuneUntil.getTime() / 1000),
+              )
+            : "",
+        predicate:
+          wallet.immuneUntil && wallet.immuneUntil.getTime() > Date.now(),
+      },
+    ];
+
     return await interaction.reply(
-      sprintf("**Wallet**: %s\n**Bank**: %s", walletBalance, bankBalance),
+      parts
+        .filter((part) => part.predicate)
+        .map((part) => part.name)
+        .join("\n"),
     );
   },
 } satisfies Command;
