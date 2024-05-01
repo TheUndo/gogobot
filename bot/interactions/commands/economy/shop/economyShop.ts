@@ -75,6 +75,13 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
     .setColor(Colors.Info);
 
   const tools = Object.entries(buyToolItems);
+  const wallet = await createWallet(user.id, guild.id);
+
+  const inventory = await prisma.shopItem.findMany({
+    where: {
+      walletId: wallet.id,
+    },
+  });
 
   embed.addFields([
     {
@@ -82,12 +89,14 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
       value: sprintf(
         "%s",
         tools
-          .map(([_, tool]) =>
+          .map(([_, pick]) =>
             sprintf(
               "%s | %s - %s",
-              tool.emoji,
-              tool.name,
-              makeDollars(formatNumber(tool.price)),
+              pick.emoji,
+              inventory?.filter((tool) => tool.itemId === pick.id).length >= 1
+                ? `${pick.name} (Already Owned)`
+                : pick.name,
+              makeDollars(formatNumber(pick.price)),
             ),
           )
           .join("\n"),
@@ -95,7 +104,6 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
     },
   ]);
 
-  const wallet = await createWallet(user.id, guild.id);
   const shopSelectItemsInteraction = await prisma.interaction.create({
     data: {
       type: InteractionType.ShopBuyToolMenu,

@@ -80,7 +80,16 @@ export const balance = {
     }
 
     return await interaction.reply(
-      sprintf("**Wallet**: %s\n**Bank**: %s", walletBalance, bankBalance),
+      sprintf(
+        "**Wallet**: %s\n**Bank**: %s\n%s",
+        walletBalance,
+        bankBalance,
+        wallet.immuneUntil && wallet.immuneUntil.getTime() > Date.now()
+          ? `Losses Immunity <t:${Math.floor(
+              wallet.immuneUntil.getTime() / 1000,
+            )}:R>`
+          : "",
+      ),
     );
   },
 } satisfies Command;

@@ -123,6 +123,5 @@ export async function shopToolBuy(
       item.name,
       makeDollars(formatNumber(item.price)),
     ),
-    ephemeral: true,
   });
 }
