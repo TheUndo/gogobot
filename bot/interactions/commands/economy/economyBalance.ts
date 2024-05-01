@@ -85,7 +85,7 @@ export const balance = {
         walletBalance,
         bankBalance,
         wallet.immuneUntil && wallet.immuneUntil.getTime() > Date.now()
-          ? `Losses Immunity <t:${Math.floor(
+          ? `Immunity expires <t:${Math.floor(
               wallet.immuneUntil.getTime() / 1000,
             )}:R>`
           : "",

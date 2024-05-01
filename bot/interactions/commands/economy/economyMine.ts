@@ -16,7 +16,7 @@ import { z } from "zod";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import {
   ToolTypes,
-  itemType,
+  ItemType,
   toolEmojis,
   toolIds,
   toolNames,
@@ -194,7 +194,7 @@ export const mine = {
       },
     });
 
-    const pickaxes = inventory.filter((tool) => tool.type === itemType.Tools);
+    const pickaxes = inventory.filter((tool) => tool.type === ItemType.Tools);
     const selectedPickaxe = z
       .nativeEnum(ToolTypes)
       .parse(interaction.options.getString("pickaxe"));
@@ -298,7 +298,7 @@ export const mine = {
       },
     });
 
-    if (pickaxesUpdated?.durability && pickaxesUpdated.durability <= 0) {
+    if (pickaxesUpdated?.durability != null && pickaxesUpdated.durability <= 0) {
       await prisma.shopItem.delete({
         where: {
           id: pickaxesUpdated.id,

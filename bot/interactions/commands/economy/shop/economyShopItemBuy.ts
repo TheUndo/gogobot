@@ -8,7 +8,7 @@ import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ToolTypes, itemType } from "../lib/shopConfig";
+import { ToolTypes, ItemType } from "../lib/shopConfig";
 import { buyToolItems } from "../lib/shopItems";
 import { shopBuyMenuContext } from "./economyShop";
 
@@ -109,7 +109,7 @@ export async function shopToolBuy(
     prisma.shopItem.create({
       data: {
         itemId: item.id,
-        type: itemType.Tools,
+        type: ItemType.Tools,
         durability: item.durability,
         walletId: wallet.id,
       },

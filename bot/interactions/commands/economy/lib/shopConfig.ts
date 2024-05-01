@@ -1,4 +1,4 @@
-export enum itemType {
+export enum ItemType {
   Tools = "TOOLS",
   Resources = "RESOURCES",
 }
