@@ -54,9 +54,9 @@ export async function shopToolBuy(
     );
   }
 
-  const Toolvalue = z.nativeEnum(ToolTypes).safeParse(interaction.values[0]);
+  const toolValue = z.nativeEnum(ToolTypes).safeParse(interaction.values[0]);
 
-  if (!Toolvalue.success) {
+  if (!toolValue.success) {
     return await interaction.reply({
       content: "Invalid value",
       ephemeral: true,
@@ -71,7 +71,7 @@ export async function shopToolBuy(
     },
   });
 
-  const item = buyToolItems[Toolvalue.data];
+  const item = buyToolItems[toolValue.data];
   const itemInInv = inventory?.filter((tool) => tool.itemId === item.id);
 
   if (itemInInv.length >= 1) {
@@ -118,7 +118,7 @@ export async function shopToolBuy(
 
   return await interaction.reply({
     content: sprintf(
-      "You have bought a %s|`%s` for only %s",
+      "You have purchased a %s|`%s` for only %s",
       item.emoji,
       item.name,
       makeDollars(formatNumber(item.price)),
