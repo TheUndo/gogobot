@@ -50,9 +50,9 @@ export const gift = {
       .preprocess(
         safeParseNumber,
         z
-          .number()
-          .int()
-          .transform((v) => (v === 0 ? myWallet.balance : v)),
+          .bigint()
+          .min(0n)
+          .transform((v) => (v === 0n ? myWallet.balance : v)),
       )
       .safeParse(rawAmount);
 
@@ -62,7 +62,7 @@ export const gift = {
       );
     }
 
-    if (amountToGift.data < 100) {
+    if (amountToGift.data < 100n) {
       return await interaction.reply({
         content: "You can't gift less than 100.",
         ephemeral: true,
