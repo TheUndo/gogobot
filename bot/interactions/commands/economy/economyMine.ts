@@ -71,15 +71,15 @@ const rewards: Record<
     generateReward: async () => randomNumber(250_000, 500_000),
   },
   [Resources.Diamond]: {
-    message: sprintf("You found Diamond! %s", resourceEmojis.DIAMOND),
+    message: sprintf("You found diamond! %s", resourceEmojis.DIAMOND),
     generateReward: async () => randomNumber(1_000_000, 1_200_000),
   },
   [Resources.Netherite]: {
-    message: sprintf("You found Diamond! %s", resourceEmojis.NETHERITE),
+    message: sprintf("You found netherite! %s", resourceEmojis.NETHERITE),
     generateReward: async () => randomNumber(2_500_000, 3_000_000),
   },
   [Resources.Kryptonite]: {
-    message: sprintf("You found Diamond! %s", resourceEmojis.NETHERITE),
+    message: sprintf("You found kryptonite! %s", resourceEmojis.KRYPTONITE),
     generateReward: async () => randomNumber(4_000_000, 5_000_000),
   },
   [Resources.RockSlide]: {
