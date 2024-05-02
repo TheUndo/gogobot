@@ -3,7 +3,7 @@ export enum ItemType {
   Resources = "RESOURCES",
 }
 
-//Tools Section
+/** Tools Section */
 
 export enum ToolTypes {
   StonePickaxe = "STONE_PICKAXE",
@@ -30,9 +30,9 @@ export const toolDurability: Record<ToolTypes, number> = {
 };
 
 export const toolPrices: Record<ToolTypes, number> = {
-  [ToolTypes.StonePickaxe]: 100_000,
-  [ToolTypes.IronPickaxe]: 500_000,
-  [ToolTypes.DiamondPickaxe]: 2_000_000,
+  [ToolTypes.StonePickaxe]: 300_000,
+  [ToolTypes.IronPickaxe]: 1_000_000,
+  [ToolTypes.DiamondPickaxe]: 5_000_000,
 };
 
 export const toolEmojis: Record<ToolTypes, string> = {
@@ -41,4 +41,49 @@ export const toolEmojis: Record<ToolTypes, string> = {
   [ToolTypes.DiamondPickaxe]: "<:Diamond_Pickaxe:1233853120363102341>",
 };
 
-// Resource Section
+/** Resource Section */
+
+export enum ResourceTypes {
+  Copper = "COPPER",
+  Silver = "SILVER",
+  Iron = "IRON",
+  Gold = "GOLD",
+  Emerald = "EMERALD",
+  Diamond = "DIAMOND",
+}
+
+export const resourceIds: Record<ResourceTypes, string> = {
+  [ResourceTypes.Copper]: "RESOURCECOPPER",
+  [ResourceTypes.Silver]: "RESOURCESILVER",
+  [ResourceTypes.Iron]: "RESOURCEIRON",
+  [ResourceTypes.Gold]: "RESOURCEGOLD",
+  [ResourceTypes.Emerald]: "RESOURCEEMERALD",
+  [ResourceTypes.Diamond]: "RESOURCEDIAMOND",
+};
+
+export const resourceNames: Record<ResourceTypes, string> = {
+  [ResourceTypes.Copper]: "Copper",
+  [ResourceTypes.Silver]: "Silver",
+  [ResourceTypes.Iron]: "Iron",
+  [ResourceTypes.Gold]: "Gold",
+  [ResourceTypes.Emerald]: "Emerald",
+  [ResourceTypes.Diamond]: "Diamond",
+};
+
+export const resourcePrices: Record<ResourceTypes, number> = {
+  [ResourceTypes.Copper]: 0,
+  [ResourceTypes.Silver]: 0,
+  [ResourceTypes.Iron]: 0,
+  [ResourceTypes.Gold]: 0,
+  [ResourceTypes.Emerald]: 0,
+  [ResourceTypes.Diamond]: 0,
+};
+
+export const resourceEmojis: Record<ResourceTypes, string> = {
+  [ResourceTypes.Copper]: "<:Copper:1235516426912272414>",
+  [ResourceTypes.Silver]: "<:Silver:1235516425146335252>",
+  [ResourceTypes.Iron]: "<:Iron:1235516433853841489>",
+  [ResourceTypes.Gold]: "<:Gold:1235516431794307142>",
+  [ResourceTypes.Emerald]: "<:Emerald:1235516429873184789>",
+  [ResourceTypes.Diamond]: "<:Diamond:1235516428363501599>",
+};
