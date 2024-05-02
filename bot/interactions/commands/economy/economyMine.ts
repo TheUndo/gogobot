@@ -17,6 +17,7 @@ import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import {
   ItemType,
   ToolTypes,
+  resourceEmojis,
   toolEmojis,
   toolIds,
   toolNames,
@@ -25,7 +26,7 @@ import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
 
-enum Resources {
+export enum Resources {
   Copper = "COPPER", // 1k
   Silver = "SILVER", //10k
   Iron = "IRON", //50k
@@ -38,47 +39,32 @@ enum Resources {
   Ambush = "AMBUSH", // -100k
 }
 
-// const odds: Record<Resources, number> = {
-//   [Resources.Copper]: 100,
-//   [Resources.Silver]: 100,
-//   [Resources.Iron]: 30,
-//   [Resources.Gold]: 20,
-//   [Resources.Emerald]: 4,
-//   [Resources.Diamond]: 1,
-//   [Resources.RockSlide]: 30,
-//   [Resources.DeadEnd]: 30,
-//   [Resources.Nothing]: 30,
-//   [Resources.Ambush]: 10,
-// };
-
-// const computedOdds = stackOdds(odds);
-
 const rewards: Record<
   Resources,
   { message: string; generateReward: () => Promise<number> }
 > = {
   [Resources.Copper]: {
-    message: "You found copper! ⛏️",
+    message: sprintf("You found copper! %s", resourceEmojis.COPPER),
     generateReward: async () => randomNumber(500, 1_000),
   },
   [Resources.Silver]: {
-    message: "You found silver! ⛏️",
+    message: sprintf("You found silver! %s", resourceEmojis.SILVER),
     generateReward: async () => randomNumber(30_000, 50_000),
   },
   [Resources.Iron]: {
-    message: "You found iron! ⛏️",
+    message: sprintf("You found iron! %s", resourceEmojis.IRON),
     generateReward: async () => randomNumber(5_000, 10_000),
   },
   [Resources.Gold]: {
-    message: "You found gold! ⛏️",
+    message: sprintf("You found gold! %s", resourceEmojis.GOLD),
     generateReward: async () => randomNumber(75_000, 100_000),
   },
   [Resources.Emerald]: {
-    message: "You found an emerald! ⛏️",
+    message: sprintf("You found an emerald! %s", resourceEmojis.EMERALD),
     generateReward: async () => randomNumber(250_000, 500_000),
   },
   [Resources.Diamond]: {
-    message: "You found Diamond! 💎",
+    message: sprintf("You found Diamond! %s", resourceEmojis.DIAMOND),
     generateReward: async () => randomNumber(1_000_000, 1_200_000),
   },
   [Resources.RockSlide]: {
@@ -358,7 +344,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Copper]: 100,
       [Resources.Silver]: 30,
       [Resources.Iron]: 80,
-      [Resources.Gold]: 6,
+      [Resources.Gold]: 0,
       [Resources.Emerald]: 0,
       [Resources.Diamond]: 0,
       [Resources.RockSlide]: 30,
@@ -370,7 +356,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Copper]: 90,
       [Resources.Silver]: 60,
       [Resources.Iron]: 60,
-      [Resources.Gold]: 30,
+      [Resources.Gold]: 10,
       [Resources.Emerald]: 1,
       [Resources.Diamond]: 1,
       [Resources.RockSlide]: 30,
