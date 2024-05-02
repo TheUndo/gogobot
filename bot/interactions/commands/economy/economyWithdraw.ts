@@ -1,6 +1,7 @@
 import { createBank } from "!/bot/logic/economy/createBank";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import type { Command } from "!/bot/types";
+import { BigIntMath } from "!/bot/utils/bigIntMath";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { safeParseNumber } from "!/bot/utils/parseNumber";
 import { prisma } from "!/core/db/prisma";
@@ -38,7 +39,7 @@ export const withdraw = {
     const rawAmount = interaction.options.get("amount");
 
     const amount = z
-      .preprocess(safeParseNumber, z.number().int().min(0))
+      .preprocess(safeParseNumber, z.bigint().min(0n))
       .safeParse(rawAmount?.value);
 
     if (!amount.success) {
@@ -49,7 +50,7 @@ export const withdraw = {
 
     const bank = await createBank(interaction.user.id, guildId);
 
-    if (bank.balance <= 0) {
+    if (bank.balance <= 0n) {
       return await interaction.reply(
         "You don't have enough money to withdraw this amount.",
       );
@@ -57,7 +58,9 @@ export const withdraw = {
     const wallet = await createWallet(interaction.user.id, guildId);
 
     const toWithdraw =
-      amount.data === 0 ? bank.balance : Math.min(amount.data, bank.balance);
+      amount.data === 0n
+        ? bank.balance
+        : BigIntMath.min(amount.data, bank.balance);
 
     await prisma.$transaction([
       prisma.bank.update({

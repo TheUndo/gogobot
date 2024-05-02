@@ -98,8 +98,10 @@ export async function clanUpgradeCommand({ authorId, guildId }: Options) {
   };
 }
 
-function upgradePrice(level: number) {
+function upgradePrice(level: number): bigint {
   const exact = Math.floor(level ** 4 + level * 150_000) + 60_000;
   const precision = Math.max(exact.toString().length - 3, 1);
-  return Math.round(exact / 10 ** precision) * 10 ** precision;
+  const res = Math.round(exact / 10 ** precision) * 10 ** precision;
+
+  return BigInt(res);
 }

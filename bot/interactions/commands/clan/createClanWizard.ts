@@ -30,7 +30,7 @@ import { z } from "zod";
 import { upsertClanChannel } from "./clanChannel";
 import { addClanRole, clanRoleUpdate, validateClanName } from "./clanRole";
 
-const CLAN_CREATE_PRICE = 500_000;
+const CLAN_CREATE_PRICE = 500_000n;
 
 type Options = {
   userId: string;

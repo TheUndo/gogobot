@@ -43,9 +43,9 @@ export async function aggregateClanStatistics() {
       .then((accounts) => {
         return accounts.reduce((acc, account) => {
           return (
-            acc + account.reduce((acc, account) => acc + account.balance, 0)
+            acc + account.reduce((acc, account) => acc + account.balance, 0n)
           );
-        }, 0);
+        }, 0n);
       });
 
     // upsert is broken on prisma sqlite

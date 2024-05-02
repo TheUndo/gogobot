@@ -218,7 +218,7 @@ export async function connect4move(
         },
         data: {
           balance: {
-            increment: game.wagerAmount * 2,
+            increment: game.wagerAmount * 2n,
           },
         },
       });
@@ -364,7 +364,7 @@ export async function connect4forfeit(
       },
       data: {
         balance: {
-          increment: game.wagerAmount * 2,
+          increment: game.wagerAmount * 2n,
         },
       },
     });

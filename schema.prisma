@@ -77,11 +77,11 @@ model Wallet {
   id            String   @id @default(cuid())
   userDiscordId String
   guildId       String
-  balance       Int      @default(0)
+  balance       BigInt   @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  inventory     ShopItem[]
+  inventory ShopItem[]
 
   lastRobbed  DateTime?
   immuneUntil DateTime?
@@ -90,15 +90,16 @@ model Wallet {
 }
 
 model ShopItem {
-  id          String  @id @default(cuid())
-  type        String
-  itemId      String
-  durability  Int?
+  id         String @id @default(cuid())
+  type       String
+  itemId     String
+  durability Int?
 
-  wallet      Wallet  @relation(fields: [walletId], references: [id])
-  walletId    String
-  
+  wallet   Wallet @relation(fields: [walletId], references: [id])
+  walletId String
+
   purchasedAt DateTime @default(now())
+
   @@index([itemId, walletId])
 }
 
@@ -106,7 +107,7 @@ model Bank {
   id            String   @id @default(cuid())
   userDiscordId String
   guildId       String
-  balance       Int      @default(1000)
+  balance       BigInt   @default(1000)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -150,7 +151,7 @@ model Clan {
   roleId    String?
   channelId String?
 
-  treasuryBalance Int                @default(0)
+  treasuryBalance BigInt             @default(0)
   announcements   ClanAnnouncement[]
 
   @@unique([slug, discordGuildId])
@@ -169,7 +170,7 @@ model ClanStatistics {
   id String @id @default(cuid())
 
   clan      Clan     @relation(fields: [clanId], references: [id])
-  wealth    Int
+  wealth    BigInt
   guildId   String
   clanId    String
   updatedAt DateTime @updatedAt
@@ -184,7 +185,7 @@ model ClanMember {
   guildId          String
   discordUserId    String
   role             String
-  contributed      Int       @default(0)
+  contributed      BigInt       @default(0)
   lastContribution DateTime?
 
   @@unique([guildId, discordUserId])
@@ -243,7 +244,7 @@ model Transaction {
   userDiscordId String
   guildId       String
   clanId        String?
-  amount        Int
+  amount        BigInt
   type          String
   createdAt     DateTime @default(now())
 }
@@ -259,7 +260,7 @@ model Connect4Game {
   gameState       String
   challengerColor String
   moveTime        Int
-  wagerAmount     Int?
+  wagerAmount     BigInt?
 
   lastMessageId String
   lastMoveAt    DateTime
@@ -279,7 +280,7 @@ model Connect4GameInvitation {
   moveTime        Int
   guildId         String
   channelId       String
-  wagerAmount     Int?
+  wagerAmount     BigInt?
   createdAt       DateTime @default(now())
   voided          Boolean  @default(false)
   expiresAt       DateTime

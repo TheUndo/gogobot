@@ -25,6 +25,7 @@ import * as R from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
+import { BigIntMath } from "!/bot/utils/bigIntMath";
 
 const gamblePayloadContext = z.object({
   result: z.number(),
@@ -101,9 +102,9 @@ export const gamble = {
       .preprocess(
         safeParseNumber,
         z
-          .number()
-          .int()
-          .transform((v) => (v === 0 ? wallet.balance : v)),
+          .bigint()
+          .min(0n)
+          .transform((v) => (v === 0n ? wallet.balance : v)),
       )
       .safeParse(interaction.options.getString("stake"));
 
@@ -117,14 +118,14 @@ export const gamble = {
 
     const bet = parseBet.data;
 
-    if (bet < 1_000) {
+    if (bet < 1_000n) {
       return await interaction.reply({
         content: "Minimum bet is 1k",
         ephemeral: true,
       });
     }
 
-    if (bet > 300_000) {
+    if (bet > 300_000n) {
       return await interaction.reply({
         content: "Maximum bet is 300k",
         ephemeral: true,
@@ -228,7 +229,7 @@ export const gamble = {
               result,
               outcomeLayout,
               index,
-              bet,
+              bet: Number(bet),
               emoji,
             } satisfies z.infer<typeof gamblePayloadContext>),
           },
@@ -362,7 +363,11 @@ export async function gambleInteractionButton(
     buttons.push(
       new ButtonBuilder()
         .setEmoji(outcome.emoji)
-        .setLabel(addCurrency()(formatNumber(Math.round(outcome.result * bet))))
+        .setLabel(
+          addCurrency()(
+            formatNumber(BigInt(Math.floor(outcome.result)) * BigInt(bet)),
+          ),
+        )
         .setStyle(index === i ? ButtonStyle.Primary : ButtonStyle.Secondary)
         .setCustomId(`noop${i}`)
         .setDisabled(true),
@@ -377,7 +382,9 @@ export async function gambleInteractionButton(
         "You bet **%s** %s **%s**",
         addCurrency()(formatNumber(bet)),
         result >= 1 ? "and won" : result === 0 ? "and got" : "and lost",
-        addCurrency()(formatNumber(Math.round(Math.abs(result * bet)))),
+        addCurrency()(
+          formatNumber(BigIntMath.abs(BigInt(result) * BigInt(bet))),
+        ),
       ),
     );
 
@@ -396,7 +403,7 @@ export async function gambleInteractionButton(
     },
     data: {
       balance: {
-        increment: Math.round(result * bet),
+        increment: BigInt(result) * BigInt(bet),
       },
     },
   });

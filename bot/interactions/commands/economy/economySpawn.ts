@@ -51,14 +51,24 @@ export const spawn = {
       );
     }
 
+    if (amount.data > 500_000_000) {
+      return await interaction.reply("You can't spawn more than 500,000,000.");
+    }
+
     const wallet = await createWallet(interaction.user.id, guildId);
+
+    if (wallet.balance > 1_000_000_000) {
+      return await interaction.reply(
+        "You have too much money.",
+      );
+    }
 
     await prisma.wallet.update({
       where: {
         id: wallet.id,
       },
       data: {
-        balance: wallet.balance + amount.data,
+        balance: wallet.balance + BigInt(amount.data),
       },
     });
 

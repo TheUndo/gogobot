@@ -1,3 +1,3 @@
-export function formatNumber(number: number): string {
+export function formatNumber(number: number | bigint): string {
   return number.toLocaleString("en-US");
 }

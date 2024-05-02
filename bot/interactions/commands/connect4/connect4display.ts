@@ -77,7 +77,7 @@ export async function connect4display(gameId: string) {
   ) {
     embed.setFields({
       name: "Prize",
-      value: addCurrency()(formatNumber(game.wagerAmount * 2)),
+      value: addCurrency()(formatNumber(game.wagerAmount * 2n)),
     });
   }
 

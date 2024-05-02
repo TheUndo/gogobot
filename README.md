@@ -18,16 +18,13 @@ Features:
 
 ## Installation
 
-> GoGoBot no longer supports Node, get Bun or don't run
-
-Install [Bun](https://bun.sh)
+Install [Bun](https://bun.sh) then run:
 
 ```sh
 git clone https://github.com/TheUndo/gogobot.git # download repo
 cd gogobot                                       # enter directory
 cp .env.example .env                             # copy environment variables
 bun install                                      # install dependencies
-bunx prisma db push                              # install prisma
 ```
 
 After installing open `.env` in your IDE and edit it.
@@ -64,7 +61,7 @@ bunx pm2 start ecosystem.config.cjs
 - Process manager: [pm2](https://pm2.io/)
 - Frontend framework: [Qwik](https://qwik.dev)
 - PaaS: [Cloudflare pages](https://pages.dev)
-- Linter: [Biome](https://biomejs.dev/)
+- Linter/formatter: [Biome](https://biomejs.dev/)
 - Git hooks: [Husky](https://typicode.github.io/husky/)
 
 ## Contributing

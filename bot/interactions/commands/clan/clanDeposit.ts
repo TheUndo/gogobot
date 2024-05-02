@@ -52,7 +52,7 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
 
   const wallet = await createWallet(authorId, guildId);
 
-  const amountToDeposit = parsedAmount === 0 ? wallet.balance : parsedAmount;
+  const amountToDeposit = parsedAmount === 0n ? wallet.balance : parsedAmount;
 
   if (amountToDeposit <= 0) {
     return {
@@ -65,7 +65,7 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
     return {
       content: sprintf(
         "You don't have enough money to deposit **%s**",
-        addCurrency()(formatNumber(amountToDeposit)),
+        addCurrency()(formatNumber(BigInt(amountToDeposit))),
       ),
     };
   }
@@ -93,7 +93,7 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
     }),
     prisma.transaction.create({
       data: {
-        amount: amountToDeposit,
+        amount: BigInt(amountToDeposit),
         type: TransactionType.ClanDeposit,
         clanId: clan.id,
         userDiscordId: authorId,
@@ -109,7 +109,7 @@ export async function clanDeposit({ authorId, guildId, amount }: Options) {
       },
       data: {
         contributed: {
-          increment: amountToDeposit,
+          increment: BigInt(amountToDeposit),
         },
         lastContribution: new Date(),
       },

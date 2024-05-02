@@ -26,7 +26,7 @@
     "zod": "^3.22.4"
   },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky && bun x prisma db push",
     "start": "bun run bot/start.ts",
     "dev": "bun run bot/start.ts"
   },

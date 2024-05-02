@@ -121,7 +121,10 @@ export async function showClanInfo({
       }),
     ])
     .then((results) =>
-      results.reduce((acc, { _sum }) => acc + (_sum.balance ?? 0), 0),
+      results.reduce<bigint>(
+        (acc, { _sum }) => BigInt(acc) + (_sum.balance ?? 0n),
+        0n,
+      ),
     )
     .then((d) => d + treasuryBalance);
 

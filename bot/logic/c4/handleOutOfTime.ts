@@ -53,7 +53,7 @@ export async function handleOutOfTime({
       },
       data: {
         balance: {
-          increment: game.wagerAmount * 2,
+          increment: game.wagerAmount * 2n,
         },
       },
     });

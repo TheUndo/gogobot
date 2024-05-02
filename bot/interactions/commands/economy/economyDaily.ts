@@ -51,6 +51,8 @@ export const daily = {
     const baseReward = 9_750;
     const randomBonus = Math.floor(Math.random() * 500);
 
+    const day = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+
     const [lastWork, clan] = await Promise.all([
       prisma.work
         .findFirst({
@@ -68,12 +70,14 @@ export const daily = {
             if (!d) {
               return 1;
             }
-            if (d.createdAt.getTime() + coolDowns.DAILY * 2 < Date.now()) {
+            const lastDay = Math.floor(
+              d.createdAt.getTime() / (1000 * 60 * 60 * 24),
+            );
+
+            if (lastDay + 1 < day) {
               return 1;
             }
-            if (d.streak === maxStreak) {
-              return 1;
-            }
+
             return d.streak + 1;
           })();
           return { currentStreak, lastUsed: d?.createdAt };
@@ -97,7 +101,7 @@ export const daily = {
       return await interaction.reply({
         content: sprintf(
           "You've already claimed your daily reward. Next claim <t:%d:R>",
-          Math.floor((lastWork.lastUsed.getTime() + coolDowns.DAILY) / 1000),
+          Math.ceil((day + 1) * 60 * 60 * 24),
         ),
       });
     }

@@ -5,12 +5,12 @@ import { addCurrency } from "!/bot/utils/addCurrency";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
-import { clamp } from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns } from "./lib/workConfig";
+import { BigIntMath } from "!/bot/utils/bigIntMath";
 
 const failureCost = 10_000;
 
@@ -198,7 +198,7 @@ export const rob = {
         });
       }
       case Scenario.PartialSuccess: {
-        const amount = Math.floor(victimWallet.balance * 0.75);
+        const amount = (victimWallet.balance * 3n) / 4n;
 
         await performRobbery({
           robberId: robber.id,
@@ -254,7 +254,7 @@ type RobberyOptions = {
   guildId: string;
   robberId: string;
   victimId: string;
-  amount: number;
+  amount: bigint;
 };
 async function performRobbery({
   robberId,
@@ -262,13 +262,16 @@ async function performRobbery({
   amount,
   guildId,
 }: RobberyOptions) {
-  const immunityLength = amount < 100_000 ? 0 : amount * 360;
+  const immunityLength = amount < 100_000n ? 0n : amount * 360n;
   const immuneUntil = new Date(
-    Date.now() +
-      clamp(immunityLength, {
-        min: 1e3 * 60 * 2,
-        max: 1e3 * 60 * 60 * 24 * 4,
-      }),
+    Number(
+      BigInt(Date.now()) +
+        BigIntMath.clamp(
+          immunityLength,
+          1000n * 60n * 2n,
+          1000n * 60n * 60n * 24n * 4n,
+        ),
+    ),
   );
   return await prisma.$transaction([
     prisma.wallet.update({

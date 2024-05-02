@@ -67,29 +67,49 @@ type Options = {
   userId: string;
 };
 
+const fixedDate: WorkType[] = [WorkType.Daily];
+
 async function createWorkEmbed({ guildId, userId }: Options) {
   const embed = new EmbedBuilder();
 
-  const lastUsed = await prisma.$transaction(
-    Object.entries(coolDowns).map(([rawType]) => {
-      const type = z.nativeEnum(WorkType).parse(rawType);
-
-      return prisma.work.findMany({
-        where: {
-          type,
-          userDiscordId: userId,
-          guildDiscordId: guildId,
-          createdAt: {
-            gte: new Date(Date.now() - coolDowns[type]),
-          },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: workCommandUses[type],
-      });
-    }),
+  const coolDownWorkTypes = Object.entries(coolDowns).map(([rawType]) =>
+    z.nativeEnum(WorkType).parse(rawType),
   );
+
+  const lastUsed = await prisma.$transaction([
+    ...coolDownWorkTypes
+      .filter((type) => !fixedDate.includes(type))
+      .map((type) => {
+        return prisma.work.findMany({
+          where: {
+            type,
+            userDiscordId: userId,
+            guildDiscordId: guildId,
+            createdAt: {
+              gte: new Date(Date.now() - coolDowns[type]),
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: workCommandUses[type],
+        });
+      }),
+    prisma.work.findMany({
+      where: {
+        type: WorkType.Daily,
+        createdAt: {
+          gte: new Date(
+            Math.floor(Date.now() / (1000 * 60 * 60 * 24)) *
+              60 *
+              60 *
+              24 *
+              1000,
+          ),
+        },
+      },
+    }),
+  ]);
 
   type Availability = {
     type: WorkType;
@@ -101,9 +121,7 @@ async function createWorkEmbed({ guildId, userId }: Options) {
     const available: Availability[] = [];
     const unavailable: Availability[] = [];
 
-    for (const [rawType] of Object.entries(coolDowns)) {
-      const type = z.nativeEnum(WorkType).parse(rawType);
-
+    for (const type of coolDownWorkTypes) {
       const usesOfType = lastUsed.flat(1).filter((d) => d.type === type);
       const last = usesOfType.at(-1) ?? null;
       const usesLeft = workCommandUses[type] - usesOfType.length;
@@ -119,12 +137,20 @@ async function createWorkEmbed({ guildId, userId }: Options) {
 
   const commands = getCommands();
 
+  const availableIn = (type: WorkType, lastUsed: Date) => {
+    if (fixedDate.includes(type)) {
+      return Math.ceil(Date.now() / (1000 * 60 * 60 * 24)) * 60 * 60 * 24;
+    }
+
+    return Math.floor((lastUsed.getTime() + coolDowns[type]) / 1000);
+  };
+
   const makeListItem = (item: Availability) => {
     if (item.lastUsed) {
       return sprintf(
         "- ~~%s~~ <t:%d:R>",
         workNames[item.type],
-        Math.floor((item.lastUsed.getTime() + coolDowns[item.type]) / 1000),
+        availableIn(item.type, item.lastUsed),
       );
     }
 
@@ -145,13 +171,6 @@ async function createWorkEmbed({ guildId, userId }: Options) {
     );
   };
 
-  const sortItems = (a: Availability, b: Availability) => {
-    if (!a.lastUsed || !b.lastUsed) {
-      return 0;
-    }
-    return b.lastUsed.getTime() - a.lastUsed.getTime();
-  };
-
   function makePart({
     title,
     description,
@@ -169,7 +188,19 @@ async function createWorkEmbed({ guildId, userId }: Options) {
     unavailable.length > 0
       ? makePart({
           title: "Used",
-          description: unavailable.sort(sortItems).map(makeListItem).join("\n"),
+          description: unavailable
+            .sort((a, b) => {
+              if (!a.lastUsed || !b.lastUsed) {
+                return 0;
+              }
+
+              return (
+                availableIn(a.type, a.lastUsed) -
+                availableIn(b.type, b.lastUsed)
+              );
+            })
+            .map(makeListItem)
+            .join("\n"),
         })
       : null,
   ]

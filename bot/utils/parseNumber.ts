@@ -1,4 +1,4 @@
-export function parseNumber(input: string): number {
+export function parseNumber(input: string): bigint {
   const cleaned = input
     .trim()
     .toLowerCase()
@@ -6,7 +6,7 @@ export function parseNumber(input: string): number {
     .replace(/[\s\n]+/g, " ");
 
   if (cleaned === "all") {
-    return 0;
+    return 0n;
   }
 
   if (!cleaned) {
@@ -14,10 +14,10 @@ export function parseNumber(input: string): number {
   }
 
   if (/^[\d.]+$/.test(input)) {
-    const parsed = Number.parseFloat(cleaned);
+    const parsed = BigInt(cleaned);
 
     if (!Number.isNaN(parsed)) {
-      return Math.round(parsed);
+      return parsed;
     }
   }
 
@@ -39,18 +39,14 @@ export function parseNumber(input: string): number {
       if (curr === "-") {
         return -acc;
       }
-
+      
       return acc + Number.parseFloat(curr);
     }, 0);
 
-  if (Number.isNaN(total)) {
-    throw new Error("Invalid input");
-  }
-
-  return Math.round(total);
+  return BigInt(total);
 }
 
-export function safeParseNumber(input: unknown): number | null {
+export function safeParseNumber(input: unknown): bigint | null {
   if (typeof input !== "string") {
     return null;
   }
