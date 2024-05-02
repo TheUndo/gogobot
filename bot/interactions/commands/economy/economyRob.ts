@@ -2,6 +2,7 @@ import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
 import type { Command } from "!/bot/types";
 import { addCurrency } from "!/bot/utils/addCurrency";
+import { BigIntMath } from "!/bot/utils/bigIntMath";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
@@ -10,7 +11,6 @@ import { z } from "zod";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns } from "./lib/workConfig";
-import { BigIntMath } from "!/bot/utils/bigIntMath";
 
 const failureCost = 10_000;
 

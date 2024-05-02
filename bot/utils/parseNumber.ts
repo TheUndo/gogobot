@@ -39,7 +39,7 @@ export function parseNumber(input: string): bigint {
       if (curr === "-") {
         return -acc;
       }
-      
+
       return acc + Number.parseFloat(curr);
     }, 0);
 

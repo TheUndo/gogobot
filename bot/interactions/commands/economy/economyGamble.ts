@@ -8,6 +8,7 @@ import {
   InteractionType,
 } from "!/bot/types";
 import { addCurrency } from "!/bot/utils/addCurrency";
+import { BigIntMath } from "!/bot/utils/bigIntMath";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { safeParseNumber } from "!/bot/utils/parseNumber";
 import { randomNumber } from "!/bot/utils/randomNumber";
@@ -25,7 +26,6 @@ import * as R from "remeda";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
-import { BigIntMath } from "!/bot/utils/bigIntMath";
 
 const gamblePayloadContext = z.object({
   result: z.number(),

@@ -132,9 +132,7 @@ export async function connect4start({
       ? z
           .preprocess(
             safeParseNumber,
-            z
-              .bigint()
-              .transform((v) => (v === 0n ? wallet.balance : v)),
+            z.bigint().transform((v) => (v === 0n ? wallet.balance : v)),
           )
           .safeParse(wager)
       : null;

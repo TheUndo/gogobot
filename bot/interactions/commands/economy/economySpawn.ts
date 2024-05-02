@@ -58,9 +58,7 @@ export const spawn = {
     const wallet = await createWallet(interaction.user.id, guildId);
 
     if (wallet.balance > 1_000_000_000) {
-      return await interaction.reply(
-        "You have too much money.",
-      );
+      return await interaction.reply("You have too much money.");
     }
 
     await prisma.wallet.update({
