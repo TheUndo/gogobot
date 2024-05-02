@@ -30,9 +30,9 @@ export const toolDurability: Record<ToolTypes, number> = {
 };
 
 export const toolPrices: Record<ToolTypes, number> = {
-  [ToolTypes.StonePickaxe]: 300_000,
-  [ToolTypes.IronPickaxe]: 1_000_000,
-  [ToolTypes.DiamondPickaxe]: 5_000_000,
+  [ToolTypes.StonePickaxe]: 200_000,
+  [ToolTypes.IronPickaxe]: 750_000,
+  [ToolTypes.DiamondPickaxe]: 3_000_000,
 };
 
 export const toolEmojis: Record<ToolTypes, string> = {
