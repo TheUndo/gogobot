@@ -35,6 +35,7 @@ export enum Resources {
   Emerald = "EMERALD", // 500k
   Diamond = "DIAMOND", //1m
   Netherite = "NETHERITE", //3m
+  Kryptonite = "KRYPTONITE", //5m
   RockSlide = "ROCK_FALL", //-10k
   DeadEnd = "DEAD_END", // 0
   Nothing = "NOTHING", // 0
@@ -77,6 +78,10 @@ const rewards: Record<
     message: sprintf("You found Diamond! %s", resourceEmojis.NETHERITE),
     generateReward: async () => randomNumber(2_500_000, 3_000_000),
   },
+  [Resources.Kryptonite]: {
+    message: sprintf("You found Diamond! %s", resourceEmojis.NETHERITE),
+    generateReward: async () => randomNumber(4_000_000, 5_000_000),
+  },
   [Resources.RockSlide]: {
     message: "You were caught on a rockslide and had to pay for injuries. 🩹",
     generateReward: async () => -randomNumber(7_000, 10_000),
@@ -103,7 +108,8 @@ const decrementDurability: Record<Resources, number> = {
   [Resources.Gold]: 6,
   [Resources.Emerald]: 8,
   [Resources.Diamond]: 10,
-  [Resources.Netherite]: 15,
+  [Resources.Netherite]: 10,
+  [Resources.Kryptonite]: 10,
   [Resources.RockSlide]: 0,
   [Resources.DeadEnd]: 0,
   [Resources.Nothing]: 0,
@@ -361,6 +367,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Emerald]: 0,
       [Resources.Diamond]: 0,
       [Resources.Netherite]: 0,
+      [Resources.Kryptonite]: 0,
       [Resources.RockSlide]: 30,
       [Resources.DeadEnd]: 30,
       [Resources.Nothing]: 30,
@@ -375,6 +382,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Emerald]: 5,
       [Resources.Diamond]: 3,
       [Resources.Netherite]: 1,
+      [Resources.Kryptonite]: 0,
       [Resources.RockSlide]: 30,
       [Resources.DeadEnd]: 30,
       [Resources.Nothing]: 30,
@@ -389,6 +397,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Emerald]: 15,
       [Resources.Diamond]: 10,
       [Resources.Netherite]: 5,
+      [Resources.Kryptonite]: 1,
       [Resources.RockSlide]: 15,
       [Resources.DeadEnd]: 15,
       [Resources.Nothing]: 15,
