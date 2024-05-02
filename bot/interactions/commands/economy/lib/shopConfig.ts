@@ -51,7 +51,7 @@ export enum ResourceTypes {
   Emerald = "EMERALD",
   Diamond = "DIAMOND",
   Titanium = "TITANIUM",
-  Netherite = "NETHERITE"
+  Netherite = "NETHERITE",
 }
 
 export const resourceIds: Record<ResourceTypes, string> = {
@@ -62,7 +62,7 @@ export const resourceIds: Record<ResourceTypes, string> = {
   [ResourceTypes.Emerald]: "RESOURCEEMERALD",
   [ResourceTypes.Diamond]: "RESOURCEDIAMOND",
   [ResourceTypes.Titanium]: "RESOURCETITANIUM",
-  [ResourceTypes.Netherite]: "RESOURCENETHERITE"
+  [ResourceTypes.Netherite]: "RESOURCENETHERITE",
 };
 
 export const resourceNames: Record<ResourceTypes, string> = {
@@ -73,7 +73,7 @@ export const resourceNames: Record<ResourceTypes, string> = {
   [ResourceTypes.Emerald]: "Emerald",
   [ResourceTypes.Diamond]: "Diamond",
   [ResourceTypes.Titanium]: "Titanium",
-  [ResourceTypes.Netherite]: "Netherite"
+  [ResourceTypes.Netherite]: "Netherite",
 };
 
 export const resourcePrices: Record<ResourceTypes, number> = {
@@ -84,7 +84,7 @@ export const resourcePrices: Record<ResourceTypes, number> = {
   [ResourceTypes.Emerald]: 0,
   [ResourceTypes.Diamond]: 0,
   [ResourceTypes.Titanium]: 0,
-  [ResourceTypes.Netherite]: 0
+  [ResourceTypes.Netherite]: 0,
 };
 
 export const resourceEmojis: Record<ResourceTypes, string> = {
@@ -95,5 +95,5 @@ export const resourceEmojis: Record<ResourceTypes, string> = {
   [ResourceTypes.Emerald]: "<:Emerald:1235516429873184789>",
   [ResourceTypes.Diamond]: "<:Diamond:1235516428363501599>",
   [ResourceTypes.Titanium]: "<:Titanium:1235577345620840519>",
-  [ResourceTypes.Netherite]: "<:Netherite:1235577766208868362>"
+  [ResourceTypes.Netherite]: "<:Netherite:1235577766208868362>",
 };
