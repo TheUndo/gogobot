@@ -555,7 +555,9 @@ export async function connect4decline(
     ));
   }
 
-  const wager = z.number().parse(invitation.wagerAmount);
+  const wager = invitation.wagerAmount
+    ? z.number().parse(invitation.wagerAmount)
+    : 0;
 
   await prisma.$transaction([
     prisma.connect4GameInvitation.update({
@@ -582,7 +584,7 @@ export async function connect4decline(
   ]);
 
   if (interaction.user.id === invitation.challenger) {
-    return void (await interaction.reply({
+    return void (await interaction.update({
       components: [],
       content: "",
       embeds: [
