@@ -30,9 +30,9 @@ export const toolDurability: Record<ToolTypes, number> = {
 };
 
 export const toolPrices: Record<ToolTypes, number> = {
-  [ToolTypes.StonePickaxe]: 300_000,
-  [ToolTypes.IronPickaxe]: 1_000_000,
-  [ToolTypes.DiamondPickaxe]: 5_000_000,
+  [ToolTypes.StonePickaxe]: 200_000,
+  [ToolTypes.IronPickaxe]: 750_000,
+  [ToolTypes.DiamondPickaxe]: 3_000_000,
 };
 
 export const toolEmojis: Record<ToolTypes, string> = {
@@ -50,6 +50,9 @@ export enum ResourceTypes {
   Gold = "GOLD",
   Emerald = "EMERALD",
   Diamond = "DIAMOND",
+  Titanium = "TITANIUM",
+  Netherite = "NETHERITE",
+  Kryptonite = "KRYPTONITE",
 }
 
 export const resourceIds: Record<ResourceTypes, string> = {
@@ -59,6 +62,9 @@ export const resourceIds: Record<ResourceTypes, string> = {
   [ResourceTypes.Gold]: "RESOURCEGOLD",
   [ResourceTypes.Emerald]: "RESOURCEEMERALD",
   [ResourceTypes.Diamond]: "RESOURCEDIAMOND",
+  [ResourceTypes.Titanium]: "RESOURCETITANIUM",
+  [ResourceTypes.Netherite]: "RESOURCENETHERITE",
+  [ResourceTypes.Kryptonite]: "RESOURCEKRYPTONITE",
 };
 
 export const resourceNames: Record<ResourceTypes, string> = {
@@ -68,6 +74,9 @@ export const resourceNames: Record<ResourceTypes, string> = {
   [ResourceTypes.Gold]: "Gold",
   [ResourceTypes.Emerald]: "Emerald",
   [ResourceTypes.Diamond]: "Diamond",
+  [ResourceTypes.Titanium]: "Titanium",
+  [ResourceTypes.Netherite]: "Netherite",
+  [ResourceTypes.Kryptonite]: "Kryptonite",
 };
 
 export const resourcePrices: Record<ResourceTypes, number> = {
@@ -77,6 +86,9 @@ export const resourcePrices: Record<ResourceTypes, number> = {
   [ResourceTypes.Gold]: 0,
   [ResourceTypes.Emerald]: 0,
   [ResourceTypes.Diamond]: 0,
+  [ResourceTypes.Titanium]: 0,
+  [ResourceTypes.Netherite]: 0,
+  [ResourceTypes.Kryptonite]: 0,
 };
 
 export const resourceEmojis: Record<ResourceTypes, string> = {
@@ -86,4 +98,7 @@ export const resourceEmojis: Record<ResourceTypes, string> = {
   [ResourceTypes.Gold]: "<:Gold:1235516431794307142>",
   [ResourceTypes.Emerald]: "<:Emerald:1235516429873184789>",
   [ResourceTypes.Diamond]: "<:Diamond:1235516428363501599>",
+  [ResourceTypes.Titanium]: "<:Titanium:1235577345620840519>",
+  [ResourceTypes.Netherite]: "<:Netherite:1235577766208868362>",
+  [ResourceTypes.Kryptonite]: "<:Kryptonite:1235612530559156335>",
 };
