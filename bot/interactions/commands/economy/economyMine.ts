@@ -389,9 +389,9 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Emerald]: 15,
       [Resources.Diamond]: 10,
       [Resources.Netherite]: 5,
-      [Resources.RockSlide]: 30,
-      [Resources.DeadEnd]: 30,
-      [Resources.Nothing]: 30,
+      [Resources.RockSlide]: 15,
+      [Resources.DeadEnd]: 15,
+      [Resources.Nothing]: 15,
       [Resources.Ambush]: 5,
     }))
     .run();
