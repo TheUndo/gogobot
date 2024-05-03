@@ -74,7 +74,11 @@ export const daily = {
               d.createdAt.getTime() / (1000 * 60 * 60 * 24),
             );
 
-            if (lastDay < day) {
+            if (lastDay + 1 < day) {
+              return 1;
+            }
+
+            if (d.streak >= maxStreak) {
               return 1;
             }
 
