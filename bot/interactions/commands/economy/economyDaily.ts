@@ -10,7 +10,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { WorkType, coolDowns } from "./lib/workConfig";
+import { WorkType } from "./lib/workConfig";
 
 const maxStreak = 7;
 
@@ -94,16 +94,18 @@ export const daily = {
       }),
     ]);
 
-    if (
-      lastWork.lastUsed &&
-      lastWork.lastUsed.getTime() + coolDowns.DAILY > Date.now()
-    ) {
-      return await interaction.reply({
-        content: sprintf(
-          "You've already claimed your daily reward. Next claim <t:%d:R>",
-          Math.ceil((day + 1) * 60 * 60 * 24),
-        ),
-      });
+    if (lastWork.lastUsed) {
+      const lastWorkDay = Math.ceil(
+        lastWork.lastUsed.getTime() / (1000 * 60 * 60 * 24),
+      );
+      if (lastWorkDay > day) {
+        return await interaction.reply({
+          content: sprintf(
+            "You've already claimed your daily reward. Next claim <t:%d:R>",
+            lastWorkDay * 60 * 60 * 24,
+          ),
+        });
+      }
     }
 
     const clanRewardMultiplier = 1 + (clan?.level ?? 0) / 10;
