@@ -35,6 +35,7 @@ export async function aggregateClanStatistics() {
             userDiscordId: {
               in: discordUserIds,
             },
+            guildId: clan.discordGuildId,
           },
           select: {
             balance: true,
