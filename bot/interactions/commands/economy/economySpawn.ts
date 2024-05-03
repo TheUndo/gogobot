@@ -42,7 +42,7 @@ export const spawn = {
 
     const rawAmount = interaction.options.get("amount");
     const amount = z
-      .preprocess(safeParseNumber, z.number().int())
+      .preprocess(safeParseNumber, z.bigint())
       .safeParse(rawAmount?.value);
 
     if (!amount.success) {

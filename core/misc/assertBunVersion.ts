@@ -1,7 +1,7 @@
 import { semver } from "bun";
 import { sprintf } from "sprintf-js";
 
-const minimumBunVersion = "1.1.6";
+const minimumBunVersion = "1.1.7";
 
 if (semver.order(minimumBunVersion, Bun.version) === 1) {
   console.log(
