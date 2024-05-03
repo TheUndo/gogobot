@@ -128,8 +128,7 @@ export const mine = {
           { name: "Stone Pickaxe", value: ToolTypes.StonePickaxe },
           { name: "Iron Pickaxe", value: ToolTypes.IronPickaxe },
           { name: "Diamond Pickaxe", value: ToolTypes.DiamondPickaxe },
-        )
-        .setRequired(true),
+        ),
     ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
@@ -198,10 +197,21 @@ export const mine = {
       },
     });
 
-    const pickaxes = inventory.filter((tool) => tool.type === ItemType.Tools);
-    const selectedPickaxe = z
-      .nativeEnum(ToolTypes)
-      .parse(interaction.options.getString("pickaxe"));
+    const pickaxes = inventory
+      .filter((tool) => tool.type === ItemType.Tools)
+      .filter((tool) => tool.itemId.endsWith("PICKAXE"));
+
+    const selectedPickaxe = interaction.options.getString("pickaxe")
+      ? z.nativeEnum(ToolTypes).parse(interaction.options.getString("pickaxe"))
+      : pickaxes.length >= 1
+        ? z
+            .nativeEnum(ToolTypes)
+            .parse(
+              (Object.keys(toolIds) as Array<ToolTypes>).find(
+                (key) => toolIds[key] === pickaxes[0]?.itemId,
+              ),
+            )
+        : ToolTypes.StonePickaxe;
 
     const pickaxe = pickaxes.find(
       (pick) => pick.itemId === toolIds[selectedPickaxe],
@@ -381,7 +391,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Gold]: 10,
       [Resources.Emerald]: 5,
       [Resources.Diamond]: 3,
-      [Resources.Netherite]: 1,
+      [Resources.Netherite]: 0,
       [Resources.Kryptonite]: 0,
       [Resources.RockSlide]: 30,
       [Resources.DeadEnd]: 30,
@@ -390,13 +400,13 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
     }))
     .with(ToolTypes.DiamondPickaxe, () => ({
       [Resources.Copper]: 30,
-      [Resources.Silver]: 80,
+      [Resources.Silver]: 30,
       [Resources.Iron]: 30,
       [Resources.Titanium]: 50,
-      [Resources.Gold]: 50,
+      [Resources.Gold]: 100,
       [Resources.Emerald]: 15,
       [Resources.Diamond]: 10,
-      [Resources.Netherite]: 5,
+      [Resources.Netherite]: 1,
       [Resources.Kryptonite]: 1,
       [Resources.RockSlide]: 15,
       [Resources.DeadEnd]: 15,
