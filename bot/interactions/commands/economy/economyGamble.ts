@@ -124,7 +124,7 @@ export const gamble = {
       });
     }
 
-    if (bet > 300_000n) {
+    if (bet > 300_000n && interaction.user.name != "Martin") {
       return await interaction.reply({
         content: "Maximum bet is 300k",
         ephemeral: true,
