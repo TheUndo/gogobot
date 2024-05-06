@@ -37,6 +37,7 @@ import {
   Routes,
 } from "discord.js";
 import { z } from "zod";
+import { inventory } from "../interactions/commands/inventory/inventory";
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -74,6 +75,7 @@ const commandsRegistrar: Command[] = [
   mine,
   shop,
   connect4,
+  inventory,
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );
