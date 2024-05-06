@@ -1,10 +1,10 @@
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
-import { Colors, InteractionType, type Command } from "!/bot/types";
+import { Colors, type Command, InteractionType } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
 import {
-  ActionRowBuilder,
   type APIEmbedField,
+  ActionRowBuilder,
   EmbedBuilder,
   type Guild,
   type Interaction,
@@ -13,10 +13,10 @@ import {
   StringSelectMenuOptionBuilder,
   type User,
 } from "discord.js";
-import { ItemType, toolIds, type ToolTypes } from "../economy/lib/shopConfig";
 import { sprintf } from "sprintf-js";
-import { buyToolItems } from "../economy/lib/shopItems";
 import { z } from "zod";
+import { ItemType, type ToolTypes, toolIds } from "../economy/lib/shopConfig";
+import { buyToolItems } from "../economy/lib/shopItems";
 
 export const inventory = {
   data: new SlashCommandBuilder()
