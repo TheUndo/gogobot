@@ -1,6 +1,8 @@
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
+import { getTool } from "!/bot/logic/inventory/getTool";
 import { Colors, type Command, InteractionType } from "!/bot/types";
+import { formatItem } from "!/bot/utils/formatItem";
 import { prisma } from "!/core/db/prisma";
 import {
   type APIEmbedField,
@@ -15,8 +17,7 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ItemType, type ToolTypes, toolIds } from "../economy/lib/shopConfig";
-import { buyToolItems } from "../economy/lib/shopItems";
+import { ItemType } from "../economy/lib/shopConfig";
 
 export const inventory = {
   data: new SlashCommandBuilder()
@@ -108,13 +109,16 @@ export const createEmbed = async (
     .setCustomId(inventoryDisposeInteraction.id)
     .setPlaceholder("Select the item you would like to dispose.");
 
-  /**Filtering out the first 25 items will be added in the future when more tools/items are added */
+  //Filtering out the first 25 items will be added in the future when more tools/items are added
 
   for (const tool of tools) {
-    const ToolType = (Object.keys(toolIds) as Array<ToolTypes>).find(
-      (key) => toolIds[key] === tool.itemId,
-    ) as ToolTypes;
-    const toolData = buyToolItems[ToolType];
+    const toolData = await getTool(tool.itemId);
+    if (!toolData) {
+      return {
+        content: "Something went wrong, Contact a Developer",
+        ephemeral: true,
+      };
+    }
 
     stringSelectMenuBuilder.addOptions(
       new StringSelectMenuOptionBuilder()
@@ -125,7 +129,7 @@ export const createEmbed = async (
     );
 
     fields.push({
-      name: sprintf("%s|%s", toolData.emoji, toolData.name),
+      name: await formatItem(toolData),
       value: sprintf("Durability: %s", tool.durability),
     });
   }
@@ -135,7 +139,7 @@ export const createEmbed = async (
   embed.addFields(fields);
 
   return {
-    content: content ? content : "",
+    content: content ?? "",
     embeds: [embed],
     components: [firstRow],
   };

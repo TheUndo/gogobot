@@ -1,3 +1,4 @@
+import { getTool } from "!/bot/logic/inventory/getTool";
 import { notYourInteraction } from "!/bot/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "!/bot/logic/responses/wrongGuildForInteraction";
 import {
@@ -5,6 +6,7 @@ import {
   type InteractionContext,
   InteractionType,
 } from "!/bot/types";
+import { formatItem } from "!/bot/utils/formatItem";
 import { prisma } from "!/core/db/prisma";
 import { ActionRowBuilder } from "@discordjs/builders";
 import { ButtonBuilder, ButtonStyle } from "discord.js";
@@ -128,9 +130,8 @@ export async function inventoryToolDispose(
 
   await interaction.update({
     content: sprintf(
-      "Are you sure, You want to dispose %s|%s",
-      toolData.emoji,
-      toolData.name,
+      "Are you sure, You want to dispose %s",
+      await formatItem(toolData),
     ),
     embeds: [],
     components: [row],
@@ -202,10 +203,13 @@ export async function inventoryToolDisposeAccept(
     });
   }
 
-  const ToolType = (Object.keys(toolIds) as Array<ToolTypes>).find(
-    (key) => toolIds[key] === selectedTool.itemId,
-  ) as ToolTypes;
-  const toolData = buyToolItems[ToolType];
+  const toolData = await getTool(selectedTool.itemId);
+
+  if (!toolData) {
+    return await interaction.reply({
+      content: "Something went wrong! Contact a Developer",
+    });
+  }
 
   await prisma.shopItem.delete({
     where: {
@@ -218,9 +222,8 @@ export async function inventoryToolDisposeAccept(
       interaction.user,
       interaction.guild,
       sprintf(
-        "Sucessfully disposed %s|%s from you inventory.",
-        toolData.emoji,
-        toolData.name,
+        "Sucessfully disposed %s from you inventory.",
+        await formatItem(toolData),
       ),
     ),
   );
@@ -269,7 +272,7 @@ export async function inventoryToolDisposeDecline(
     );
   }
 
-  await interaction.update(
+  return await interaction.update(
     await createEmbed(interaction.user, interaction.guild),
   );
 }
