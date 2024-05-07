@@ -6,6 +6,7 @@ export enum WorkType {
   Gamble = "GAMBLE",
   Soldier = "SOLDIER",
   Mine = "MINE",
+  Influencer = "INFLUENCER",
 }
 
 export const coolDowns: Record<WorkType, number> = {
@@ -16,6 +17,7 @@ export const coolDowns: Record<WorkType, number> = {
   [WorkType.Gamble]: 1000 * 60 * 60 * 4,
   [WorkType.Soldier]: 1000 * 60 * 60 * 5,
   [WorkType.Mine]: 1000 * 60 * 60,
+  [WorkType.Influencer]: 1000 * 60 * 60 * 4,
 };
 
 export const workNames: Record<WorkType, string> = {
@@ -26,6 +28,7 @@ export const workNames: Record<WorkType, string> = {
   [WorkType.Gamble]: "Gambling",
   [WorkType.Soldier]: "Soldiering",
   [WorkType.Mine]: "Mining",
+  [WorkType.Influencer]: "Influencer"
 };
 
 export const workCommands: Record<WorkType, string> = {
@@ -36,14 +39,16 @@ export const workCommands: Record<WorkType, string> = {
   [WorkType.Gamble]: "gamble",
   [WorkType.Soldier]: "soldier",
   [WorkType.Mine]: "mine",
+  [WorkType.Influencer]: "influencer",
 };
 
 export const workCommandUses: Record<WorkType, number> = {
   [WorkType.Daily]: 1,
   [WorkType.Weekly]: 1,
   [WorkType.Rob]: 1,
-  [WorkType.Fish]: 3,
+  [WorkType.Fish]: 4,
   [WorkType.Gamble]: 5,
   [WorkType.Soldier]: 2,
-  [WorkType.Mine]: 4,
+  [WorkType.Mine]: 3,
+  [WorkType.Influencer]: 3,
 };
