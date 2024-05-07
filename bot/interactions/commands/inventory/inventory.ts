@@ -1,9 +1,23 @@
-//import { createWallet } from "!/bot/logic/economy/createWallet";
+import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
-import type { Command } from "!/bot/types";
-//import { prisma } from "!/core/db/prisma";
-import { type Interaction, SlashCommandBuilder } from "discord.js";
-//import { ItemType } from "../economy/lib/shopConfig";
+import { getTool } from "!/bot/logic/inventory/getTool";
+import { Colors, type Command, InteractionType } from "!/bot/types";
+import { formatItem } from "!/bot/utils/formatItem";
+import { prisma } from "!/core/db/prisma";
+import {
+  type APIEmbedField,
+  ActionRowBuilder,
+  EmbedBuilder,
+  type Guild,
+  type Interaction,
+  SlashCommandBuilder,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
+  type User,
+} from "discord.js";
+import { sprintf } from "sprintf-js";
+import { z } from "zod";
+import { ItemType } from "../economy/lib/shopConfig";
 
 export const inventory = {
   data: new SlashCommandBuilder()
@@ -36,13 +50,97 @@ export const inventory = {
       });
     }
 
-    // const wallet = await createWallet(interaction.user.id, guildId);
-    // const inventory = await prisma.shopItem.findMany({
-    //     where: {
-    //         walletId: wallet.id
-    //     }
-    // })
+    const interactionReplyOption = await createEmbed(
+      interaction.user,
+      interaction.guild,
+    );
 
-    // const tools = inventory.filter((tool) => tool.type === ItemType.Tools);
+    return await interaction.reply(interactionReplyOption);
   },
 } satisfies Command;
+
+export const inventoryDisposeMenuContext = z.object({
+  walletId: z.string(),
+  type: z.nativeEnum(ItemType),
+});
+
+export const createEmbed = async (
+  user: User,
+  guild: Guild,
+  content?: string,
+) => {
+  const guildId = guild.id;
+  const wallet = await createWallet(user.id, guildId);
+
+  const inventory = await prisma.shopItem.findMany({
+    where: {
+      walletId: wallet.id,
+    },
+  });
+
+  const fields: APIEmbedField[] = [];
+
+  const embed = new EmbedBuilder()
+    .setTitle("Player Inventory")
+    .setDescription("### Tools")
+    .setColor(Colors.Info);
+
+  const tools = inventory.filter((tool) => tool.type === ItemType.Tools);
+  if (tools.length < 1) {
+    embed.addFields([{ name: "No tools data found!", value: "\u200b" }]);
+    return { content: "", embeds: [embed], components: [] };
+  }
+
+  const inventoryDisposeInteraction = await prisma.interaction.create({
+    data: {
+      type: InteractionType.InventoryDisposeToolMenu,
+      guildId,
+      userDiscordId: user.id,
+      payload: JSON.stringify({
+        walletId: wallet.id,
+        type: ItemType.Tools,
+      } satisfies z.infer<typeof inventoryDisposeMenuContext>),
+    },
+  });
+
+  const firstRow = new ActionRowBuilder<StringSelectMenuBuilder>();
+
+  const stringSelectMenuBuilder = new StringSelectMenuBuilder()
+    .setCustomId(inventoryDisposeInteraction.id)
+    .setPlaceholder("Select the item you would like to dispose.");
+
+  //Filtering out the first 25 items will be added in the future when more tools/items are added
+
+  for (const tool of tools) {
+    const toolData = await getTool(tool.itemId);
+    if (!toolData) {
+      return {
+        content: "Something went wrong, Contact a Developer",
+        ephemeral: true,
+      };
+    }
+
+    stringSelectMenuBuilder.addOptions(
+      new StringSelectMenuOptionBuilder()
+        .setDefault(false)
+        .setLabel(toolData.name)
+        .setEmoji(toolData.emoji)
+        .setValue(tool.id),
+    );
+
+    fields.push({
+      name: await formatItem(toolData),
+      value: sprintf("Durability: %s", tool.durability),
+    });
+  }
+
+  firstRow.addComponents(stringSelectMenuBuilder);
+
+  embed.addFields(fields);
+
+  return {
+    content: content ?? "",
+    embeds: [embed],
+    components: [firstRow],
+  };
+};
