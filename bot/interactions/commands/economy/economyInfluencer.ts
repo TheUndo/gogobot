@@ -27,8 +27,8 @@ enum Scenario {
   Pstar = "PSTAR", //mega OF
   Hoe = "HOE", //basic OF
   Junkie = "JUNKIE", // mega bebuff OF
-  Instagram= "INSTAGRAM", //Insta influencer
-  Failure = "FAILURE",// Debuff inluencer
+  Instagram = "INSTAGRAM", //Insta influencer
+  Failure = "FAILURE", // Debuff inluencer
   Tiktok = "TikTok", //basic tiktoker
 }
 
@@ -59,7 +59,8 @@ const rewards: Record<
   }
 > = {
   [Scenario.Charlie]: {
-    message: "You streamed 📹 on twitch and surpassed the view count of moistcr1tikal!",
+    message:
+      "You streamed 📹 on twitch and surpassed the view count of moistcr1tikal!",
     generateReward: async () => 50_000,
   },
   [Scenario.MrBeast]: {
@@ -73,11 +74,13 @@ const rewards: Record<
     generateReward: async () => 1_200_000,
   },
   [Scenario.Pstar]: {
-    message: "You decided to work on OnlyFans 📸 and break in to the top 0.1% creator!",
+    message:
+      "You decided to work on OnlyFans 📸 and break in to the top 0.1% creator!",
     generateReward: async () => 300_000,
   },
   [Scenario.Xqc]: {
-    message: "You decided to be a twitch streamer 📹 and surpassed the view count of xQc!",
+    message:
+      "You decided to be a twitch streamer 📹 and surpassed the view count of xQc!",
     generateReward: async () => 300_000,
   },
   [Scenario.Youtuber]: {
@@ -85,19 +88,23 @@ const rewards: Record<
     generateReward: async () => randomNumber(3_000, 4_000),
   },
   [Scenario.Streamer]: {
-    message: "You decided to be a Twitch Streamer 📹 and got a few subscribers!",
+    message:
+      "You decided to be a Twitch Streamer 📹 and got a few subscribers!",
     generateReward: async () => randomNumber(800, 1_000),
   },
   [Scenario.Hoe]: {
-    message: "You decided to open and OnlyFans account and posted some feet pics 📸!",
+    message:
+      "You decided to open and OnlyFans account and posted some feet pics 📸!",
     generateReward: async () => randomNumber(100, 1000),
   },
   [Scenario.Flop]: {
-    message: "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably!",
+    message:
+      "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably!",
     generateReward: async () => -40_000,
   },
   [Scenario.Logan]: {
-    message: "You were caught in a massive internet drama bigger than Logan Paul's Japan Controversy! ☠️",
+    message:
+      "You were caught in a massive internet drama bigger than Logan Paul's Japan Controversy! ☠️",
     generateReward: async () => -randomNumber(100_000, 200_000),
   },
   [Scenario.Instagram]: {
@@ -113,13 +120,16 @@ const rewards: Record<
     generateReward: async () => -randomNumber(10_000, 15_000),
   },
   [Scenario.Junkie]: {
-    message: "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers! 💀",
+    message:
+      "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers! 💀",
     generateReward: async () => -randomNumber(100_000, 200_000),
   },
 };
 
 export const influencer = {
-  data: new SlashCommandBuilder().setName("influencer").setDescription("Become an influencer"),
+  data: new SlashCommandBuilder()
+    .setName("influencer")
+    .setDescription("Become an influencer"),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;

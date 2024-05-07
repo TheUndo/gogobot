@@ -27,8 +27,8 @@ import { subscriptions } from "!/bot/interactions/commands/subscriptions";
 import { unsubscribe } from "!/bot/interactions/commands/unsubscribe";
 import { welcome } from "!/bot/interactions/commands/welcome";
 import { env } from "!/core/misc/env";
-import { shop } from "../interactions/commands/economy/shop/economyShop";
 import { influencer } from "../interactions/commands/economy/economyInfluencer";
+import { shop } from "../interactions/commands/economy/shop/economyShop";
 
 import type { Command } from "!/bot/types";
 import {

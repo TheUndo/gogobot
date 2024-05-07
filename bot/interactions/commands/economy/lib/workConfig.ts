@@ -28,7 +28,7 @@ export const workNames: Record<WorkType, string> = {
   [WorkType.Gamble]: "Gambling",
   [WorkType.Soldier]: "Soldiering",
   [WorkType.Mine]: "Mining",
-  [WorkType.Influencer]: "Influencer"
+  [WorkType.Influencer]: "Influencer",
 };
 
 export const workCommands: Record<WorkType, string> = {
