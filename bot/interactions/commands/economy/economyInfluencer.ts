@@ -16,41 +16,37 @@ import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 import { workTitle } from "./lib/workTitle";
 enum Scenario {
-  Jormungandr = "JORMUNGANDR",
-  Kraken = "KRAKEN",
-  Whale = "WHALE",
-  Shark = "SHARK",
-  BigFish = "BIG_FISH",
-  LochNessMonster = "LOCH_NESS_MONSTER",
-  SmallFish = "SMALL_FISH",
-  Shoe = "SHOE",
-  Octopus = "OCTOPUS",
-  Turtle = "TURTLE",
-  Seaweed = "SEAWEED",
-  Starfish = "STARFISH",
-  HiddenTreasure = "HIDDEN_TREASURE",
-  Jellyfish = "JELLYFISH",
-  Nothing = "NOTHING",
-  PirateAttack = "PIRATE_ATTACK",
+  Youtuber = "Youtuber", //basic youtuber
+  MrBeast = "MRBEAST", //mega youtuber
+  Pewdiepie = "PEWDIEPIE", //second mega youtuber
+  Flop = "FLOP", //debuff
+  Logan = "LOGAN", // mega debuff youtuber
+  Xqc = "XQC", // mega streamer
+  Charlie = "CHARLIE", //basic streamer penguinz0
+  Streamer = "STREAMER", //less basic streamer
+  Pstar = "PSTAR", //mega OF
+  Hoe = "HOE", //basic OF
+  Junkie = "JUNKIE", // mega bebuff OF
+  Instagram = "INSTAGRAM", //Insta influencer
+  Failure = "FAILURE", // Debuff inluencer
+  Tiktok = "TikTok", //basic tiktoker
 }
 
 const odds: Record<Scenario, number> = {
-  [Scenario.Jormungandr]: 1,
-  [Scenario.Kraken]: 3,
-  [Scenario.Whale]: 50,
-  [Scenario.LochNessMonster]: 6,
-  [Scenario.Shark]: 170,
-  [Scenario.BigFish]: 370,
-  [Scenario.SmallFish]: 400,
-  [Scenario.Shoe]: 100,
-  [Scenario.Octopus]: 50,
-  [Scenario.Turtle]: 50,
-  [Scenario.Seaweed]: 50,
-  [Scenario.HiddenTreasure]: 100,
-  [Scenario.Jellyfish]: 100,
-  [Scenario.Starfish]: 100,
-  [Scenario.Nothing]: 30,
-  [Scenario.PirateAttack]: 30,
+  [Scenario.MrBeast]: 1,
+  [Scenario.Pewdiepie]: 3,
+  [Scenario.Pstar]: 4,
+  [Scenario.Xqc]: 4,
+  [Scenario.Charlie]: 50,
+  [Scenario.Youtuber]: 100,
+  [Scenario.Streamer]: 100,
+  [Scenario.Hoe]: 100,
+  [Scenario.Flop]: 51,
+  [Scenario.Logan]: 3,
+  [Scenario.Instagram]: 100,
+  [Scenario.Failure]: 50,
+  [Scenario.Tiktok]: 100,
+  [Scenario.Junkie]: 3,
 };
 
 const computedOdds = stackOdds(odds);
@@ -62,75 +58,78 @@ const rewards: Record<
     generateReward: () => Promise<number>;
   }
 > = {
-  [Scenario.Whale]: {
-    message: "You caught a whale! 🐋",
+  [Scenario.Charlie]: {
+    message:
+      "You streamed 📹 on Twitch and surpassed the view count of moistcr1tikal!",
     generateReward: async () => 50_000,
   },
-  [Scenario.Jormungandr]: {
+  [Scenario.MrBeast]: {
     message:
-      "The seas roared; the Kraken trembled. The World Serpent **Jörmungandr** graced you with His presence. :snake:",
+      "You decided to be a Youtuber 🎥 and surpassed the subscriber count of MrBeast!",
     generateReward: async () => 2_000_000,
   },
-  [Scenario.LochNessMonster]: {
-    message: "You caught the Loch Ness Monster! 🐉",
+  [Scenario.Pewdiepie]: {
+    message:
+      "You decided to be a Youtuber 🎥 and surpassed the subscriber count of PewDiePie!",
+    generateReward: async () => 1_200_000,
+  },
+  [Scenario.Pstar]: {
+    message:
+      "You decided to work on OnlyFans 📸 and break in to the top 0.1% creator!",
     generateReward: async () => 300_000,
   },
-  [Scenario.Shark]: {
-    message: "You caught a shark! 🦈",
-    generateReward: async () => 15_000,
+  [Scenario.Xqc]: {
+    message:
+      "You decided to be a twitch streamer 📹 and surpassed the view count of xQc!",
+    generateReward: async () => 300_000,
   },
-  [Scenario.BigFish]: {
-    message: "You caught a big fish! 🐟",
+  [Scenario.Youtuber]: {
+    message: "You decided to be a Youtuber 🎥 and got your first ad revenue!",
     generateReward: async () => randomNumber(3_000, 4_000),
   },
-  [Scenario.SmallFish]: {
-    message: "You caught a small fish! 🐠",
+  [Scenario.Streamer]: {
+    message:
+      "You decided to be a Twitch Streamer 📹 and got a few subscribers!",
     generateReward: async () => randomNumber(800, 1_000),
   },
-  [Scenario.Shoe]: {
-    message: "You caught a shoe! 👞",
-    generateReward: async () => randomNumber(0, 500),
+  [Scenario.Hoe]: {
+    message:
+      "You decided to open and OnlyFans account and posted some feet pics. 📸",
+    generateReward: async () => randomNumber(100, 1000),
   },
-  [Scenario.Nothing]: {
-    message: "You caught nothing... 🎣",
-    generateReward: async () => 0,
+  [Scenario.Flop]: {
+    message:
+      "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably.",
+    generateReward: async () => -40_000,
   },
-  [Scenario.Octopus]: {
-    message: "You caught an octopus! 🐙",
+  [Scenario.Logan]: {
+    message:
+      "You were caught in a massive internet drama bigger than Logan Paul's Japan Controversy! ☠️",
+    generateReward: async () => -randomNumber(100_000, 200_000),
+  },
+  [Scenario.Instagram]: {
+    message: "You decided to be Instagram influencer! 📷",
     generateReward: async () => randomNumber(800, 1_000),
   },
-  [Scenario.Turtle]: {
-    message: "You caught a turtle! 🐢",
-    generateReward: async () => randomNumber(800, 1_000),
-  },
-  [Scenario.Seaweed]: {
-    message: "You caught seaweed! 🌿",
+  [Scenario.Tiktok]: {
+    message: "You decided to be a TikToker. 🤳",
     generateReward: async () => randomNumber(0, 30),
   },
-  [Scenario.HiddenTreasure]: {
-    message: "You found a hidden treasure! 💰",
-    generateReward: async () => randomNumber(10_000, 15_000),
+  [Scenario.Failure]: {
+    message: "After years of trying you failed as an influencer. 😔",
+    generateReward: async () => -randomNumber(10_000, 15_000),
   },
-  [Scenario.Jellyfish]: {
-    message: "You caught a jellyfish! 🪼",
-    generateReward: async () => randomNumber(500, 1_000),
-  },
-  [Scenario.Starfish]: {
-    message: "You caught a starfish! ⭐",
-    generateReward: async () => randomNumber(200, 600),
-  },
-  [Scenario.PirateAttack]: {
-    message: "You were attacked by pirates! 💣",
-    generateReward: async () => -randomNumber(5_000, 10_000),
-  },
-  [Scenario.Kraken]: {
-    message: "The Call of Cthulhu! You caught a kraken monster. 🦑",
-    generateReward: async () => 1_200_000,
+  [Scenario.Junkie]: {
+    message:
+      "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers. 💀",
+    generateReward: async () => -randomNumber(100_000, 200_000),
   },
 };
 
-export const fish = {
-  data: new SlashCommandBuilder().setName("fish").setDescription("Go fishing!"),
+export const influencer = {
+  data: new SlashCommandBuilder()
+    .setName("influencer")
+    .setDescription("Become an influencer"),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;
@@ -157,11 +156,11 @@ export const fish = {
       });
     }
 
-    const coolDown = coolDowns.FISH;
+    const coolDown = coolDowns.INFLUENCER;
 
     const lastUses = await prisma.work.findMany({
       where: {
-        type: WorkType.Fish,
+        type: WorkType.Influencer,
         createdAt: {
           gte: new Date(Date.now() - coolDown),
         },
@@ -171,10 +170,10 @@ export const fish = {
       orderBy: {
         createdAt: "desc",
       },
-      take: workCommandUses.FISH,
+      take: workCommandUses.INFLUENCER,
     });
 
-    if (lastUses.length >= workCommandUses.FISH) {
+    if (lastUses.length >= workCommandUses.INFLUENCER) {
       const lastUse = lastUses.at(-1);
 
       if (!lastUse) {
@@ -185,7 +184,7 @@ export const fish = {
 
       return await interaction.reply({
         content: sprintf(
-          "You scared all the fish away. Try your luck <t:%s:R>",
+          "You are tired from influencing people. Try again <t:%s:R>",
           Math.floor((lastUse.createdAt.getTime() + coolDown) / 1000),
         ),
       });
@@ -222,7 +221,7 @@ export const fish = {
         data: {
           userDiscordId: interaction.user.id,
           guildDiscordId: guildId,
-          type: WorkType.Fish,
+          type: WorkType.Influencer,
         },
       }),
       prisma.wallet.update({
@@ -256,18 +255,18 @@ export const fish = {
         ),
       );
 
-    if (lastUses.length === workCommandUses.FISH - 1) {
-      const nextFish = sprintf(
-        "Next fish <t:%d:R>",
+    if (lastUses.length === workCommandUses.INFLUENCER - 1) {
+      const nextInfluencer = sprintf(
+        "Next Influencing <t:%d:R>",
         Math.floor((Date.now() + coolDown) / 1000),
       );
       embed.setDescription(
-        [embed.data.description, nextFish]
+        [embed.data.description, nextInfluencer]
           .filter((v): v is string => v != null)
           .join("\n"),
       );
     } else {
-      const count = workCommandUses.FISH - lastUses.length - 1;
+      const count = workCommandUses.INFLUENCER - lastUses.length - 1;
       const word = count === 1 ? "use" : "uses";
       embed.setFooter({
         text: sprintf("%d %s left", count, word),

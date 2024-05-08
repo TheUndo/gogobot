@@ -179,7 +179,7 @@ export const mine = {
 
       if (!lastUse) {
         return await interaction.reply({
-          content: "Hmm, something went wrong, Please try agian later.",
+          content: "Hmm, something went wrong, Please try again later.",
         });
       }
 
@@ -371,11 +371,11 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
   const odds: Record<Resources, number> = match(pickaxe)
     .with(ToolTypes.StonePickaxe, () => ({
       [Resources.Copper]: 100,
-      [Resources.Silver]: 30,
+      [Resources.Silver]: 40,
       [Resources.Iron]: 80,
       [Resources.Titanium]: 50,
-      [Resources.Gold]: 0,
-      [Resources.Emerald]: 0,
+      [Resources.Gold]: 2,
+      [Resources.Emerald]: 1,
       [Resources.Diamond]: 0,
       [Resources.Netherite]: 0,
       [Resources.Kryptonite]: 0,
@@ -385,18 +385,18 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Ambush]: 1,
     }))
     .with(ToolTypes.IronPickaxe, () => ({
-      [Resources.Copper]: 90,
-      [Resources.Silver]: 60,
-      [Resources.Iron]: 60,
+      [Resources.Copper]: 60,
+      [Resources.Silver]: 90,
+      [Resources.Iron]: 100,
       [Resources.Titanium]: 60,
-      [Resources.Gold]: 10,
-      [Resources.Emerald]: 5,
-      [Resources.Diamond]: 3,
+      [Resources.Gold]: 30,
+      [Resources.Emerald]: 6,
+      [Resources.Diamond]: 5,
       [Resources.Netherite]: 1,
       [Resources.Kryptonite]: 0,
-      [Resources.RockSlide]: 30,
-      [Resources.DeadEnd]: 30,
-      [Resources.Nothing]: 30,
+      [Resources.RockSlide]: 20,
+      [Resources.DeadEnd]: 20,
+      [Resources.Nothing]: 20,
       [Resources.Ambush]: 3,
     }))
     .with(ToolTypes.DiamondPickaxe, () => ({
@@ -404,7 +404,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Silver]: 30,
       [Resources.Iron]: 30,
       [Resources.Titanium]: 50,
-      [Resources.Gold]: 100,
+      [Resources.Gold]: 80,
       [Resources.Emerald]: 15,
       [Resources.Diamond]: 10,
       [Resources.Netherite]: 3,

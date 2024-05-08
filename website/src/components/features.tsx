@@ -19,7 +19,7 @@ const features = [
   {
     title: "Mini Games",
     description:
-      "Play games like rock connect 4, paper scissors, tic tac toe, and more!",
+      "Play games like connect 4, rock paper scissors, tic tac toe, and more!",
   },
 ] satisfies {
   title: string;
