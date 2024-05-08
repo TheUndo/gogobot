@@ -1,5 +1,10 @@
 import {
+  ResourceTypes,
   ToolTypes,
+  resourceEmojis,
+  resourceIds,
+  resourceNames,
+  resourcePrices,
   toolDurability,
   toolEmojis,
   toolIds,
@@ -44,4 +49,67 @@ export const buyToolItems: Record<
   },
 };
 
-export const sellResourceItems: Record<string, number> = {};
+export const sellResourceItems: Record<
+  ResourceTypes,
+  {
+    id: string;
+    name: string;
+    sellPrice: number;
+    emoji: string;
+  }
+> = {
+  [ResourceTypes.Copper]: {
+    id: resourceIds.COPPER,
+    name: resourceNames.COPPER,
+    sellPrice: resourcePrices.COPPER,
+    emoji: resourceEmojis.COPPER,
+  },
+  [ResourceTypes.Silver]: {
+    id: resourceIds.SILVER,
+    name: resourceNames.SILVER,
+    sellPrice: resourcePrices.SILVER,
+    emoji: resourceEmojis.SILVER,
+  },
+  [ResourceTypes.Iron]: {
+    id: resourceIds.IRON,
+    name: resourceNames.IRON,
+    sellPrice: resourcePrices.IRON,
+    emoji: resourceEmojis.IRON,
+  },
+  [ResourceTypes.Gold]: {
+    id: resourceIds.GOLD,
+    name: resourceNames.GOLD,
+    sellPrice: resourcePrices.GOLD,
+    emoji: resourceEmojis.GOLD,
+  },
+  [ResourceTypes.Emerald]: {
+    id: resourceIds.EMERALD,
+    name: resourceNames.EMERALD,
+    sellPrice: resourcePrices.EMERALD,
+    emoji: resourceEmojis.EMERALD,
+  },
+  [ResourceTypes.Diamond]: {
+    id: resourceIds.DIAMOND,
+    name: resourceNames.DIAMOND,
+    sellPrice: resourcePrices.DIAMOND,
+    emoji: resourceEmojis.DIAMOND,
+  },
+  [ResourceTypes.Titanium]: {
+    id: resourceIds.TITANIUM,
+    name: resourceNames.TITANIUM,
+    sellPrice: resourcePrices.TITANIUM,
+    emoji: resourceEmojis.TITANIUM,
+  },
+  [ResourceTypes.Netherite]: {
+    id: resourceIds.NETHERITE,
+    name: resourceNames.NETHERITE,
+    sellPrice: resourcePrices.NETHERITE,
+    emoji: resourceEmojis.NETHERITE,
+  },
+  [ResourceTypes.Kryptonite]: {
+    id: resourceIds.KRYPTONITE,
+    name: resourceNames.KRYPTONITE,
+    sellPrice: resourcePrices.KRYPTONITE,
+    emoji: resourceEmojis.KRYPTONITE,
+  },
+};
