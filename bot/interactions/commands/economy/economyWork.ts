@@ -99,13 +99,7 @@ async function createWorkEmbed({ guildId, userId }: Options) {
       where: {
         type: WorkType.Daily,
         createdAt: {
-          gte: new Date(
-            Math.floor(Date.now() / (1000 * 60 * 60 * 24)) *
-              60 *
-              60 *
-              24 *
-              1000,
-          ),
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
         },
       },
     }),
