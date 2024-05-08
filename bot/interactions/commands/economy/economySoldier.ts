@@ -134,6 +134,7 @@ export const soldier = {
           gte: new Date(Date.now() - coolDown),
         },
         userDiscordId: interaction.user.id,
+        guildDiscordId: guildId,
       },
       orderBy: {
         createdAt: "desc",

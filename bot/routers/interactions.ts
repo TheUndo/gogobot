@@ -38,6 +38,11 @@ import { prisma } from "!/core/db/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
 import { shopToolBuy } from "../interactions/commands/economy/shop/economyShopItemBuy";
+import {
+  inventoryToolDispose,
+  inventoryToolDisposeAccept,
+  inventoryToolDisposeDecline,
+} from "../interactions/commands/inventory/inventoryDispose";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
@@ -149,6 +154,21 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           return void (await connect4forfeit(interactionContext, interaction));
         case InteractionType.ShopBuyToolMenu:
           return void (await shopToolBuy(interactionContext, interaction));
+        case InteractionType.InventoryDisposeToolMenu:
+          return void (await inventoryToolDispose(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.InventoryDisposeToolAccept:
+          return void (await inventoryToolDisposeAccept(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.InventoryDisposeToolDecline:
+          return void (await inventoryToolDisposeDecline(
+            interactionContext,
+            interaction,
+          ));
       }
     }
   }

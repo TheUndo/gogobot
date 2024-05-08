@@ -166,6 +166,7 @@ export const mine = {
           gte: new Date(Date.now() - coolDown),
         },
         userDiscordId: interaction.user.id,
+        guildDiscordId: guildId,
       },
       orderBy: {
         createdAt: "desc",
@@ -406,7 +407,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Gold]: 80,
       [Resources.Emerald]: 15,
       [Resources.Diamond]: 10,
-      [Resources.Netherite]: 1,
+      [Resources.Netherite]: 3,
       [Resources.Kryptonite]: 1,
       [Resources.RockSlide]: 15,
       [Resources.DeadEnd]: 15,
