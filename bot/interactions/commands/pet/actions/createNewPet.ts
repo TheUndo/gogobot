@@ -1,12 +1,12 @@
+import { makePossessive } from "!/bot/utils/makePossessive";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import { getPet } from "../lib/getPet";
+import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { validatePetName } from "../../utils/validatePetName";
 import { createPet } from "../lib/createPet";
-import { PetType } from "../lib/types";
 import { createPetProfile } from "../lib/createPetProfile";
-import { sprintf } from "sprintf-js";
-import { makePossessive } from "!/bot/utils/makePossessive";
+import { getPet } from "../lib/getPet";
+import { PetType } from "../lib/types";
 
 export async function createNewPet(
   interaction: ChatInputCommandInteraction<CacheType>,

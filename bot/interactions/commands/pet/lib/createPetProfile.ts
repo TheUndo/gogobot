@@ -1,11 +1,11 @@
+import { formatNumber } from "!/bot/utils/formatNumber";
 import { EmbedBuilder } from "@discordjs/builders";
-import type { TSPet } from "./types";
-import { sprintf } from "sprintf-js";
 import type { InteractionReplyOptions } from "discord.js";
+import { sprintf } from "sprintf-js";
 import { createProgressBar } from "../../utils/createProgressBar";
 import { calculatePersonalCPH } from "./calculatePersonalCPH";
-import { formatNumber } from "!/bot/utils/formatNumber";
 import { maxHappiness, maxHunger, maxLevel } from "./petConfig";
+import type { TSPet } from "./types";
 
 type Options = {
   userId: string;

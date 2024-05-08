@@ -1,4 +1,4 @@
-import { expect, it, describe } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { derivePetState } from "./derivePetState";
 import { PetState } from "./types";
 

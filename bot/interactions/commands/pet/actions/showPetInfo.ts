@@ -1,6 +1,6 @@
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
-import { getPet } from "../lib/getPet";
 import { createPetProfile } from "../lib/createPetProfile";
+import { getPet } from "../lib/getPet";
 
 export async function showPetInfo(
   interaction: ChatInputCommandInteraction<CacheType>,

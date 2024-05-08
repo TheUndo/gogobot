@@ -2,8 +2,8 @@ import type { Command } from "!/bot/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 import { createNewPet } from "./actions/createNewPet";
-import { petTypeNames } from "./lib/petConfig";
 import { showPetInfo } from "./actions/showPetInfo";
+import { petTypeNames } from "./lib/petConfig";
 
 enum SubCommand {
   Info = "info",

@@ -1,7 +1,7 @@
 import { prisma } from "!/core/db/prisma";
+import type { Pet } from "@prisma/client";
 import { z } from "zod";
 import { PetState, PetType, type TSPet } from "./types";
-import type { Pet } from "@prisma/client";
 
 type Options = {
   guildId: string;
