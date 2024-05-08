@@ -60,7 +60,7 @@ const rewards: Record<
 > = {
   [Scenario.Charlie]: {
     message:
-      "You streamed 📹 on twitch and surpassed the view count of moistcr1tikal!",
+      "You streamed 📹 on Twitch and surpassed the view count of moistcr1tikal!",
     generateReward: async () => 50_000,
   },
   [Scenario.MrBeast]: {
@@ -70,7 +70,7 @@ const rewards: Record<
   },
   [Scenario.Pewdiepie]: {
     message:
-      "You decided to be a Youtuber 🎥 and surpassed the subscriber count of Pewdiepie!",
+      "You decided to be a Youtuber 🎥 and surpassed the subscriber count of PewDiePie!",
     generateReward: async () => 1_200_000,
   },
   [Scenario.Pstar]: {
@@ -94,12 +94,12 @@ const rewards: Record<
   },
   [Scenario.Hoe]: {
     message:
-      "You decided to open and OnlyFans account and posted some feet pics 📸!",
+      "You decided to open and OnlyFans account and posted some feet pics. 📸",
     generateReward: async () => randomNumber(100, 1000),
   },
   [Scenario.Flop]: {
     message:
-      "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably!",
+      "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably.",
     generateReward: async () => -40_000,
   },
   [Scenario.Logan]: {
@@ -108,20 +108,20 @@ const rewards: Record<
     generateReward: async () => -randomNumber(100_000, 200_000),
   },
   [Scenario.Instagram]: {
-    message: "You decided to be Instagram 📷 Influencer!",
+    message: "You decided to be Instagram influencer! 📷",
     generateReward: async () => randomNumber(800, 1_000),
   },
   [Scenario.Tiktok]: {
-    message: "You decided to be a TikToker 🤳!",
+    message: "You decided to be a TikToker. 🤳",
     generateReward: async () => randomNumber(0, 30),
   },
   [Scenario.Failure]: {
-    message: "After years of trying you failed as an influencer! 😔",
+    message: "After years of trying you failed as an influencer. 😔",
     generateReward: async () => -randomNumber(10_000, 15_000),
   },
   [Scenario.Junkie]: {
     message:
-      "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers! 💀",
+      "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers. 💀",
     generateReward: async () => -randomNumber(100_000, 200_000),
   },
 };
@@ -184,7 +184,7 @@ export const influencer = {
 
       return await interaction.reply({
         content: sprintf(
-          "You are tired from influencing people. Try your luck <t:%s:R>",
+          "You are tired from influencing people. Try again <t:%s:R>",
           Math.floor((lastUse.createdAt.getTime() + coolDown) / 1000),
         ),
       });
@@ -257,7 +257,7 @@ export const influencer = {
 
     if (lastUses.length === workCommandUses.INFLUENCER - 1) {
       const nextInfluencer = sprintf(
-        "Next Influecing <t:%d:R>",
+        "Next Influencing <t:%d:R>",
         Math.floor((Date.now() + coolDown) / 1000),
       );
       embed.setDescription(
