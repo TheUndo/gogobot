@@ -556,6 +556,8 @@ export async function connect4decline(
     ? z.number().parse(invitation.wagerAmount)
     : 0;
 
+  const wallet = await createWallet(invitation.challenger, guildId);
+
   await prisma.$transaction([
     prisma.connect4GameInvitation.update({
       where: {
@@ -567,10 +569,7 @@ export async function connect4decline(
     }),
     prisma.wallet.update({
       where: {
-        userDiscordId_guildId: {
-          userDiscordId: invitation.challenger,
-          guildId,
-        },
+        id: wallet.id,
       },
       data: {
         balance: {

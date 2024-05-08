@@ -1,25 +1,3 @@
-export enum PetType {
-  Tom = "TOM",
-  ZeroTwo = "ZERO_TWO",
-  Pikachu = "PIKACHU",
-  Aqua = "AQUA",
-  Pepe = "PEPE",
-  Doge = "DOGE",
-  Kermit = "KERMIT",
-  Luffy = "LUFFY",
-  Naruto = "NARUTO",
-  Umaru = "UMARU",
-}
-
-export enum PetState {
-  Normal = "NORMAL",
-  Hungry = "HUNGRY",
-  Sick = "SICK",
-  Dead = "DEAD",
-  Happy = "HAPPY",
-  Sad = "SAD",
-}
-
 /* const images: Record<PetType, Record<PetState, string>> = {
   [PetType.Tom]: {
     [PetState.Normal]: "https://i.imgur.com/7Jb5w3W.png",
@@ -30,3 +8,17 @@ export enum PetState {
   },
 }
  */
+
+import { PetType } from "./types";
+
+export const petTypeNames: Record<PetType, string> = {
+  [PetType.Tom]: "Tom",
+  [PetType.ZeroTwo]: "Zero Two",
+};
+
+export const maxHappiness = 100;
+export const maxHunger = 100;
+export const happinessDecay = 1;
+export const hungerDecay = 1;
+export const happinessGain = 10;
+export const maxLevel = 200;

@@ -1,31 +1,46 @@
 import type { Command } from "!/bot/types";
 import { type Interaction, SlashCommandBuilder } from "discord.js";
-import { PetType } from "./petConfig";
+import { z } from "zod";
+import { createNewPet } from "./actions/createNewPet";
+import { petTypeNames } from "./lib/petConfig";
+import { showPetInfo } from "./actions/showPetInfo";
 
-enum SubCommands {
+enum SubCommand {
+  Info = "info",
   Create = "create",
-  Status = "status",
-  Feed = "feed",
-  Rename = "rename",
-  Kill = "kill",
 }
 
-export const clan = {
+export const pet = {
   data: new SlashCommandBuilder()
     .setName("pet")
     .setDescription("Your pet")
     .setDMPermission(false)
-    .addSubcommand((subCommand) =>
-      subCommand
-        .setName(SubCommands.Create)
-        .setDescription("Crete a new pet")
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(SubCommand.Info)
+        .setDescription("Get info about your pet"),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(SubCommand.Create)
+        .setDescription("Create a pet")
         .addStringOption((option) =>
-          option.setChoices(
-            ...Object.values(PetType).map((type) => ({
-              name: type,
-              value: type,
-            })),
-          ),
+          option
+            .setName("name")
+            .setDescription("Name of your pet")
+            .setRequired(true),
+        )
+        .addStringOption((option) =>
+          option
+            .setName("type")
+            .setDescription("Pet type")
+            .setRequired(true)
+            .addChoices(
+              ...Object.entries(petTypeNames).map(([key, value]) => ({
+                name: value,
+                value: key,
+              })),
+            ),
         ),
     ),
   async execute(interaction: Interaction) {
@@ -36,12 +51,22 @@ export const clan = {
     const guildId = interaction.guildId;
 
     if (!guildId) {
-      return await interaction.reply("Clans are only available in servers.");
+      return await interaction.reply("Pets are only available in servers.");
     }
 
-    const subcommand = interaction.options.getSubcommand();
+    const subCommand = z
+      .nativeEnum(SubCommand)
+      .safeParse(interaction.options.getSubcommand());
 
-    switch (subcommand) {
+    if (!subCommand.success) {
+      return await interaction.reply("Invalid subcommand");
+    }
+
+    switch (subCommand.data) {
+      case SubCommand.Create:
+        return await createNewPet(interaction);
+      case SubCommand.Info:
+        return await showPetInfo(interaction);
     }
   },
 } satisfies Command;

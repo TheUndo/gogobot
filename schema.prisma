@@ -185,7 +185,7 @@ model ClanMember {
   guildId          String
   discordUserId    String
   role             String
-  contributed      BigInt       @default(0)
+  contributed      BigInt    @default(0)
   lastContribution DateTime?
 
   @@unique([guildId, discordUserId])
@@ -297,4 +297,24 @@ model DiscordCacheUserNameCache {
   createdAt     DateTime @default(now())
 
   @@index([userDiscordId, guildId])
+}
+
+model Pet {
+  id           String @id @default(cuid())
+  name         String
+  level        Int    @default(1)
+  happiness    Int
+  hunger       Int
+  color        Int
+  type         String
+  // This is derived from the pet's health
+  // Used only for faster queries
+  derivedState String
+
+  userId    String
+  guildId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, guildId])
+  @@index([derivedState])
 }

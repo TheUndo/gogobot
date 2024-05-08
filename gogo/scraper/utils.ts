@@ -21,17 +21,19 @@ export const domain = await (async () => {
   return new URL(resolved);
 });
 
-export const apiDomain = await fetch(domain.toString())
-  .then((d) => d.text())
-  .then((d) => {
-    const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(d)?.[1];
+const apiDomainRequest = fetch(domain.toString()).then((d) => d.text());
 
-    if (!parsed) {
-      throw new Error("Could not find the API domain");
-    }
+export const apiDomain = async () => {
+  const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(
+    await apiDomainRequest,
+  )?.[1];
 
-    return new URL(parsed);
-  });
+  if (!parsed) {
+    throw new Error("Could not find the API domain");
+  }
+
+  return new URL(parsed);
+};
 
 type Options<T> = {
   type: number;
@@ -42,7 +44,7 @@ type Options<T> = {
 export async function scrapePage<T>({ type, page, onNewEpisode }: Options<T>) {
   const url = new URL(
     `/ajax/page-recent-release.html?page=${page}&type=${type}`,
-    `https://${apiDomain.host}`,
+    `https://${(await apiDomain()).host}`,
   );
 
   const html = await fetch(url.toString()).then((r) => r.text());

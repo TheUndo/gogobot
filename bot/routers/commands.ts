@@ -39,6 +39,7 @@ import {
 } from "discord.js";
 import { z } from "zod";
 import { inventory } from "../interactions/commands/inventory/inventory";
+/* import { pet } from "../interactions/commands/pet/pet"; */
 
 const commandsRegistrar: Command[] = [
   ping,
@@ -78,6 +79,7 @@ const commandsRegistrar: Command[] = [
   connect4,
   influencer,
   inventory,
+  /* pet, */
 ].filter((v) =>
   env.BUN_ENV === "production" ? ("dev" in v ? !v.dev : true) : true,
 );

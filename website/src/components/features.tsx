@@ -4,12 +4,12 @@ const features = [
   {
     title: "Economy",
     description:
-      "Powerful economy system with robbing, shopping, gambling, leader boards, working and much more.",
+      "Powerful economy system with pets, robbing, shopping, gambling, leader boards, working and much more.",
   },
   {
     title: "Clans",
     description:
-      "Create, compete and grow your clan. Earn money for your clan and wage war against the others! Each clan is customizable and has ranking systems.",
+      "Create, compete and grow your clan. Earn money for your clan and wage war against the others! Each clan is customizable and clan members are assigned a clan role which allows them to chat in their clan channel, all fully automatic.",
   },
   {
     title: "Anime",
