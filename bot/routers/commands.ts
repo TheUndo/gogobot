@@ -49,12 +49,6 @@ const commandsRegistrar: Command[] = [
   welcome,
   help,
   github,
-  /* format,
-  releaseDate,
-  bulk,
-  adblock,
-  virus,
-  domains, */
   showAnime,
   stats,
   daily,

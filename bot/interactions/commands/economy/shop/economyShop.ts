@@ -29,6 +29,9 @@ export const shop = {
     .addSubcommand((subcommand) =>
       subcommand.setName("buy").setDescription("Buy items from the store!"),
     ),
+  // .addSubcommand((subcommand) =>
+  //   subcommand.setName("sell").setDescription("Sell items to the store!"),
+  // ),
   async execute(interaction: Interaction) {
     if (!interaction.isRepliable() || !interaction.isChatInputCommand()) {
       return;
@@ -55,14 +58,26 @@ export const shop = {
         ...guard,
       });
     }
-    const interactionOptions = await formatBuyToolItems(
-      interaction.user,
-      interaction.guild,
-    );
-    return await interaction.reply({
-      embeds: [interactionOptions.embed],
-      components: interactionOptions.component,
-    });
+
+    const query = interaction.options.getSubcommand();
+    switch (query) {
+      case "buy": {
+        const interactionOptions = await formatBuyToolItems(
+          interaction.user,
+          interaction.guild,
+        );
+        return await interaction.reply({
+          embeds: [interactionOptions.embed],
+          components: interactionOptions.component,
+        });
+      }
+
+      // case "sell": {
+      //   return await interaction.reply({
+      //     content: "test"
+      //   })
+      // }
+    }
   },
 } satisfies Command;
 
@@ -135,3 +150,7 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
 
   return { embed, component: [firstRow] };
 };
+
+// const formatSellResourceItems = async (user: User, guild: Guild) => {
+
+// }

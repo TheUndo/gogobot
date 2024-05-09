@@ -1,5 +1,5 @@
 {
-  "name": "my-qwik-empty-starter",
+  "name": "@gogobot/website",
   "description": "App with Routing built-in ready to create your app",
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
@@ -26,17 +26,16 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.5.2",
-    "@builder.io/qwik-city": "^1.5.2",
+    "@builder.io/qwik": "^1.5.4",
+    "@builder.io/qwik-city": "^1.5.4",
     "@types/node": "^20.11.30",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.31",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "tailwindcss": "3.3.3",
-    "typescript": "5.3.3",
     "undici": "*",
-    "vite": "^5.1.6",
+    "vite": "^5.2.11",
     "vite-tsconfig-paths": "^4.2.1",
     "wrangler": "^3.0.0"
   }

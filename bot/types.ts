@@ -5,11 +5,16 @@ import type {
   Interaction,
   ModalSubmitInteraction,
   SlashCommandBuilder,
+  SlashCommandOptionsOnlyBuilder,
+  SlashCommandSubcommandsOnlyBuilder,
 } from "discord.js";
 import type { prisma } from "../core/db/prisma";
 
 export type Command = {
-  data: Partial<SlashCommandBuilder>;
+  data:
+    | Partial<SlashCommandBuilder>
+    | SlashCommandOptionsOnlyBuilder
+    | SlashCommandSubcommandsOnlyBuilder;
   execute(interaction: Interaction): Promise<unknown>;
   dev?: boolean;
   private?: boolean;

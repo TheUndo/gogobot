@@ -1,8 +1,8 @@
 {
-  "name": "gogo",
+  "name": "@gogobot/root",
   "module": "index.ts",
   "devDependencies": {
-    "@biomejs/biome": "1.6.1",
+    "@biomejs/biome": "latest",
     "@types/bun": "latest",
     "@types/sprintf-js": "^1.1.4",
     "husky": "^9.0.11",
@@ -16,19 +16,19 @@
     "@prisma/client": "5.13.0",
     "cheerio": "^1.0.0-rc.12",
     "cron": "^3.1.6",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.2",
     "fuse.js": "^7.0.0",
     "prisma": "5.13.0",
     "remeda": "^1.58.1",
     "sprintf-js": "^1.1.3",
     "ts-pattern": "^5.1.1",
-    "typescript": "^5.4.5",
+    "typescript": "latest",
     "zod": "^3.22.4"
   },
   "scripts": {
     "prepare": "husky && bun x prisma db push",
-    "start": "bun run bot/start.ts",
-    "dev": "bun run bot/start.ts"
+    "start": "bun bot/start.ts",
+    "dev": "bun --watch bot/start.ts"
   },
   "workspaces": ["website"]
 }
