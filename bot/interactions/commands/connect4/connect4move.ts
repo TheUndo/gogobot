@@ -196,7 +196,8 @@ export async function connect4move(
     if (draw) {
       await prisma.wallet.updateMany({
         where: {
-          id: {
+          guildId,
+          userDiscordId: {
             in: [game.challenger, game.opponent],
           },
         },
