@@ -214,7 +214,10 @@ export async function connect4move(
           : game.opponent;
       await prisma.wallet.update({
         where: {
-          id: winnerId,
+          userDiscordId_guildId: {
+            guildId,
+            userDiscordId: winnerId,
+          },
         },
         data: {
           balance: {
