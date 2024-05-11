@@ -196,7 +196,8 @@ export async function connect4move(
     if (draw) {
       await prisma.wallet.updateMany({
         where: {
-          id: {
+          guildId,
+          userDiscordId: {
             in: [game.challenger, game.opponent],
           },
         },
@@ -214,7 +215,10 @@ export async function connect4move(
           : game.opponent;
       await prisma.wallet.update({
         where: {
-          id: winnerId,
+          userDiscordId_guildId: {
+            guildId,
+            userDiscordId: winnerId,
+          },
         },
         data: {
           balance: {

@@ -35,14 +35,14 @@ enum Scenario {
 const odds: Record<Scenario, number> = {
   [Scenario.MrBeast]: 1,
   [Scenario.Pewdiepie]: 3,
-  [Scenario.Pstar]: 4,
-  [Scenario.Xqc]: 4,
-  [Scenario.Charlie]: 50,
+  [Scenario.Pstar]: 5,
+  [Scenario.Xqc]: 5,
+  [Scenario.Charlie]: 51,
   [Scenario.Youtuber]: 100,
   [Scenario.Streamer]: 100,
   [Scenario.Hoe]: 100,
   [Scenario.Flop]: 51,
-  [Scenario.Logan]: 3,
+  [Scenario.Logan]: 2,
   [Scenario.Instagram]: 100,
   [Scenario.Failure]: 50,
   [Scenario.Tiktok]: 100,
@@ -80,27 +80,27 @@ const rewards: Record<
   },
   [Scenario.Xqc]: {
     message:
-      "You decided to be a twitch streamer 📹 and surpassed the view count of xQc!",
+      "You decided to be a Twitch streamer 📹 and surpassed the view count of xQc!",
     generateReward: async () => 300_000,
   },
   [Scenario.Youtuber]: {
     message: "You decided to be a Youtuber 🎥 and got your first ad revenue!",
-    generateReward: async () => randomNumber(3_000, 4_000),
+    generateReward: async () => randomNumber(3_000, 10_000),
   },
   [Scenario.Streamer]: {
     message:
       "You decided to be a Twitch Streamer 📹 and got a few subscribers!",
-    generateReward: async () => randomNumber(800, 1_000),
+    generateReward: async () => randomNumber(1_000, 5_000),
   },
   [Scenario.Hoe]: {
     message:
-      "You decided to open and OnlyFans account and posted some feet pics. 📸",
-    generateReward: async () => randomNumber(100, 1000),
+      "You decided to open an OnlyFans account and posted some feet pics. 📸",
+    generateReward: async () => randomNumber(100, 1_000),
   },
   [Scenario.Flop]: {
     message:
       "You decided to be an YouTuber 🎥 and spent money on a video but it flopped miserably.",
-    generateReward: async () => -40_000,
+    generateReward: async () => -20_000,
   },
   [Scenario.Logan]: {
     message:
@@ -109,11 +109,11 @@ const rewards: Record<
   },
   [Scenario.Instagram]: {
     message: "You decided to be Instagram influencer! 📷",
-    generateReward: async () => randomNumber(800, 1_000),
+    generateReward: async () => randomNumber(1_000, 3_000),
   },
   [Scenario.Tiktok]: {
     message: "You decided to be a TikToker. 🤳",
-    generateReward: async () => randomNumber(0, 30),
+    generateReward: async () => randomNumber(500, 2_500),
   },
   [Scenario.Failure]: {
     message: "After years of trying you failed as an influencer. 😔",
@@ -122,7 +122,7 @@ const rewards: Record<
   [Scenario.Junkie]: {
     message:
       "You decided to post your feet pics on OnlyFans and it failed miserably and lost all of your subscribers. 💀",
-    generateReward: async () => -randomNumber(100_000, 200_000),
+    generateReward: async () => -randomNumber(50_000, 100_000),
   },
 };
 

@@ -66,6 +66,10 @@ export const rob = {
       });
     }
 
+    if (!interaction.isChatInputCommand()) {
+      return;
+    }
+
     const robber = interaction.user;
     const victim = interaction.options.getUser("user");
 
