@@ -1,6 +1,6 @@
 import {
-  resourceIds,
   Resources,
+  resourceIds,
 } from "!/bot/interactions/commands/economy/lib/shopConfig";
 import { sellResourceItems } from "!/bot/interactions/commands/economy/lib/shopItems";
 import { z } from "zod";

@@ -23,9 +23,9 @@ import {
   toolIds,
   toolNames,
 } from "./lib/shopConfig";
+import { sellResourceItems } from "./lib/shopItems";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
-import { sellResourceItems } from "./lib/shopItems";
 
 const rewards: Record<
   Resources,

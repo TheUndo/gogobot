@@ -1,8 +1,11 @@
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
+import { getResource } from "!/bot/logic/inventory/getResource";
 import { getTool } from "!/bot/logic/inventory/getTool";
 import { Colors, type Command, InteractionType } from "!/bot/types";
+import { addCurrency } from "!/bot/utils/addCurrency";
 import { formatItem } from "!/bot/utils/formatItem";
+import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import {
   type APIEmbedField,
@@ -19,11 +22,8 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ItemType } from "../economy/lib/shopConfig";
-import { getResource } from "!/bot/logic/inventory/getResource";
-import { addCurrency } from "!/bot/utils/addCurrency";
-import { formatNumber } from "!/bot/utils/formatNumber";
 import { aggregateResources } from "../economy/lib/aggregateResources";
+import { ItemType } from "../economy/lib/shopConfig";
 
 export const inventory = {
   data: new SlashCommandBuilder()

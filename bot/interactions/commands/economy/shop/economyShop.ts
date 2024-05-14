@@ -1,8 +1,10 @@
 import { buyToolItems } from "!/bot/interactions/commands/economy/lib/shopItems";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
+import { getResource } from "!/bot/logic/inventory/getResource";
 import { Colors, type Command, InteractionType } from "!/bot/types";
 import { addCurrency } from "!/bot/utils/addCurrency";
+import { formatItem } from "!/bot/utils/formatItem";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import {
@@ -19,10 +21,8 @@ import {
 } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ItemType, resourceIds, type Resources } from "../lib/shopConfig";
 import { aggregateResources } from "../lib/aggregateResources";
-import { getResource } from "!/bot/logic/inventory/getResource";
-import { formatItem } from "!/bot/utils/formatItem";
+import { ItemType, type Resources, resourceIds } from "../lib/shopConfig";
 
 export const shopBuyMenuContext = z.object({
   walletId: z.string(),

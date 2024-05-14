@@ -3,7 +3,7 @@ import { addCurrency } from "!/bot/utils/addCurrency";
 import { formatItem } from "!/bot/utils/formatItem";
 import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
-import type { User, Guild } from "discord.js";
+import type { Guild, User } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { ItemType } from "../lib/shopConfig";
 import { formatSellResourceItems } from "./economyShop";

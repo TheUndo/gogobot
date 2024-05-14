@@ -37,23 +37,23 @@ import { leaderBoardClanChangeType } from "!/bot/interactions/commands/economy/l
 import { prisma } from "!/core/db/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
+import {
+  economyShopSellButton,
+  economyShopSellMenu,
+} from "../interactions/commands/economy/shop/economyShopInteraction";
 import { shopToolBuy } from "../interactions/commands/economy/shop/economyShopItemBuy";
 import {
   inventoryToolDispose,
   inventoryToolDisposeAccept,
   inventoryToolDisposeDecline,
 } from "../interactions/commands/inventory/inventoryDispose";
+import { inventoryView } from "../interactions/commands/inventory/inventoryInteraction";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
-import { inventoryView } from "../interactions/commands/inventory/inventoryInteraction";
-import {
-  economyShopSellButton,
-  economyShopSellMenu,
-} from "../interactions/commands/economy/shop/economyShopInteraction";
 
 client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
   // Intercepts all interactions and populate the Discord username cache
