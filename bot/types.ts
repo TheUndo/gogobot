@@ -100,9 +100,12 @@ export enum InteractionType {
   Connect4Move = "CONNECT4_MOVE",
   Connect4Forfeit = "CONNECT4_FORFEIT",
   ShopBuyToolMenu = "SHOP_BUY_TOOL_MENU",
+  ShopSellResourceMenu = "SHOP_SELL_RESOURCE_MENU",
+  ShopSellResourceButton = "SHOP_SELL_RESOURCE_Button",
   InventoryDisposeToolMenu = "INVENTORY_DISPOSE_TOOL_MENU",
   InventoryDisposeToolAccept = "INVENTORY_DISPOSE_TOOL_ACCEPT",
   InventoryDisposeToolDecline = "INVENTORY_DISPOSE_TOOL_DECLINE",
+  InventoryViewButton = "INVENTORY_VIEW_BUTTON",
 }
 
 export enum ClanMemberRole {

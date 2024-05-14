@@ -16,6 +16,7 @@ import { z } from "zod";
 import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import {
   ItemType,
+  Resources,
   ToolTypes,
   resourceEmojis,
   toolEmojis,
@@ -24,63 +25,56 @@ import {
 } from "./lib/shopConfig";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
-import { workTitle } from "./lib/workTitle";
-
-export enum Resources {
-  Copper = "COPPER", // 1k
-  Silver = "SILVER", //10k
-  Iron = "IRON", //50k
-  Titanium = "TITANIUM", //75k
-  Gold = "GOLD", // 100k
-  Emerald = "EMERALD", // 500k
-  Diamond = "DIAMOND", //1m
-  Netherite = "NETHERITE", //3m
-  Kryptonite = "KRYPTONITE", //5m
-  RockSlide = "ROCK_FALL", //-10k
-  DeadEnd = "DEAD_END", // 0
-  Nothing = "NOTHING", // 0
-  Ambush = "AMBUSH", // -100k
-}
+import { sellResourceItems } from "./lib/shopItems";
 
 const rewards: Record<
   Resources,
-  { message: string; generateReward: () => Promise<number> }
+  { message: string; generateReward: (pickaxe: ToolTypes) => Promise<number> }
 > = {
   [Resources.Copper]: {
     message: sprintf("You found copper! %s", resourceEmojis.COPPER),
-    generateReward: async () => randomNumber(1_000, 5_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Copper),
   },
   [Resources.Silver]: {
     message: sprintf("You found silver! %s", resourceEmojis.SILVER),
-    generateReward: async () => randomNumber(30_000, 50_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Silver),
   },
   [Resources.Iron]: {
     message: sprintf("You found iron! %s", resourceEmojis.IRON),
-    generateReward: async () => randomNumber(10_000, 30_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Iron),
   },
   [Resources.Titanium]: {
     message: sprintf("You found titanium! %s", resourceEmojis.TITANIUM),
-    generateReward: async () => randomNumber(50_000, 75_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Titanium),
   },
   [Resources.Gold]: {
     message: sprintf("You found gold! %s", resourceEmojis.GOLD),
-    generateReward: async () => randomNumber(75_000, 100_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Gold),
   },
   [Resources.Emerald]: {
     message: sprintf("You found an emerald! %s", resourceEmojis.EMERALD),
-    generateReward: async () => randomNumber(250_000, 500_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Emerald),
   },
   [Resources.Diamond]: {
     message: sprintf("You found diamond! %s", resourceEmojis.DIAMOND),
-    generateReward: async () => randomNumber(1_000_000, 1_200_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Diamond),
   },
   [Resources.Netherite]: {
     message: sprintf("You found netherite! %s", resourceEmojis.NETHERITE),
-    generateReward: async () => randomNumber(1_200_000, 2_000_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      await getResourceQuantity(pickaxe, Resources.Netherite),
   },
   [Resources.Kryptonite]: {
     message: sprintf("You found kryptonite! %s", resourceEmojis.KRYPTONITE),
-    generateReward: async () => randomNumber(2_500_000, 3_500_000),
+    generateReward: async (pickaxe: ToolTypes) =>
+      getResourceQuantity(pickaxe, Resources.Kryptonite),
   },
   [Resources.RockSlide]: {
     message: "You were caught on a rockslide and had to pay for injuries. 🩹",
@@ -229,6 +223,7 @@ export const mine = {
       });
     }
 
+    /**Resource gathering starts from here!*/
     const randomizedResources = getRandomizedResources(selectedPickaxe);
 
     if (!randomizedResources) {
@@ -239,71 +234,79 @@ export const mine = {
     }
 
     const { generateReward, message } = rewards[randomizedResources];
+    const resourceData = sellResourceItems[randomizedResources];
+    const reward = await generateReward(selectedPickaxe);
+
+    const resourceQuantity = await getResourceQuantity(
+      selectedPickaxe,
+      randomizedResources,
+    );
     const decrement = decrementDurability[randomizedResources];
-    const reward = await generateReward();
 
-    const userClan = await prisma.clan.findFirst({
-      where: {
-        members: {
-          some: {
-            discordUserId: interaction.user.id,
+    /**Checks if the ResourceData has an ID which would indicate that it's a resource, Else it would normally send it to scenario */
+    if (resourceData.id !== "" && resourceData.id !== "") {
+      const shopItemData = Array.from({ length: resourceQuantity }, () => ({
+        type: ItemType.Resources,
+        itemId: resourceData.id,
+        walletId: wallet.id,
+      }));
+
+      await prisma.$transaction([
+        prisma.shopItem.updateMany({
+          where: {
+            walletId: wallet.id,
+            itemId: pickaxe.itemId,
           },
-        },
 
-        discordGuildId: guildId,
-      },
-
-      select: {
-        level: true,
-      },
-    });
-
-    const clanBonusMultiplier =
-      reward < 0 ? 0 : userClan?.level ? userClan.level / 40 : 0;
-
-    const clanBonus = Math.round(reward * clanBonusMultiplier);
-    const totalReward = reward + clanBonus;
-
-    const [pickaxeUpdated] = await prisma.$transaction([
-      prisma.shopItem.updateMany({
-        where: {
-          walletId: wallet.id,
-          itemId: pickaxe.itemId,
-        },
-
-        data: {
-          durability: {
-            decrement,
+          data: {
+            durability: {
+              decrement,
+            },
           },
-        },
-      }),
-      prisma.work.create({
-        data: {
-          userDiscordId: interaction.user.id,
-          guildDiscordId: guildId,
-          type: WorkType.Mine,
-        },
-      }),
-      prisma.wallet.update({
-        where: {
-          id: wallet.id,
-        },
-        data: {
-          balance: {
-            increment: totalReward,
+        }),
+        prisma.work.create({
+          data: {
+            userDiscordId: interaction.user.id,
+            guildDiscordId: guildId,
+            type: WorkType.Mine,
           },
-        },
-      }),
-    ]);
+        }),
+        prisma.shopItem.createMany({
+          data: shopItemData,
+        }),
+      ]);
+    } else {
+      await prisma.$transaction([
+        prisma.shopItem.updateMany({
+          where: {
+            walletId: wallet.id,
+            itemId: pickaxe.itemId,
+          },
 
-    const makeDollars = addCurrency();
-
-    if (pickaxeUpdated.count === 0) {
-      return await interaction.reply({
-        content:
-          "Something went wrong while updating the pickaxe, Contact an Adminstrator",
-        ephemeral: true,
-      });
+          data: {
+            durability: {
+              decrement,
+            },
+          },
+        }),
+        prisma.work.create({
+          data: {
+            userDiscordId: interaction.user.id,
+            guildDiscordId: guildId,
+            type: WorkType.Mine,
+          },
+        }),
+        prisma.wallet.update({
+          where: {
+            id: wallet.id,
+          },
+          data: {
+            balance: {
+              increment: reward,
+            },
+          },
+        }),
+      ]);
     }
 
     const pickaxesUpdated = await prisma.shopItem.findFirst({
@@ -326,18 +329,11 @@ export const mine = {
 
     const embed = new EmbedBuilder()
       .setColor(reward > 0 ? Colors.Success : Colors.Error)
-      .setTitle(workTitle(totalReward))
+      .setTitle(mineTitle(reward, resourceData))
       .setDescription(
         sprintf(
-          "%s%s\n\n%s",
+          "%s\n\n%s",
           message,
-          clanBonusMultiplier > 0 && totalReward > 0
-            ? sprintf(
-                "Clan Bonus: **+%s** (%s)",
-                makeDollars(formatNumber(clanBonus)),
-                `${((clanBonusMultiplier + 1) * 100 - 100).toFixed(0)}%`,
-              )
-            : "",
           pickaxesUpdated?.durability && pickaxesUpdated?.durability <= 0
             ? `Your ${toolEmojis[selectedPickaxe]}|${toolNames[selectedPickaxe]} Broke`
             : `Your ${toolEmojis[selectedPickaxe]}|${toolNames[selectedPickaxe]} durability is ${pickaxesUpdated?.durability}`,
@@ -367,6 +363,24 @@ export const mine = {
   },
 } satisfies Command;
 
+type resourceDataType = {
+  name: string;
+  emoji: string;
+};
+
+/**Formats the embed Title according to the Mine data provided*/
+const mineTitle = (reward: number, resourceData: resourceDataType) => {
+  if (reward <= 0) {
+    return sprintf(
+      "You lost %s",
+      addCurrency()(formatNumber(Math.abs(reward))),
+    );
+  }
+
+  return sprintf("+%s %s", reward, resourceData.emoji);
+};
+
+/**Gets the possibilities for the resource to be spawned when mining with a specific pickaxe.*/
 const getRandomizedResources = (pickaxe: ToolTypes) => {
   const odds: Record<Resources, number> = match(pickaxe)
     .with(ToolTypes.StonePickaxe, () => ({
@@ -419,4 +433,57 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
   const computedOdds = stackOdds(odds);
 
   return getRandomizedScenario(computedOdds);
+};
+
+/**Gets the possibilities for the resource quantity depending on the pickaxe type */
+const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
+  const quantity: Record<Resources, number> = match(pickaxe)
+    .with(ToolTypes.StonePickaxe, () => ({
+      [Resources.Copper]: randomNumber(1, 4),
+      [Resources.Silver]: randomNumber(1, 3),
+      [Resources.Iron]: randomNumber(1, 2),
+      [Resources.Titanium]: 1,
+      [Resources.Gold]: 1,
+      [Resources.Emerald]: 1,
+      [Resources.Diamond]: 0,
+      [Resources.Netherite]: 0,
+      [Resources.Kryptonite]: 0,
+      [Resources.RockSlide]: 0,
+      [Resources.DeadEnd]: 0,
+      [Resources.Nothing]: 0,
+      [Resources.Ambush]: 0,
+    }))
+    .with(ToolTypes.IronPickaxe, () => ({
+      [Resources.Copper]: randomNumber(3, 6),
+      [Resources.Silver]: randomNumber(2, 5),
+      [Resources.Iron]: randomNumber(3, 6),
+      [Resources.Titanium]: randomNumber(1, 4),
+      [Resources.Gold]: randomNumber(1, 3),
+      [Resources.Emerald]: randomNumber(1, 2),
+      [Resources.Diamond]: randomNumber(1, 2),
+      [Resources.Netherite]: 1,
+      [Resources.Kryptonite]: 0,
+      [Resources.RockSlide]: 0,
+      [Resources.DeadEnd]: 0,
+      [Resources.Nothing]: 0,
+      [Resources.Ambush]: 0,
+    }))
+    .with(ToolTypes.DiamondPickaxe, () => ({
+      [Resources.Copper]: randomNumber(7, 20),
+      [Resources.Silver]: randomNumber(4, 15),
+      [Resources.Iron]: randomNumber(7, 20),
+      [Resources.Titanium]: randomNumber(1, 5),
+      [Resources.Gold]: randomNumber(5, 10),
+      [Resources.Emerald]: randomNumber(1, 4),
+      [Resources.Diamond]: randomNumber(1, 3),
+      [Resources.Netherite]: randomNumber(1, 3),
+      [Resources.Kryptonite]: 1,
+      [Resources.RockSlide]: 0,
+      [Resources.DeadEnd]: 0,
+      [Resources.Nothing]: 0,
+      [Resources.Ambush]: 0,
+    }))
+    .run();
+
+  return quantity[resource];
 };

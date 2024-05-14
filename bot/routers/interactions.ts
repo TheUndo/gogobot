@@ -49,6 +49,11 @@ import { buttonRouter } from "./buttons";
 import { commandRouter } from "./commands";
 import { modalRouter } from "./modals";
 import { selectRouter } from "./selects";
+import { inventoryView } from "../interactions/commands/inventory/inventoryInteraction";
+import {
+  economyShopSellButton,
+  economyShopSellMenu,
+} from "../interactions/commands/economy/shop/economyShopInteraction";
 
 client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
   // Intercepts all interactions and populate the Discord username cache
@@ -154,6 +159,16 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           return void (await connect4forfeit(interactionContext, interaction));
         case InteractionType.ShopBuyToolMenu:
           return void (await shopToolBuy(interactionContext, interaction));
+        case InteractionType.ShopSellResourceMenu:
+          return void (await economyShopSellMenu(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.ShopSellResourceButton:
+          return void (await economyShopSellButton(
+            interactionContext,
+            interaction,
+          ));
         case InteractionType.InventoryDisposeToolMenu:
           return void (await inventoryToolDispose(
             interactionContext,
@@ -169,6 +184,8 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
             interactionContext,
             interaction,
           ));
+        case InteractionType.InventoryViewButton:
+          return void (await inventoryView(interactionContext, interaction));
       }
     }
   }
