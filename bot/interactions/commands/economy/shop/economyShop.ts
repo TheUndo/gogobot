@@ -159,7 +159,7 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
   return { embed, component: [firstRow] };
 };
 
-type fieldValue = {
+type FieldValue = {
   name: string;
   emoji: string;
   quantity: number;
@@ -206,7 +206,7 @@ export const formatSellResourceItems = async ({
     },
   });
 
-  const fieldValue: fieldValue[] = [];
+  const fieldValue: FieldValue[] = [];
 
   const firstRow = new ActionRowBuilder<StringSelectMenuBuilder>();
   const aggregateResource = await aggregateResources(resources);

@@ -244,7 +244,7 @@ export const mine = {
     const decrement = decrementDurability[randomizedResources];
 
     /**Checks if the ResourceData has an ID which would indicate that it's a resource, Else it would normally send it to scenario */
-    if (resourceData.id !== "" && resourceData.id !== "") {
+    if (resourceData.id !== "" && resourceData.sellPrice !== 0) {
       const shopItemData = Array.from({ length: resourceQuantity }, () => ({
         type: ItemType.Resources,
         itemId: resourceData.id,
@@ -469,11 +469,11 @@ const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
       [Resources.Ambush]: 0,
     }))
     .with(ToolTypes.DiamondPickaxe, () => ({
-      [Resources.Copper]: randomNumber(7, 20),
-      [Resources.Silver]: randomNumber(4, 15),
-      [Resources.Iron]: randomNumber(7, 20),
-      [Resources.Titanium]: randomNumber(1, 5),
-      [Resources.Gold]: randomNumber(5, 10),
+      [Resources.Copper]: randomNumber(7, 15),
+      [Resources.Silver]: randomNumber(5, 13),
+      [Resources.Iron]: randomNumber(3, 8),
+      [Resources.Titanium]: randomNumber(2, 5),
+      [Resources.Gold]: randomNumber(3, 7),
       [Resources.Emerald]: randomNumber(1, 4),
       [Resources.Diamond]: randomNumber(1, 3),
       [Resources.Netherite]: randomNumber(1, 3),

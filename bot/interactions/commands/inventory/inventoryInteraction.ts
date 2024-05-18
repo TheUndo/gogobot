@@ -15,7 +15,7 @@ export async function inventoryView(
   if (!interaction.isButton()) {
     return void (await interaction.reply({
       ephemeral: true,
-      content: "This interaction is an button",
+      content: "This interaction is a button",
     }));
   }
 

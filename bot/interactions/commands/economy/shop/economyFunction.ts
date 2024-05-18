@@ -8,7 +8,7 @@ import { sprintf } from "sprintf-js";
 import { ItemType } from "../lib/shopConfig";
 import { formatSellResourceItems } from "./economyShop";
 
-type dataType = {
+type ResourceType = {
   user: User;
   guild: Guild;
   walletId: string;
@@ -16,18 +16,18 @@ type dataType = {
   quantitySold: number;
 };
 
-export async function sellResources(data: dataType) {
+export async function sellResources(resource: ResourceType) {
   const inventory = await prisma.shopItem.findMany({
     where: {
-      walletId: data.walletId,
+      walletId: resource.walletId,
       type: ItemType.Resources,
-      itemId: data.itemId,
+      itemId: resource.itemId,
     },
 
-    take: data.quantitySold,
+    take: resource.quantitySold,
   });
 
-  if (inventory.length < data.quantitySold) {
+  if (inventory.length < resource.quantitySold) {
     return {
       content: "Something went wrong. Contact a Developer!",
       embeds: [],
@@ -36,7 +36,7 @@ export async function sellResources(data: dataType) {
     };
   }
 
-  const resourceData = await getResource(data.itemId);
+  const resourceData = await getResource(resource.itemId);
 
   if (!resourceData) {
     return {
@@ -51,7 +51,7 @@ export async function sellResources(data: dataType) {
     where: {
       members: {
         some: {
-          discordUserId: data.user.id,
+          discordUserId: resource.user.id,
         },
       },
     },
@@ -61,11 +61,10 @@ export async function sellResources(data: dataType) {
     },
   });
 
-  console.log(userClan?.level);
-
   const clanBonusMultiplier = userClan?.level ? userClan.level / 20 : 0;
   const clanBonus = Math.round(resourceData?.sellPrice * clanBonusMultiplier);
-  const totalPrice = (resourceData.sellPrice + clanBonus) * data.quantitySold;
+  const totalPrice =
+    (resourceData.sellPrice + clanBonus) * resource.quantitySold;
 
   await prisma.$transaction([
     prisma.shopItem.deleteMany({
@@ -78,7 +77,7 @@ export async function sellResources(data: dataType) {
 
     prisma.wallet.update({
       where: {
-        id: data.walletId,
+        id: resource.walletId,
       },
       data: {
         balance: {
@@ -89,34 +88,34 @@ export async function sellResources(data: dataType) {
   ]);
 
   return await createSoldEmbed({
-    data: { user: data.user, guild: data.guild },
+    data: { user: resource.user, guild: resource.guild },
     inventory,
     price: { per: resourceData.sellPrice, total: totalPrice, bonus: clanBonus },
   });
 }
 
-type inventoryType = {
+type InventoryType = {
   itemId: string;
 };
 
-type priceType = {
+type PriceType = {
   per: number;
   total: number;
   bonus: number;
 };
 
-type data = {
+type Data = {
   user: User;
   guild: Guild;
 };
 
-type createSoldEmbedType = {
-  data: data;
-  inventory: inventoryType[];
-  price: priceType;
+type CreateSoldEmbedType = {
+  data: Data;
+  inventory: InventoryType[];
+  price: PriceType;
 };
 
-async function createSoldEmbed(options: createSoldEmbedType) {
+async function createSoldEmbed(options: CreateSoldEmbedType) {
   const makeDollars = addCurrency();
 
   if (!options.inventory[0]) {
@@ -143,11 +142,6 @@ async function createSoldEmbed(options: createSoldEmbedType) {
     user: options.data.user,
     guild: options.data.guild,
   });
-
-  // const embed = new EmbedBuilder()
-  //   .setColor(Colors.Success)
-  //   .setTitle("Shop Invoice")
-  //   .setDescription("The following item has been sold")
 
   if (!resourceEmbed.embeds[0]) {
     return {
