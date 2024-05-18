@@ -37,12 +37,17 @@ import { leaderBoardClanChangeType } from "!/bot/interactions/commands/economy/l
 import { prisma } from "!/core/db/prisma";
 import { Events } from "discord.js";
 import { client } from "../client";
+import {
+  economyShopSellButton,
+  economyShopSellMenu,
+} from "../interactions/commands/economy/shop/economyShopInteraction";
 import { shopToolBuy } from "../interactions/commands/economy/shop/economyShopItemBuy";
 import {
   inventoryToolDispose,
   inventoryToolDisposeAccept,
   inventoryToolDisposeDecline,
 } from "../interactions/commands/inventory/inventoryDispose";
+import { inventoryView } from "../interactions/commands/inventory/inventoryInteraction";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
@@ -154,6 +159,16 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           return void (await connect4forfeit(interactionContext, interaction));
         case InteractionType.ShopBuyToolMenu:
           return void (await shopToolBuy(interactionContext, interaction));
+        case InteractionType.ShopSellResourceMenu:
+          return void (await economyShopSellMenu(
+            interactionContext,
+            interaction,
+          ));
+        case InteractionType.ShopSellResourceButton:
+          return void (await economyShopSellButton(
+            interactionContext,
+            interaction,
+          ));
         case InteractionType.InventoryDisposeToolMenu:
           return void (await inventoryToolDispose(
             interactionContext,
@@ -169,6 +184,8 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
             interactionContext,
             interaction,
           ));
+        case InteractionType.InventoryViewButton:
+          return void (await inventoryView(interactionContext, interaction));
       }
     }
   }

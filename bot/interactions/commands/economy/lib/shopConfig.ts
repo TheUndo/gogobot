@@ -43,62 +43,82 @@ export const toolEmojis: Record<ToolTypes, string> = {
 
 /** Resource Section */
 
-export enum ResourceTypes {
-  Copper = "COPPER",
-  Silver = "SILVER",
-  Iron = "IRON",
-  Gold = "GOLD",
-  Emerald = "EMERALD",
-  Diamond = "DIAMOND",
-  Titanium = "TITANIUM",
-  Netherite = "NETHERITE",
-  Kryptonite = "KRYPTONITE",
+export enum Resources {
+  Copper = "COPPER", // 1k
+  Silver = "SILVER", //10k
+  Iron = "IRON", //50k
+  Titanium = "TITANIUM", //75k
+  Gold = "GOLD", // 100k
+  Emerald = "EMERALD", // 500k
+  Diamond = "DIAMOND", //1m
+  Netherite = "NETHERITE", //3m
+  Kryptonite = "KRYPTONITE", //5m
+  RockSlide = "ROCK_FALL", //-10k
+  DeadEnd = "DEAD_END", // 0
+  Nothing = "NOTHING", // 0
+  Ambush = "AMBUSH", // -100k
 }
 
-export const resourceIds: Record<ResourceTypes, string> = {
-  [ResourceTypes.Copper]: "RESOURCECOPPER",
-  [ResourceTypes.Silver]: "RESOURCESILVER",
-  [ResourceTypes.Iron]: "RESOURCEIRON",
-  [ResourceTypes.Gold]: "RESOURCEGOLD",
-  [ResourceTypes.Emerald]: "RESOURCEEMERALD",
-  [ResourceTypes.Diamond]: "RESOURCEDIAMOND",
-  [ResourceTypes.Titanium]: "RESOURCETITANIUM",
-  [ResourceTypes.Netherite]: "RESOURCENETHERITE",
-  [ResourceTypes.Kryptonite]: "RESOURCEKRYPTONITE",
+export const resourceIds: Record<Resources, string> = {
+  [Resources.Copper]: "RESOURCECOPPER",
+  [Resources.Silver]: "RESOURCESILVER",
+  [Resources.Iron]: "RESOURCEIRON",
+  [Resources.Gold]: "RESOURCEGOLD",
+  [Resources.Emerald]: "RESOURCEEMERALD",
+  [Resources.Diamond]: "RESOURCEDIAMOND",
+  [Resources.Titanium]: "RESOURCETITANIUM",
+  [Resources.Netherite]: "RESOURCENETHERITE",
+  [Resources.Kryptonite]: "RESOURCEKRYPTONITE",
+  [Resources.RockSlide]: "",
+  [Resources.DeadEnd]: "",
+  [Resources.Nothing]: "",
+  [Resources.Ambush]: "",
 };
 
-export const resourceNames: Record<ResourceTypes, string> = {
-  [ResourceTypes.Copper]: "Copper",
-  [ResourceTypes.Silver]: "Silver",
-  [ResourceTypes.Iron]: "Iron",
-  [ResourceTypes.Gold]: "Gold",
-  [ResourceTypes.Emerald]: "Emerald",
-  [ResourceTypes.Diamond]: "Diamond",
-  [ResourceTypes.Titanium]: "Titanium",
-  [ResourceTypes.Netherite]: "Netherite",
-  [ResourceTypes.Kryptonite]: "Kryptonite",
+export const resourceNames: Record<Resources, string> = {
+  [Resources.Copper]: "Copper",
+  [Resources.Silver]: "Silver",
+  [Resources.Iron]: "Iron",
+  [Resources.Gold]: "Gold",
+  [Resources.Emerald]: "Emerald",
+  [Resources.Diamond]: "Diamond",
+  [Resources.Titanium]: "Titanium",
+  [Resources.Netherite]: "Netherite",
+  [Resources.Kryptonite]: "Kryptonite",
+  [Resources.RockSlide]: "",
+  [Resources.DeadEnd]: "",
+  [Resources.Nothing]: "",
+  [Resources.Ambush]: "",
 };
 
-export const resourcePrices: Record<ResourceTypes, number> = {
-  [ResourceTypes.Copper]: 0,
-  [ResourceTypes.Silver]: 0,
-  [ResourceTypes.Iron]: 0,
-  [ResourceTypes.Gold]: 0,
-  [ResourceTypes.Emerald]: 0,
-  [ResourceTypes.Diamond]: 0,
-  [ResourceTypes.Titanium]: 0,
-  [ResourceTypes.Netherite]: 0,
-  [ResourceTypes.Kryptonite]: 0,
+export const resourcePrices: Record<Resources, number> = {
+  [Resources.Copper]: 10_000,
+  [Resources.Silver]: 40_000,
+  [Resources.Iron]: 20_000,
+  [Resources.Gold]: 80_000,
+  [Resources.Emerald]: 300_000,
+  [Resources.Diamond]: 800_000,
+  [Resources.Titanium]: 60_000,
+  [Resources.Netherite]: 1_000_000,
+  [Resources.Kryptonite]: 3_000_000,
+  [Resources.RockSlide]: 0,
+  [Resources.DeadEnd]: 0,
+  [Resources.Nothing]: 0,
+  [Resources.Ambush]: 0,
 };
 
-export const resourceEmojis: Record<ResourceTypes, string> = {
-  [ResourceTypes.Copper]: "<:Copper:1235516426912272414>",
-  [ResourceTypes.Silver]: "<:Silver:1235516425146335252>",
-  [ResourceTypes.Iron]: "<:Iron:1235516433853841489>",
-  [ResourceTypes.Gold]: "<:Gold:1235516431794307142>",
-  [ResourceTypes.Emerald]: "<:Emerald:1235516429873184789>",
-  [ResourceTypes.Diamond]: "<:Diamond:1235516428363501599>",
-  [ResourceTypes.Titanium]: "<:Titanium:1235577345620840519>",
-  [ResourceTypes.Netherite]: "<:Netherite:1235577766208868362>",
-  [ResourceTypes.Kryptonite]: "<:Kryptonite:1235612530559156335>",
+export const resourceEmojis: Record<Resources, string> = {
+  [Resources.Copper]: "<:Copper:1235516426912272414>",
+  [Resources.Silver]: "<:Silver:1235516425146335252>",
+  [Resources.Iron]: "<:Iron:1235516433853841489>",
+  [Resources.Gold]: "<:Gold:1235516431794307142>",
+  [Resources.Emerald]: "<:Emerald:1235516429873184789>",
+  [Resources.Diamond]: "<:Diamond:1235516428363501599>",
+  [Resources.Titanium]: "<:Titanium:1235577345620840519>",
+  [Resources.Netherite]: "<:Netherite:1235577766208868362>",
+  [Resources.Kryptonite]: "<:Kryptonite:1235612530559156335>",
+  [Resources.RockSlide]: "",
+  [Resources.DeadEnd]: "",
+  [Resources.Nothing]: "",
+  [Resources.Ambush]: "",
 };

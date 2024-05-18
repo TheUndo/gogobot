@@ -14,7 +14,7 @@ import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { type ToolTypes, toolIds } from "../economy/lib/shopConfig";
 import { buyToolItems } from "../economy/lib/shopItems";
-import { createEmbed, inventoryDisposeMenuContext } from "./inventory";
+import { createToolEmbed, inventoryContext } from "./inventory";
 
 const disposeContext = z.object({
   walletId: z.string(),
@@ -32,7 +32,7 @@ export async function inventoryToolDispose(
     }));
   }
 
-  const context = inventoryDisposeMenuContext.safeParse(
+  const context = inventoryContext.safeParse(
     JSON.parse(interactionContext.payload ?? "{}"),
   );
 
@@ -218,7 +218,7 @@ export async function inventoryToolDisposeAccept(
   });
 
   await interaction.update(
-    await createEmbed(
+    await createToolEmbed(
       interaction.user,
       interaction.guild,
       sprintf(
@@ -273,6 +273,6 @@ export async function inventoryToolDisposeDecline(
   }
 
   return await interaction.update(
-    await createEmbed(interaction.user, interaction.guild),
+    await createToolEmbed(interaction.user, interaction.guild),
   );
 }
