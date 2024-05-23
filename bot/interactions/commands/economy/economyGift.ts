@@ -85,6 +85,13 @@ export const gift = {
       });
     }
 
+    if (selectedUser.id === "566563259268988938") {
+      return await interaction.reply({
+        content: "You can't gift money to this user.",
+        ephemeral: true,
+      });
+    }
+
     const theirWallet = await createWallet(selectedUser.id, guildId);
 
     if (myWallet.balance < amountToGift.data) {

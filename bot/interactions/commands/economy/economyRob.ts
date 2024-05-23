@@ -84,6 +84,13 @@ export const rob = {
       });
     }
 
+    if (victim.id === "566563259268988938") {
+      return await interaction.reply({
+        content: "You can't rob this user.",
+        ephemeral: true,
+      });
+    }
+
     if (robber.id === victim.id) {
       return await interaction.reply({
         content: "You can't rob yourself.",

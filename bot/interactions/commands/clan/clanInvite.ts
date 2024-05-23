@@ -50,6 +50,13 @@ export async function clanInvite({
     };
   }
 
+  if (inviteeId === "566563259268988938") {
+    return {
+      content: "You can't invite this user.",
+      ephemeral: true,
+    };
+  }
+
   if (userId === inviteeId) {
     return {
       ephemeral: true,

@@ -213,6 +213,14 @@ export async function connect4move(
           BinaryColorState.Red && checkWinner.gameState === GameState.RedWin
           ? game.challenger
           : game.opponent;
+      console.table({
+        winnerId,
+        challengerColor: game.challengerColor,
+        checkWinnerGameState: checkWinner.gameState,
+        opponent: game.opponent,
+        challenger: game.challenger,
+      });
+
       await prisma.wallet.update({
         where: {
           userDiscordId_guildId: {

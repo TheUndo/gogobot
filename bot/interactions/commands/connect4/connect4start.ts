@@ -69,6 +69,13 @@ export async function connect4start({
     };
   }
 
+  if (authorId === "566563259268988938") {
+    return {
+      content: "You can't challenge this user.",
+      ephemeral: true,
+    };
+  }
+
   const authorCurrentGame = await prisma.connect4Game.findFirst({
     where: {
       guildId,
