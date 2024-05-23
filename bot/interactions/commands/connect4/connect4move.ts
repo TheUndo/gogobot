@@ -208,18 +208,17 @@ export async function connect4move(
         },
       });
     } else {
+      const challengerColor = z
+        .nativeEnum(BinaryColorState)
+        .parse(game.challengerColor);
       const winnerId =
-        z.nativeEnum(BinaryColorState).parse(game.challengerColor) ===
-          BinaryColorState.Red && checkWinner.gameState === GameState.RedWin
-          ? game.challenger
-          : game.opponent;
-      console.table({
-        winnerId,
-        challengerColor: game.challengerColor,
-        checkWinnerGameState: checkWinner.gameState,
-        opponent: game.opponent,
-        challenger: game.challenger,
-      });
+        checkWinner.gameState === GameState.RedWin
+          ? challengerColor === BinaryColorState.Red
+            ? game.challenger
+            : game.opponent
+          : challengerColor === BinaryColorState.Yellow
+            ? game.challenger
+            : game.opponent;
 
       await prisma.wallet.update({
         where: {
