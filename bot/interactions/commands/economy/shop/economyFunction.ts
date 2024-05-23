@@ -63,8 +63,7 @@ export async function sellResources(resource: ResourceType) {
 
   const clanBonusMultiplier = userClan?.level ? userClan.level / 20 : 0;
   const clanBonus = Math.round(resourceData?.sellPrice * clanBonusMultiplier);
-  const totalPrice =
-    (resourceData.sellPrice + clanBonus) * resource.quantitySold;
+  const totalPrice = resourceData.sellPrice * resource.quantitySold + clanBonus;
 
   await prisma.$transaction([
     prisma.shopItem.deleteMany({
