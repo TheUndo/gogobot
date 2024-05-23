@@ -1,16 +1,16 @@
 import {
-  ToolTypes,
+  ShopItemType,
   toolIds,
-} from "!/bot/interactions/commands/economy/lib/shopConfig";
-import { buyToolItems } from "!/bot/interactions/commands/economy/lib/shopItems";
+} from "!/bot/interactions/commands/economy/lib/shopCatalogue";
+import { items } from "!/bot/interactions/commands/economy/lib/shopItems";
 import { z } from "zod";
 
 export async function getTool(toolId: string) {
   const toolType = Object.keys(toolIds).find(
-    (key) => toolIds[z.nativeEnum(ToolTypes).parse(key)] === toolId,
-  ) as ToolTypes;
+    (key) => toolIds[z.nativeEnum(ShopItemType).parse(key)] === toolId,
+  ) as ShopItemType;
   if (!toolType) {
     return;
   }
-  return buyToolItems[toolType];
+  return items[toolType];
 }

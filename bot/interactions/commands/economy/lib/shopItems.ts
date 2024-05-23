@@ -1,6 +1,6 @@
 import {
   Resources,
-  ToolTypes,
+  ShopItemType,
   resourceEmojis,
   resourceIds,
   resourceNames,
@@ -10,38 +10,28 @@ import {
   toolIds,
   toolNames,
   toolPrices,
-} from "!/bot/interactions/commands/economy/lib/shopConfig";
+} from "!/bot/interactions/commands/economy/lib/shopCatalogue";
 
-export const buyToolItems: Record<
-  ToolTypes,
-  {
-    id: string;
-    type: ToolTypes;
-    name: string;
-    price: number;
-    durability: number;
-    emoji: string;
-  }
-> = {
-  [ToolTypes.StonePickaxe]: {
+export const items: Record<ShopItemType, ShopItem> = {
+  [ShopItemType.StonePickaxe]: {
     id: toolIds.STONE_PICKAXE,
-    type: ToolTypes.StonePickaxe,
+    type: ShopItemType.StonePickaxe,
     name: toolNames.STONE_PICKAXE,
     price: toolPrices.STONE_PICKAXE,
     durability: toolDurability.STONE_PICKAXE,
     emoji: toolEmojis.STONE_PICKAXE,
   },
-  [ToolTypes.IronPickaxe]: {
+  [ShopItemType.IronPickaxe]: {
     id: toolIds.IRON_PICKAXE,
-    type: ToolTypes.IronPickaxe,
+    type: ShopItemType.IronPickaxe,
     name: toolNames.IRON_PICKAXE,
     price: toolPrices.IRON_PICKAXE,
     durability: toolDurability.IRON_PICKAXE,
     emoji: toolEmojis.IRON_PICKAXE,
   },
-  [ToolTypes.DiamondPickaxe]: {
+  [ShopItemType.DiamondPickaxe]: {
     id: toolIds.DIAMOND_PICKAXE,
-    type: ToolTypes.DiamondPickaxe,
+    type: ShopItemType.DiamondPickaxe,
     name: toolNames.DIAMOND_PICKAXE,
     price: toolPrices.DIAMOND_PICKAXE,
     durability: toolDurability.DIAMOND_PICKAXE,

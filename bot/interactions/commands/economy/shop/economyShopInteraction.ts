@@ -4,7 +4,7 @@ import { wrongGuildForInteraction } from "!/bot/logic/responses/wrongGuildForInt
 import type { AnyInteraction, InteractionContext } from "!/bot/types";
 import { prisma } from "!/core/db/prisma";
 import { z } from "zod";
-import { ItemType } from "../lib/shopConfig";
+import { ItemType } from "../lib/shopCatalogue";
 import { sellResources } from "./economyFunction";
 import {
   ShopSellContextActionType,

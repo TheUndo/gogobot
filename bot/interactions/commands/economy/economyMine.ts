@@ -17,63 +17,66 @@ import { getRandomizedScenario } from "./lib/getRandomizedScenario";
 import {
   ItemType,
   Resources,
-  ToolTypes,
+  ShopItemType,
   resourceEmojis,
   toolEmojis,
   toolIds,
   toolNames,
-} from "./lib/shopConfig";
+} from "./lib/shopCatalogue";
 import { sellResourceItems } from "./lib/shopItems";
 import { stackOdds } from "./lib/stackOdds";
 import { WorkType, coolDowns, workCommandUses } from "./lib/workConfig";
 
 const rewards: Record<
   Resources,
-  { message: string; generateReward: (pickaxe: ToolTypes) => Promise<number> }
+  {
+    message: string;
+    generateReward: (pickaxe: ShopItemType) => Promise<number>;
+  }
 > = {
   [Resources.Copper]: {
     message: sprintf("You found copper! %s", resourceEmojis.COPPER),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Copper),
   },
   [Resources.Silver]: {
     message: sprintf("You found silver! %s", resourceEmojis.SILVER),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Silver),
   },
   [Resources.Iron]: {
     message: sprintf("You found iron! %s", resourceEmojis.IRON),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Iron),
   },
   [Resources.Titanium]: {
     message: sprintf("You found titanium! %s", resourceEmojis.TITANIUM),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Titanium),
   },
   [Resources.Gold]: {
     message: sprintf("You found gold! %s", resourceEmojis.GOLD),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Gold),
   },
   [Resources.Emerald]: {
     message: sprintf("You found an emerald! %s", resourceEmojis.EMERALD),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Emerald),
   },
   [Resources.Diamond]: {
     message: sprintf("You found diamond! %s", resourceEmojis.DIAMOND),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Diamond),
   },
   [Resources.Netherite]: {
     message: sprintf("You found netherite! %s", resourceEmojis.NETHERITE),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       await getResourceQuantity(pickaxe, Resources.Netherite),
   },
   [Resources.Kryptonite]: {
     message: sprintf("You found kryptonite! %s", resourceEmojis.KRYPTONITE),
-    generateReward: async (pickaxe: ToolTypes) =>
+    generateReward: async (pickaxe: ShopItemType) =>
       getResourceQuantity(pickaxe, Resources.Kryptonite),
   },
   [Resources.RockSlide]: {
@@ -119,9 +122,9 @@ export const mine = {
         .setName("pickaxe")
         .setDescription("Choose which pickaxe you wanna use.")
         .setChoices(
-          { name: "Stone Pickaxe", value: ToolTypes.StonePickaxe },
-          { name: "Iron Pickaxe", value: ToolTypes.IronPickaxe },
-          { name: "Diamond Pickaxe", value: ToolTypes.DiamondPickaxe },
+          { name: "Stone Pickaxe", value: ShopItemType.StonePickaxe },
+          { name: "Iron Pickaxe", value: ShopItemType.IronPickaxe },
+          { name: "Diamond Pickaxe", value: ShopItemType.DiamondPickaxe },
         ),
     ),
   async execute(interaction: Interaction) {
@@ -197,16 +200,18 @@ export const mine = {
       .filter((tool) => tool.itemId.endsWith("PICKAXE"));
 
     const selectedPickaxe = interaction.options.getString("pickaxe")
-      ? z.nativeEnum(ToolTypes).parse(interaction.options.getString("pickaxe"))
+      ? z
+          .nativeEnum(ShopItemType)
+          .parse(interaction.options.getString("pickaxe"))
       : pickaxes.length >= 1
         ? z
-            .nativeEnum(ToolTypes)
+            .nativeEnum(ShopItemType)
             .parse(
-              (Object.keys(toolIds) as Array<ToolTypes>).find(
+              (Object.keys(toolIds) as Array<ShopItemType>).find(
                 (key) => toolIds[key] === pickaxes[0]?.itemId,
               ),
             )
-        : ToolTypes.StonePickaxe;
+        : ShopItemType.StonePickaxe;
 
     const pickaxe = pickaxes.find(
       (pick) => pick.itemId === toolIds[selectedPickaxe],
@@ -381,9 +386,9 @@ const mineTitle = (reward: number, resourceData: resourceDataType) => {
 };
 
 /**Gets the possibilities for the resource to be spawned when mining with a specific pickaxe.*/
-const getRandomizedResources = (pickaxe: ToolTypes) => {
+const getRandomizedResources = (pickaxe: ShopItemType) => {
   const odds: Record<Resources, number> = match(pickaxe)
-    .with(ToolTypes.StonePickaxe, () => ({
+    .with(ShopItemType.StonePickaxe, () => ({
       [Resources.Copper]: 100,
       [Resources.Silver]: 40,
       [Resources.Iron]: 80,
@@ -398,7 +403,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Nothing]: 30,
       [Resources.Ambush]: 1,
     }))
-    .with(ToolTypes.IronPickaxe, () => ({
+    .with(ShopItemType.IronPickaxe, () => ({
       [Resources.Copper]: 60,
       [Resources.Silver]: 90,
       [Resources.Iron]: 100,
@@ -413,7 +418,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
       [Resources.Nothing]: 20,
       [Resources.Ambush]: 3,
     }))
-    .with(ToolTypes.DiamondPickaxe, () => ({
+    .with(ShopItemType.DiamondPickaxe, () => ({
       [Resources.Copper]: 30,
       [Resources.Silver]: 30,
       [Resources.Iron]: 30,
@@ -436,9 +441,12 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
 };
 
 /**Gets the possibilities for the resource quantity depending on the pickaxe type */
-const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
+const getResourceQuantity = async (
+  pickaxe: ShopItemType,
+  resource: Resources,
+) => {
   const quantity: Record<Resources, number> = match(pickaxe)
-    .with(ToolTypes.StonePickaxe, () => ({
+    .with(ShopItemType.StonePickaxe, () => ({
       [Resources.Copper]: randomNumber(1, 4),
       [Resources.Silver]: randomNumber(1, 3),
       [Resources.Iron]: randomNumber(1, 2),
@@ -453,7 +461,7 @@ const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
       [Resources.Nothing]: 0,
       [Resources.Ambush]: 0,
     }))
-    .with(ToolTypes.IronPickaxe, () => ({
+    .with(ShopItemType.IronPickaxe, () => ({
       [Resources.Copper]: randomNumber(3, 6),
       [Resources.Silver]: randomNumber(2, 5),
       [Resources.Iron]: randomNumber(3, 6),
@@ -468,7 +476,7 @@ const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
       [Resources.Nothing]: 0,
       [Resources.Ambush]: 0,
     }))
-    .with(ToolTypes.DiamondPickaxe, () => ({
+    .with(ShopItemType.DiamondPickaxe, () => ({
       [Resources.Copper]: randomNumber(7, 15),
       [Resources.Silver]: randomNumber(5, 13),
       [Resources.Iron]: randomNumber(3, 8),

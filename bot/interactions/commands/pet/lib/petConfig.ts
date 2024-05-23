@@ -18,7 +18,7 @@ export const petTypeNames: Record<PetType, string> = {
 
 export const maxHappiness = 100;
 export const maxHunger = 100;
-export const happinessDecay = 1;
+export const happinessDecay = 3;
 export const hungerDecay = 1;
 export const happinessGain = 10;
 export const maxLevel = 200;

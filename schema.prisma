@@ -311,6 +311,9 @@ model Pet {
   // Used only for faster queries
   derivedState String
 
+  // When did the owner last check in on the pet?
+  ownerCheckedInAt DateTime @default(now())
+
   userId    String
   guildId   String
   createdAt DateTime @default(now())

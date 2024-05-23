@@ -48,6 +48,7 @@ import {
   inventoryToolDisposeDecline,
 } from "../interactions/commands/inventory/inventoryDispose";
 import { inventoryView } from "../interactions/commands/inventory/inventoryInteraction";
+import { petPlayButton } from "../interactions/commands/pet/actions/petPlayButton";
 import { cacheName } from "../logic/discordCache/store";
 import { InteractionType } from "../types";
 import { buttonRouter } from "./buttons";
@@ -186,6 +187,8 @@ client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
           ));
         case InteractionType.InventoryViewButton:
           return void (await inventoryView(interactionContext, interaction));
+        case InteractionType.PetPlay:
+          return void (await petPlayButton(interactionContext, interaction));
       }
     }
   }

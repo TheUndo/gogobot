@@ -8,8 +8,8 @@ import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { ItemType, ToolTypes } from "../lib/shopConfig";
-import { buyToolItems } from "../lib/shopItems";
+import { ItemType, ShopItemType } from "../lib/shopCatalogue";
+import { items } from "../lib/shopItems";
 import { shopBuyMenuContext } from "./economyShop";
 
 export async function shopToolBuy(
@@ -54,7 +54,7 @@ export async function shopToolBuy(
     );
   }
 
-  const toolValue = z.nativeEnum(ToolTypes).safeParse(interaction.values[0]);
+  const toolValue = z.nativeEnum(ShopItemType).safeParse(interaction.values[0]);
 
   if (!toolValue.success) {
     return await interaction.reply({
@@ -71,7 +71,7 @@ export async function shopToolBuy(
     },
   });
 
-  const item = buyToolItems[toolValue.data];
+  const item = items[toolValue.data];
   const itemInInv = inventory?.filter((tool) => tool.itemId === item.id);
 
   if (itemInInv.length >= 1) {

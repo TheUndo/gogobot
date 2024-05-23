@@ -23,7 +23,7 @@ import {
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { aggregateResources } from "../economy/lib/aggregateResources";
-import { ItemType } from "../economy/lib/shopConfig";
+import { ItemType } from "../economy/lib/shopCatalogue";
 
 export const inventory = {
   data: new SlashCommandBuilder()

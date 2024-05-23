@@ -106,6 +106,9 @@ export enum InteractionType {
   InventoryDisposeToolAccept = "INVENTORY_DISPOSE_TOOL_ACCEPT",
   InventoryDisposeToolDecline = "INVENTORY_DISPOSE_TOOL_DECLINE",
   InventoryViewButton = "INVENTORY_VIEW_BUTTON",
+  PetFeed = "PET_FEED",
+  PetPlay = "PET_PLAY",
+  PetSettings = "PET_SETTINGS",
 }
 
 export enum ClanMemberRole {
@@ -124,4 +127,6 @@ export enum ClanJoinSetting {
 
 export enum TransactionType {
   ClanDeposit = "CLAN_DEPOSIT",
+  PetPersonalCPH = "PET_PERSONAL_CPH",
+  PetClanCPH = "PET_CLAN_CPH",
 }

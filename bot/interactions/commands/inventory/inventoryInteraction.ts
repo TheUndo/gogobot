@@ -1,7 +1,7 @@
 import { notYourInteraction } from "!/bot/logic/responses/notYourInteraction";
 import { wrongGuildForInteraction } from "!/bot/logic/responses/wrongGuildForInteraction";
 import type { AnyInteraction, InteractionContext } from "!/bot/types";
-import { ItemType } from "../economy/lib/shopConfig";
+import { ItemType } from "../economy/lib/shopCatalogue";
 import {
   createResourceEmbed,
   createToolEmbed,

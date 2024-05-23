@@ -1,4 +1,4 @@
-import { buyToolItems } from "!/bot/interactions/commands/economy/lib/shopItems";
+import { items } from "!/bot/interactions/commands/economy/lib/shopItems";
 import { createWallet } from "!/bot/logic/economy/createWallet";
 import { guardEconomyChannel } from "!/bot/logic/guildConfig/guardEconomyChannel";
 import { getResource } from "!/bot/logic/inventory/getResource";
@@ -22,7 +22,7 @@ import {
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
 import { aggregateResources } from "../lib/aggregateResources";
-import { ItemType, type Resources, resourceIds } from "../lib/shopConfig";
+import { ItemType, type Resources, resourceIds } from "../lib/shopCatalogue";
 
 export const shopBuyMenuContext = z.object({
   walletId: z.string(),
@@ -47,7 +47,7 @@ export const shop = {
 
     if (!guildId) {
       return await interaction.reply({
-        content: "This command can only be used in a Server.",
+        content: "This command can only be used in a server.",
         ephemeral: true,
       });
     }
@@ -97,7 +97,7 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
     .setDescription(sprintf("Buy tools from %s's Shop", guild.name))
     .setColor(Colors.Info);
 
-  const tools = Object.entries(buyToolItems);
+  const tools = Object.entries(items);
   const wallet = await createWallet(user.id, guild.id);
 
   const inventory = await prisma.shopItem.findMany({
@@ -114,7 +114,7 @@ const formatBuyToolItems = async (user: User, guild: Guild) => {
         tools
           .map(([_, pick]) =>
             sprintf(
-              "%s | %s - %s",
+              formatItem(pick),
               pick.emoji,
               inventory?.filter((tool) => tool.itemId === pick.id).length >= 1
                 ? `${pick.name} (Already Owned)`

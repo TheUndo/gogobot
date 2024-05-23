@@ -1,3 +1,4 @@
+import { prisma } from "!/core/db/prisma";
 import type { CacheType, ChatInputCommandInteraction } from "discord.js";
 import { createPetProfile } from "../lib/createPetProfile";
 import { getPet } from "../lib/getPet";
@@ -31,5 +32,14 @@ export async function showPetInfo(
     guildId,
   });
 
-  return void (await interaction.reply(message));
+  return void (await interaction.reply(message).then(() => {
+    return prisma.pet.update({
+      where: {
+        id: pet.id,
+      },
+      data: {
+        ownerCheckedInAt: new Date(),
+      },
+    });
+  }));
 }

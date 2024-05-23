@@ -12,8 +12,8 @@ import { ActionRowBuilder } from "@discordjs/builders";
 import { ButtonBuilder, ButtonStyle } from "discord.js";
 import { sprintf } from "sprintf-js";
 import { z } from "zod";
-import { type ToolTypes, toolIds } from "../economy/lib/shopConfig";
-import { buyToolItems } from "../economy/lib/shopItems";
+import { type ShopItemType, toolIds } from "../economy/lib/shopCatalogue";
+import { items } from "../economy/lib/shopItems";
 import { createToolEmbed, inventoryContext } from "./inventory";
 
 const disposeContext = z.object({
@@ -86,10 +86,10 @@ export async function inventoryToolDispose(
     });
   }
 
-  const ToolType = (Object.keys(toolIds) as Array<ToolTypes>).find(
+  const ToolType = (Object.keys(toolIds) as Array<ShopItemType>).find(
     (key) => toolIds[key] === selectedTool.itemId,
-  ) as ToolTypes;
-  const toolData = buyToolItems[ToolType];
+  ) as ShopItemType;
+  const toolData = items[ToolType];
 
   const [disposeInteractionAccept, disposeInteractionDecline] =
     await prisma.$transaction([

@@ -5,7 +5,7 @@ import { formatNumber } from "!/bot/utils/formatNumber";
 import { prisma } from "!/core/db/prisma";
 import type { Guild, User } from "discord.js";
 import { sprintf } from "sprintf-js";
-import { ItemType } from "../lib/shopConfig";
+import { ItemType } from "../lib/shopCatalogue";
 import { formatSellResourceItems } from "./economyShop";
 
 type ResourceType = {

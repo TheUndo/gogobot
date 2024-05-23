@@ -1,10 +1,10 @@
 import { sprintf } from "sprintf-js";
 
-type itemOption = {
+type Item = {
   name: string;
   emoji: string;
 };
 
-export async function formatItem(item: itemOption) {
+export function formatItem<T extends Item>(item: T) {
   return sprintf("%s|%s", item.emoji, item.name);
 }

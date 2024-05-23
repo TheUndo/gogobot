@@ -1,7 +1,7 @@
 import {
   Resources,
   resourceIds,
-} from "!/bot/interactions/commands/economy/lib/shopConfig";
+} from "!/bot/interactions/commands/economy/lib/shopCatalogue";
 import { sellResourceItems } from "!/bot/interactions/commands/economy/lib/shopItems";
 import { z } from "zod";
 
