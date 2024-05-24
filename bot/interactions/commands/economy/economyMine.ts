@@ -329,7 +329,7 @@ export const mine = {
 
     const embed = new EmbedBuilder()
       .setColor(reward > 0 ? Colors.Success : Colors.Error)
-      .setTitle(mineTitle(reward, resourceData))
+      .setTitle(mineTitle(reward, resourceQuantity, resourceData))
       .setDescription(
         sprintf(
           "%s\n\n%s",
@@ -369,7 +369,11 @@ type resourceDataType = {
 };
 
 /**Formats the embed Title according to the Mine data provided*/
-const mineTitle = (reward: number, resourceData: resourceDataType) => {
+const mineTitle = (
+  reward: number,
+  resourceQuantity: number,
+  resourceData: resourceDataType,
+) => {
   if (reward <= 0) {
     return sprintf(
       "You lost %s",
@@ -377,7 +381,7 @@ const mineTitle = (reward: number, resourceData: resourceDataType) => {
     );
   }
 
-  return sprintf("+%s %s", reward, resourceData.emoji);
+  return sprintf("+%s %s", resourceQuantity, resourceData.emoji);
 };
 
 /**Gets the possibilities for the resource to be spawned when mining with a specific pickaxe.*/
