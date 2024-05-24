@@ -221,7 +221,7 @@ export const formatSellResourceItems = async ({
     .setTitle(sprintf("%s Shop - Sell", guild.name))
     .setDescription(
       sprintf(
-        "Sell your items in %s's shop \n\n> **NOTE:** The following item total does not include Clan Bonus",
+        "Sell your items in %s's shop \n\n> **NOTE:** Clan bonus has been removed until further notice!",
         guild.name,
       ),
     )
