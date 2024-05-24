@@ -147,6 +147,7 @@ async function createSoldEmbed(options: CreateSoldEmbedType) {
       content: "Something went wrong, Contact an developer!",
       embeds: [],
       components: [],
+      ephemeral: true,
     };
   }
 
@@ -190,6 +191,6 @@ async function createSoldEmbed(options: CreateSoldEmbedType) {
   return {
     content: "",
     embeds: [resourceEmbed.embeds[0]],
-    components: resourceEmbed.components,
+    components: resourceEmbed.components ?? [],
   };
 }
