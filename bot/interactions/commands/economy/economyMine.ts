@@ -237,7 +237,7 @@ export const mine = {
     const resourceData = sellResourceItems[randomizedResources];
     const reward = await generateReward(selectedPickaxe);
 
-    const resourceQuantity = await getResourceQuantity(
+    const resourceQuantity = getResourceQuantity(
       selectedPickaxe,
       randomizedResources,
     );
@@ -440,7 +440,7 @@ const getRandomizedResources = (pickaxe: ToolTypes) => {
 };
 
 /**Gets the possibilities for the resource quantity depending on the pickaxe type */
-const getResourceQuantity = async (pickaxe: ToolTypes, resource: Resources) => {
+const getResourceQuantity = (pickaxe: ToolTypes, resource: Resources) => {
   const quantity: Record<Resources, number> = match(pickaxe)
     .with(ToolTypes.StonePickaxe, () => ({
       [Resources.Copper]: randomNumber(1, 4),
