@@ -47,23 +47,23 @@ export async function sellResources(resource: ResourceType) {
     };
   }
 
-  // const userClan = await prisma.clan.findFirst({
-  //   where: {
-  //     members: {
-  //       some: {
-  //         discordUserId: resource.user.id,
-  //       },
-  //     },
-  //   },
+  const userClan = await prisma.clan.findFirst({
+    where: {
+      members: {
+        some: {
+          discordUserId: resource.user.id,
+        },
+      },
+    },
 
-  //   select: {
-  //     level: true,
-  //   },
-  // });
+    select: {
+      level: true,
+    },
+  });
 
-  // const clanBonusMultiplier = userClan?.level ? userClan.level / 20 : 0;
-  // const clanBonus = Math.round(resourceData?.sellPrice * clanBonusMultiplier);
-  const totalPrice = resourceData.sellPrice * resource.quantitySold;
+  const clanBonusMultiplier = userClan?.level ? userClan.level / 20 : 0;
+  const clanBonus = Math.round(resourceData?.sellPrice * clanBonusMultiplier);
+  const totalPrice = resourceData.sellPrice * resource.quantitySold + clanBonus;
 
   await prisma.$transaction([
     prisma.shopItem.deleteMany({
@@ -89,7 +89,7 @@ export async function sellResources(resource: ResourceType) {
   return await createSoldEmbed({
     data: { user: resource.user, guild: resource.guild },
     inventory,
-    price: { per: resourceData.sellPrice, total: totalPrice, bonus: 0 },
+    price: { per: resourceData.sellPrice, total: totalPrice, bonus: clanBonus },
   });
 }
 

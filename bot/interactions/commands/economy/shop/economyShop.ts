@@ -221,7 +221,7 @@ export const formatSellResourceItems = async ({
     .setTitle(sprintf("%s Shop - Sell", guild.name))
     .setDescription(
       sprintf(
-        "Sell your items in %s's shop \n\n> **NOTE:** Clan bonus has been removed until further notice!",
+        "Sell your items in %s's shop \n\n> **NOTE:** The following item total does not include Clan Bonus",
         guild.name,
       ),
     )
@@ -314,47 +314,46 @@ export const formatSellResourceItems = async ({
     return { content: "", embeds: [embed], components: [firstRow] };
   }
 
-  const [shopSellButtonOne, shopSellButtonHalf, shopSellButtonAll] =
-    await prisma.$transaction([
-      prisma.interaction.create({
-        data: {
-          type: InteractionType.ShopSellResourceButton,
-          guildId: guild.id,
-          userDiscordId: user.id,
-          payload: JSON.stringify({
-            walletId: wallet.id,
-            itemId: resourceIds[resourceSelected],
-            action: ShopSellContextActionType.SellOne,
-          } satisfies z.infer<typeof shopSellButtonContext>),
-        },
-      }),
+  const [shopSellButtonAll] = await prisma.$transaction([
+    // prisma.interaction.create({
+    //   data: {
+    //     type: InteractionType.ShopSellResourceButton,
+    //     guildId: guild.id,
+    //     userDiscordId: user.id,
+    //     payload: JSON.stringify({
+    //       walletId: wallet.id,
+    //       itemId: resourceIds[resourceSelected],
+    //       action: ShopSellContextActionType.SellOne,
+    //     } satisfies z.infer<typeof shopSellButtonContext>),
+    //   },
+    // }),
 
-      prisma.interaction.create({
-        data: {
-          type: InteractionType.ShopSellResourceButton,
-          guildId: guild.id,
-          userDiscordId: user.id,
-          payload: JSON.stringify({
-            walletId: wallet.id,
-            itemId: resourceIds[resourceSelected],
-            action: ShopSellContextActionType.SellHalf,
-          } satisfies z.infer<typeof shopSellButtonContext>),
-        },
-      }),
+    // prisma.interaction.create({
+    //   data: {
+    //     type: InteractionType.ShopSellResourceButton,
+    //     guildId: guild.id,
+    //     userDiscordId: user.id,
+    //     payload: JSON.stringify({
+    //       walletId: wallet.id,
+    //       itemId: resourceIds[resourceSelected],
+    //       action: ShopSellContextActionType.SellHalf,
+    //     } satisfies z.infer<typeof shopSellButtonContext>),
+    //   },
+    // }),
 
-      prisma.interaction.create({
-        data: {
-          type: InteractionType.ShopSellResourceButton,
-          guildId: guild.id,
-          userDiscordId: user.id,
-          payload: JSON.stringify({
-            walletId: wallet.id,
-            itemId: resourceIds[resourceSelected],
-            action: ShopSellContextActionType.SellAll,
-          } satisfies z.infer<typeof shopSellButtonContext>),
-        },
-      }),
-    ]);
+    prisma.interaction.create({
+      data: {
+        type: InteractionType.ShopSellResourceButton,
+        guildId: guild.id,
+        userDiscordId: user.id,
+        payload: JSON.stringify({
+          walletId: wallet.id,
+          itemId: resourceIds[resourceSelected],
+          action: ShopSellContextActionType.SellAll,
+        } satisfies z.infer<typeof shopSellButtonContext>),
+      },
+    }),
+  ]);
 
   const secondRow = new ActionRowBuilder<ButtonBuilder>();
 
@@ -368,16 +367,16 @@ export const formatSellResourceItems = async ({
   )[0]?.quantity;
 
   secondRow.addComponents(
-    new ButtonBuilder()
-      .setCustomId(shopSellButtonOne.id)
-      .setLabel("Sell One")
-      .setStyle(ButtonStyle.Secondary),
+    // new ButtonBuilder()
+    //   .setCustomId(shopSellButtonOne.id)
+    //   .setLabel("Sell One")
+    //   .setStyle(ButtonStyle.Secondary),
 
-    new ButtonBuilder()
-      .setCustomId(shopSellButtonHalf.id)
-      .setLabel("Sell Half")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(totalQuantity ? totalQuantity < 2 : true),
+    // new ButtonBuilder()
+    //   .setCustomId(shopSellButtonHalf.id)
+    //   .setLabel("Sell Half")
+    //   .setStyle(ButtonStyle.Secondary)
+    //   .setDisabled(totalQuantity ? totalQuantity < 2 : true),
 
     new ButtonBuilder()
       .setCustomId(shopSellButtonAll.id)
