@@ -361,10 +361,10 @@ export const formatSellResourceItems = async ({
     .filter((opt) => opt.data.value === resourceIds[resourceSelected])[0]
     ?.setDefault(true);
 
-  const total = await aggregateResources(resources);
-  const totalQuantity = total.filter(
-    (res) => res.resourceId === resourceIds[resourceSelected],
-  )[0]?.quantity;
+  // const total = await aggregateResources(resources);
+  // const totalQuantity = total.filter(
+  //   (res) => res.resourceId === resourceIds[resourceSelected],
+  // )[0]?.quantity;
 
   secondRow.addComponents(
     // new ButtonBuilder()
@@ -381,8 +381,8 @@ export const formatSellResourceItems = async ({
     new ButtonBuilder()
       .setCustomId(shopSellButtonAll.id)
       .setLabel("Sell All")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(totalQuantity ? totalQuantity < 2 : true),
+      .setStyle(ButtonStyle.Secondary),
+    //.setDisabled(totalQuantity ? totalQuantity < 2 : true),
   );
 
   return { content: "", embeds: [embed], components: [firstRow, secondRow] };
