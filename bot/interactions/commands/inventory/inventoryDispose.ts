@@ -87,7 +87,7 @@ export async function inventoryToolDispose(
   }
 
   const ToolType = (Object.keys(toolIds) as Array<ToolTypes>).find(
-    (key) => toolIds[key] === selectedTool.itemId,
+    (key) => toolIds[key] === selectedTool.itemId.toString(),
   ) as ToolTypes;
   const toolData = buyToolItems[ToolType];
 
@@ -203,7 +203,7 @@ export async function inventoryToolDisposeAccept(
     });
   }
 
-  const toolData = await getTool(selectedTool.itemId);
+  const toolData = await getTool(selectedTool.itemId.toString());
 
   if (!toolData) {
     return await interaction.reply({
