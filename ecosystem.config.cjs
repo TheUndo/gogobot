@@ -15,7 +15,7 @@ module.exports = {
       name: "latest",
       interpreter: "bun",
       script: "gogo/scraper/scrapeRecents.ts",
-      cron_restart: "*/15 * * * *",
+      cron_restart: "*/5 * * * *",
     },
   ],
 };
