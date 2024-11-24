@@ -52,6 +52,22 @@ bun gogo/scraper/scrapeRecents.ts     # Scrape recents and notify (optional)
 bunx pm2 start ecosystem.config.cjs
 ```
 
+### Docker Container
+
+```sh
+git clone https://github.com/TheUndo/gogobot.git # download repo
+cd gogobot                                       # enter directory
+cp .env.example .env                             # copy environment variables
+
+# a: download and run
+docker pull ghcr.io/theundo/gogobot:latest       # download image
+docker compose up                                # run service
+
+# b: build and run
+sh ./docker-build.sh                             # build image
+docker compose up                                # run service
+```
+
 ## Technical Information
 
 - Runtime: [Bun](https://bun.sh)
