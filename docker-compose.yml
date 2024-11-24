@@ -1,0 +1,18 @@
+services:
+  bot:
+    image: ghcr.io/TheUndo/gogobot:latest
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/dev.db:/app/dev.db
+    # environment:
+    #   DISCORD_TOKEN: ''
+    #   DISCORD_DEV_GUILD_ID: ''
+    #   DISCORD_APPLICATION_ID: ''
+    #   DISCORD_DEBUG_CHANNEL_ID: ''
+    #   DISCORD_SUBBED_CHANNEL_ID: ''
+    #   DISCORD_DUBBED_CHANNEL_ID: ''
+    #   DISCORD_CHINESE_CHANNEL_ID: ''
+    #   DISCORD_NEWS_CHANNEL_ID: ''
+    #   OWNER_DISCORD_ID: ''
+    env_file:
+      .env
