@@ -1,6 +1,6 @@
 services:
   bot:
-    image: ghcr.io/TheUndo/gogobot:latest
+    image: ghcr.io/theundo/gogobot:latest
     restart: unless-stopped
     volumes:
       - ${PWD}/dev.db:/app/dev.db
