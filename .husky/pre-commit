@@ -1,2 +1,2 @@
 bunx biome format . --write
-bunx biome check . --apply
+bunx biome check . --write
