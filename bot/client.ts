@@ -7,6 +7,10 @@ export const client = new Client({
 
 client.login(process.env.DISCORD_TOKEN);
 
+client.on(Events.ShardDisconnect, () => {
+  process.exit(1);
+});
+
 await new Promise((r) => {
   client.once(Events.ClientReady, () => {
     console.log("ready.");

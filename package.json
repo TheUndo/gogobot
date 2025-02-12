@@ -5,8 +5,7 @@
     "@biomejs/biome": "latest",
     "@types/bun": "latest",
     "@types/sprintf-js": "^1.1.4",
-    "husky": "^9.0.11",
-    "sucrase": "^3.35.0"
+    "husky": "9"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -16,9 +15,9 @@
     "@prisma/client": "5.13.0",
     "cheerio": "^1.0.0-rc.12",
     "cron": "^3.1.6",
-    "discord.js": "^14.15.2",
+    "discord.js": "14",
     "fuse.js": "^7.0.0",
-    "prisma": "5.13.0",
+    "prisma": "6",
     "remeda": "^1.58.1",
     "sprintf-js": "^1.1.3",
     "ts-pattern": "^5.1.1",
