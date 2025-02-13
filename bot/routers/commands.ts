@@ -34,7 +34,6 @@ import type { Command } from "!/bot/types";
 import {
   type CacheType,
   type ChatInputCommandInteraction,
-  Events,
   REST,
   Routes,
 } from "discord.js";
@@ -84,7 +83,7 @@ const rest = new REST().setToken(env.DISCORD_TOKEN);
 rest.on("rateLimited", () => {
   console.log("Rate limited");
   process.exit(1);
-})
+});
 
 export async function commandRouter(
   interaction: ChatInputCommandInteraction<CacheType>,

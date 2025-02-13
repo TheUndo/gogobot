@@ -1,3 +1,4 @@
+import { client } from "!/bot/client";
 import {
   EmbedBuilder,
   type Interaction,
@@ -7,7 +8,6 @@ import { prisma } from "../../../core/db/prisma";
 import { env } from "../../../core/misc/env";
 import { makeCodeBlock } from "../../../gogo/scraper/debug";
 import { Colors, type Command } from "../../types";
-import { client } from "!/bot/client";
 
 export const stats = {
   data: new SlashCommandBuilder()
