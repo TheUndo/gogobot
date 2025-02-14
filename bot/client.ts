@@ -6,17 +6,7 @@ export const client = new Client({
 });
 
 client.login(process.env.DISCORD_TOKEN).catch((e) => {
-  console.error("Failed to login", e);
-  setTimeout(
-    () => {
-      process.exit(1);
-    },
-    1000 * 60 * 5,
-  );
-});
-
-client.on(Events.ShardDisconnect, () => {
-  process.exit(1);
+  console.error(e);
 });
 
 await new Promise((r) => {
