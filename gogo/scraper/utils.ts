@@ -5,28 +5,30 @@ import { prisma } from "../../core/db/prisma";
 import { ongoingIndex } from "../../core/search/fuse";
 import { DebugLevel, debug, makeCodeBlock } from "./debug";
 
-export const domain = await (async () => {
-  const cache = await fs.readFile("domain.txt", "utf-8").catch(() => null);
-  if (cache) {
-    return cache;
-  }
-  return "https://anitaku.to";
-})().then(async (domain) => {
-  const response = await fetch(domain);
+const defaultDomain = "https://anitaku.to";
+
+export let domain = new URL(
+  await (async () => {
+    const cache = await fs.readFile("domain.txt", "utf-8").catch(() => null);
+    return cache ?? defaultDomain;
+  })(),
+);
+
+async function resolveDomain() {
+  const response = await fetch(domain.toString());
   const resolved = (() => {
     const url = new URL(response.url);
     return `https://${url.host}`;
   })();
   await fs.writeFile("domain.txt", resolved);
-  return new URL(resolved);
-});
-
-const apiDomainRequest = fetch(domain.toString()).then((d) => d.text());
+  domain = new URL(resolved);
+  return domain;
+}
 
 export const apiDomain = async () => {
-  const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(
-    await apiDomainRequest,
-  )?.[1];
+  const response = await fetch((await resolveDomain()).toString());
+  const html = await response.text();
+  const parsed = /ase_url_cdn_api\s*=\s*['"](.*)['"]/.exec(html)?.[1];
 
   if (!parsed) {
     throw new Error("Could not find the API domain");
